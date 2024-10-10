@@ -81,6 +81,11 @@ butterfly(
 #> `new$value`: 2 0 0 0
 ```
 
+`butterfly()` uses `dplyr::semi_join()` to match the timesteps of your
+current dataframe, to the timesteps already present in the previous
+dataframe. `waldo::compare()` is then used to compare these and return
+the differences.
+
 ## The case for butterfly
 
 Why use butterfly when there are so many other methods of comparing
@@ -306,20 +311,30 @@ mar_old <- semi_join(
 
 # This is the principle butterfly is built on:
 butterfly(
+  mar,
   feb,
-  jan,
   datetime_variable = "time"
 )
-#> ✔ No differences
+#> old vs new
+#>            value
+#>   old[1, ]  1.75
+#>   old[2, ]  0.45
+#> - old[3, ]  1.33
+#> + new[3, ]  0.33
+#>   old[4, ]  0.24
+#> 
+#> `old$value`: 2 0 1 0
+#> `new$value`: 2 0 0 0
 ```
 
 ## Relevant packages and functions
 
 The butterfly package was created for a specific use case of handling
 continuously updating/overwritten time-series data, where previous
-values may change without notice. There are other R packages and
-functions which handle object comparison, which may suit your specific
-needs better:
+values may change without notice.
+
+There are other R packages and functions which handle object comparison,
+which may suit your specific needs better:
 
 - [waldo](https://github.com/r-lib/waldo)
 - [diffdf](https://github.com/gowerc/diffdf)
