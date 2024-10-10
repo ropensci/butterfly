@@ -42,20 +42,21 @@ jan <- data.frame(
   value = c(0.45, 0.33, 0.24)
 )
 
-# In February an additional row appears, all remaining data remains the same
+# In February an additional row appears, all previous data remains the same
 feb <- data.frame(
   time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
   value = c(1.75, 0.45, 0.33, 0.24)
 )
 
-#In March an additional row appears again
+# In March an additional row appears again
 # ...but a previous value has unexpectedly changed
 mar <- data.frame(
   time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
   value = c(2.22, 1.75, 0.45, 1.33, 0.24)
 )
 
-# Let's check our previous values are unchanged
+# Let's use butterfly() to check if our previous values have changed
+# And if so, where this change occurred
 butterfly(
   feb,
   jan,
