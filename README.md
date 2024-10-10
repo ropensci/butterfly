@@ -8,13 +8,13 @@
 
 The goal of butterfly is to aid in the QA/QC of continually
 updating/overwritten time-series data where we expect new values over
-time, but where we want to ensure previous data remains unchanged.
+time, but where we want to ensure previous data remains unchanged. Data
+previously recorded or calculated might change due equipment
+recalibration, discovery of human error in model code or a change in
+methodology.
 
-Changes to previous input data may also alter future predictions in
-forecasting models, altering outcomes (the butterfly effect!).
-
-If data is published with a DOI, it can be appended but overwriting
-previous data invalidates a DOI.
+This could have unintended consequences, as changes to previous input
+data may also alter future predictions in forecasting models.
 
 The butterfly package aims to flag changes to previous data to prevent
 data changes going unnoticed.
