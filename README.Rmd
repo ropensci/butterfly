@@ -1,0 +1,188 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# butterfly
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of butterfly is to aid in the QA/QC of continually updating/overwritten time-series data where we expect new values over time, but where we want to ensure previous data remains unchanged.
+
+If data is published with a DOI, it can be appended 
+
+Changes to previous input data may also alter future predictions in forecasting models, altering outcomes (the butterfly effect!). 
+
+## Installation
+
+You can install the development version of butterfly from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("thomaszwagerman/butterfly")
+```
+
+## Example
+
+This is a basic example which shows you how to use butterfly:
+
+```{r simple_example}
+library(butterfly)
+
+# Imagine a continually updated dataset, say once a month
+jan <- data.frame(
+  time = c("2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(0.45, 0.33, 0.24)
+)
+
+# In February an additional row appears, all remaining data remains the same
+feb <- data.frame(
+  time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(1.75, 0.45, 0.33, 0.24)
+)
+
+#In March an additional row appears again
+# ...but a previous value has unexpectedly changed
+mar <- data.frame(
+  time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(2.22, 1.75, 0.45, 1.33, 0.24)
+)
+
+# Let's check our previous values are unchanged
+butterfly(
+  feb,
+  jan,
+  datetime_variable = "time"
+)
+
+butterfly(
+  mar,
+  feb,
+  datetime_variable = "time"
+)
+```
+
+## Why butterfly
+But why butterfly, are there no other method to do this?
+
+```{r explanation}
+library(butterfly)
+
+# Imagine a continually updated dataset, say once a month
+jan <- data.frame(
+  time = c("2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(0.45, 0.33, 0.24)
+)
+
+# In February an additional row appears, all remaining data remains the same
+feb <- data.frame(
+  time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(1.75, 0.45, 0.33, 0.24)
+)
+
+#In March an additional row appears again
+# ...but a previous value has unexpectedly changed
+mar <- data.frame(
+  time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
+  value = c(2.22, 1.75, 0.45, 1.33, 0.24)
+)
+
+# There are several methods of checking difference in dataframes
+all.equal(
+  feb,
+  jan
+)
+
+# However in our case, these are not helpful or consistent
+library(diffdf)
+diffdf(
+  feb,
+  jan
+)
+
+diffdf(
+  jan,
+  feb
+)
+
+# Regardless of order, diffdf tells us row 4 is different. 
+# This is correct, but our "top" row (ie our newest value) has changed
+
+# The waldo package does a slightly better job in showing this positional difference
+library(waldo)
+compare(
+  feb,
+  jan
+)
+# But we can't use its output
+
+# Dplyr's setdiff is useful to extract these differences
+library(dplyr)
+setdiff(
+  feb,
+  jan
+)
+
+# And intersect is useful to get an object to for the "old" data
+intersect(
+  feb,
+  jan
+)
+
+# We expect the new row to be different, but we want to compare old values separately 
+# In March an additional row appears again, but a previous value changes
+setdiff(
+  mar,
+  feb
+)
+
+# Now a second value is extracted, but this is new and old data together.
+
+# A way to circumvent this is to use the unique identifyer (in this case `time`)
+anti_join(
+  mar,
+  feb,
+  by = "time"
+)
+
+# This extracts the "new" value, without also returning the changed "old" value
+# ie the time in March but not in Feb
+anti_join(
+  mar,
+  feb,
+  by = "time"
+)
+
+# This extract the rows where time in March matches Feb
+mar_old <- semi_join(
+  mar,
+  feb,
+  by = "time"
+)
+
+# This is the principle butterfly is built on:
+butterfly(
+  feb,
+  jan,
+  datetime_variable = "time"
+)
+```
+
+## Relevant packages and functions
+The butterfly package was created for a specific use case of handling continuously updating/overwritten time-series data, where previous values may change without notice. There are other R packages and functions which handle object comparison, which may suit your specific needs better:
+
+* [waldo](https://github.com/r-lib/waldo)
+* [diffdf](https://github.com/gowerc/diffdf)
+
+Other functions include `all.equal()` or [dplyr](https://github.com/tidyverse/dplyr)'s `setdiff()`

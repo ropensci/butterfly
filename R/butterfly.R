@@ -11,6 +11,7 @@
 #' @param df_previous data.frame, the previoust dataset, ie n - 1.
 #' @param datetime_variable string, which unique ID to use to join x and y. Usually "time".
 #'
+#' @export
 butterfly <- function(df_current, df_previous, datetime_variable) {
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
