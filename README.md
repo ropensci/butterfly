@@ -81,32 +81,18 @@ butterfly(
 #> `new$value`: 2 0 0 0
 ```
 
-## Why butterfly
+## The case for butterfly
 
-But why butterfly, are there no other method to do this?
+Why use butterfly when there are so many other methods of comparing
+dataframes?
+
+The short answer is that none of them **quite** fit what we were after.
+While we are comparing two dataframes for differences, with continually
+updating data we are actually expecting these to be different. A bit of
+wrangling is therefore required:
 
 ``` r
 library(butterfly)
-
-# Imagine a continually updated dataset, say once a month
-jan <- data.frame(
-  time = c("2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(0.45, 0.33, 0.24)
-)
-
-# In February an additional row appears, all remaining data remains the same
-feb <- data.frame(
-  time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(1.75, 0.45, 0.33, 0.24)
-)
-
-#In March an additional row appears again
-# ...but a previous value has unexpectedly changed
-mar <- data.frame(
-  time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(2.22, 1.75, 0.45, 1.33, 0.24)
-)
-
 # There are several methods of checking difference in dataframes
 all.equal(
   feb,
