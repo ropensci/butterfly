@@ -70,7 +70,7 @@ release <- function(df_current, df_previous, datetime_variable) {
       cli::cat_line()
 
       cli::cat_bullet(
-        "The following rows have changed from the previous data, and will be dropped:",
+        "The following rows have changed from the previous data, and will be dropped: ",
         bullet = "info",
         col = "orange",
         bullet_col = "orange"
