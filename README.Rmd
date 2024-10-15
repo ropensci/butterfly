@@ -85,7 +85,19 @@ butterfly(
 ### Using butterfly for data wrangling
 You might want to return changed rows as a dataframe, or drop them altogether. For this `butterfly_catch()` and `butterfly_release()` are provided.
 
-Here, `butterfly_release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
+Here, `butterfly_catch()` only returns rows which have **changed** from the previous version. It will not return new rows.
+
+```{r butterfly_catch()}
+df_caught <- butterfly_catch(
+  mar,
+  feb,
+  datetime_variable = "time"
+)
+
+df_caught
+```
+
+Conversely, `butterfly_release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
 
 ```{r butterfly_release}
 df_released <- butterfly_release(

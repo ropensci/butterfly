@@ -108,8 +108,38 @@ You might want to return changed rows as a dataframe, or drop them
 altogether. For this `butterfly_catch()` and `butterfly_release()` are
 provided.
 
-Here, `butterfly_release()` drops all rows which had changed from the
-previous version. Note it retains new rows, as these were expected.
+Here, `butterfly_catch()` only returns rows which have **changed** from
+the previous version. It will not return new rows.
+
+``` r
+df_caught <- butterfly_catch(
+  mar,
+  feb,
+  datetime_variable = "time"
+)
+#> The following rows are new in 'mar': 
+#>         time value
+#> 1 2024-03-01  2.22
+#> 
+#> ℹ The following rows have changed from the previous data, and will be returned:
+#> old vs new
+#>            value
+#>   old[1, ]  1.75
+#>   old[2, ]  0.45
+#> - old[3, ]  1.33
+#> + new[3, ]  0.33
+#>   old[4, ]  0.24
+#> 
+#> `old$value`: 2 0 1 0
+#> `new$value`: 2 0 0 0
+
+df_caught
+#>         time value
+#> 1 2023-12-01  1.33
+```
+
+Conversely, `butterfly_release()` drops all rows which had changed from
+the previous version. Note it retains new rows, as these were expected.
 
 ``` r
 df_released <- butterfly_release(
