@@ -9,16 +9,25 @@ butterfly(df_current, df_previous, datetime_variable)
 \arguments{
 \item{df_current}{data.frame, most recent dataset n.}
 
-\item{df_previous}{data.frame, the previoust dataset, ie n - 1.}
+\item{df_previous}{data.frame, the previous dataset, ie n - 1.}
 
-\item{datetime_variable}{string, which unique ID to use to join x and y. Usually "time".}
+\item{datetime_variable}{string, which unique ID to use to join x and y.
+Usually a "datetime" variable.}
 }
 \description{
-This function compares two timeseries objects where we expect previous values
-to be the same.
-}
-\details{
 This function is intended to aid in the QA/QC of continually updating
 timeseries data where we expect new values, but want to ensure previous data
 remains unchanged.
+}
+\details{
+This function matches two dataframe objects by their unique identifier
+(usually "time" or "datetime in a timeseries).
+
+It informs the user of new (unmatched) rows which have appeared, and then
+returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
+
+The main assumption is that \code{df_current} and \code{df_previous} are a newer and
+older versions of the same data, and that the \code{datetime_variable} name always
+remains the same. Elsewhere new columns can of appear, and this will be
+returned.
 }
