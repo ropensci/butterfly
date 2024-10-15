@@ -102,7 +102,7 @@ the differences.
 providing too much information, rather than too little. It will give a
 detailed feedback message on the status between two objects.
 
-### Operations
+### Using butterfly for data wrangling
 
 You might want to return changed rows as a dataframe, or drop them
 altogether. For this `butterfly_catch()` and `butterfly_release()` are
@@ -112,7 +112,7 @@ Here, `butterfly_release()` drops all rows which had changed from the
 previous version. Note it retains new rows, as these were expected.
 
 ``` r
-butterfly_release(
+df_released <- butterfly_release(
   mar,
   feb,
   datetime_variable = "time"
@@ -132,6 +132,8 @@ butterfly_release(
 #> 
 #> `old$value`: 2 0 1 0
 #> `new$value`: 2 0 0 0
+
+df_released
 #>         time value
 #> 1 2024-03-01  2.22
 #> 2 2024-02-01  1.75
