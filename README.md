@@ -13,6 +13,8 @@ previously recorded or calculated might change due equipment
 recalibration, discovery of human error in model code or a change in
 methodology.
 
+![](butterfly_diagram.png)
+
 This could have unintended consequences, as changes to previous input
 data may also alter future predictions in forecasting models.
 
@@ -204,11 +206,11 @@ and
 force a recalculation, meaning previously published data differs from
 the final product.
 
-When publishing ERA5-derived datasets, it is possible to continuously
-append without invalidating a DOI. However, recalculation would
-overwrite previously published data, thereby forcing a new publication
-and DOI to be minted. We use the functionality in this package to detect
-changes, stop data transfer and notify the user.
+When publishing ERA5-derived datasets, and minting it with a DOI, it is
+possible to continuously append without invalidating that DOI. However,
+recalculation would overwrite previously published data, thereby forcing
+a new publication and DOI to be minted. We use the functionality in this
+package to detect changes, stop data transfer and notify the user.
 
 This package has intentionally been generalised to accommodate other,
 but similar, use cases. Other examples could include a correction in
