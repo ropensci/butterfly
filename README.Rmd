@@ -118,3 +118,14 @@ There are other R packages and functions which handle object comparison, which m
 * [diffdf](https://github.com/gowerc/diffdf)
 
 Other functions include `all.equal()` or [dplyr](https://github.com/tidyverse/dplyr)'s `setdiff()`
+
+## Rationale
+There are a lot of other data comparison and QA/QC packages out there, why butterfly?
+
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
+
+Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+
+When publishing ERA5-derived datasets, it is possible to continuously append without invalidating a DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. We use the functionality in this package to detect changes, stop data transfer and notify the user.
+
+This package has intentionally been generalised to accommodate other, but similar, use cases. Other examples could include a correction in instrument calibration, compromised data transfer or unnoticed changes in the parameterisation of a model.
