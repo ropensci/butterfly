@@ -45,24 +45,15 @@ This is a basic example which shows you how to use butterfly:
 ```{r simple_example}
 library(butterfly)
 
-# Imagine a continually updated dataset, say once a month
-jan <- data.frame(
-  time = c("2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(0.45, 0.33, 0.24)
-)
+# Imagine a continually updated dataset that starts in January and is updated once a month
+butterflycount$january
 
 # In February an additional row appears, all previous data remains the same
-feb <- data.frame(
-  time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(1.75, 0.45, 0.33, 0.24)
-)
+butterflycount$february
 
 # In March an additional row appears again
 # ...but a previous value has unexpectedly changed
-mar <- data.frame(
-  time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(2.22, 1.75, 0.45, 1.33, 0.24)
-)
+butterflycount$march
 ```
 
 We can use `butterfly::loupe()` to check if our previous values have changed.
@@ -71,14 +62,14 @@ We can use `butterfly::loupe()` to check if our previous values have changed.
 # Let's use butterfly::loupe() to check if our previous values have changed
 # And if so, where this change occurred
 butterfly::loupe(
-  feb,
-  jan,
+  butterflycount$february,
+  butterflycount$january,
   datetime_variable = "time"
 )
 
 butterfly::loupe(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
 ```
@@ -94,8 +85,8 @@ Here, `butterfly::catch()` only returns rows which have **changed** from the pre
 
 ```{r butterfly_catch}
 df_caught <- butterfly::catch(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
 
@@ -106,8 +97,8 @@ Conversely, `butterfly::release()` drops all rows which had changed from the pre
 
 ```{r butterfly_release}
 df_released <- butterfly::release(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
 

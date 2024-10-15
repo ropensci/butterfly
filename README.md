@@ -38,24 +38,30 @@ This is a basic example which shows you how to use butterfly:
 ``` r
 library(butterfly)
 
-# Imagine a continually updated dataset, say once a month
-jan <- data.frame(
-  time = c("2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(0.45, 0.33, 0.24)
-)
+# Imagine a continually updated dataset that starts in January and is updated once a month
+butterflycount$january
+#>         time count
+#> 1 2024-01-01    22
+#> 2 2023-12-01    55
+#> 3 2023-11-01    11
 
 # In February an additional row appears, all previous data remains the same
-feb <- data.frame(
-  time = c("2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(1.75, 0.45, 0.33, 0.24)
-)
+butterflycount$february
+#>         time value
+#> 1 2024-02-01    17
+#> 2 2024-01-01    22
+#> 3 2023-12-01    55
+#> 4 2023-11-01    11
 
 # In March an additional row appears again
 # ...but a previous value has unexpectedly changed
-mar <- data.frame(
-  time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
-  value = c(2.22, 1.75, 0.45, 1.33, 0.24)
-)
+butterflycount$march
+#>         time value
+#> 1 2024-03-01    23
+#> 2 2024-02-01    17
+#> 3 2024-01-01    22
+#> 4 2023-12-01    55
+#> 5 2023-11-01    18
 ```
 
 We can use `butterfly::loupe()` to check if our previous values have
@@ -65,35 +71,44 @@ changed.
 # Let's use butterfly::loupe() to check if our previous values have changed
 # And if so, where this change occurred
 butterfly::loupe(
-  feb,
-  jan,
+  butterflycount$february,
+  butterflycount$january,
   datetime_variable = "time"
 )
-#> The following rows are new in 'feb': 
+#> The following rows are new in 'butterflycount$february': 
 #>         time value
-#> 1 2024-02-01  1.75
-#> ✔ And there are no differences with previous data.
+#> 1 2024-02-01    17
+#> 
+#> ℹ But the following values have changes from the previous data:
+#> `names(old)`: "time" "value"
+#> `names(new)`: "time" "count"
+#> 
+#> `old$value` is a double vector (22, 55, 11)
+#> `new$value` is absent
+#> 
+#> `old$count` is absent
+#> `new$count` is a double vector (22, 55, 11)
 
 butterfly::loupe(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'mar': 
+#> The following rows are new in 'butterflycount$march': 
 #>         time value
-#> 1 2024-03-01  2.22
+#> 1 2024-03-01    23
 #> 
 #> ℹ But the following values have changes from the previous data:
 #> old vs new
 #>            value
-#>   old[1, ]  1.75
-#>   old[2, ]  0.45
-#> - old[3, ]  1.33
-#> + new[3, ]  0.33
-#>   old[4, ]  0.24
+#>   old[1, ]    17
+#>   old[2, ]    22
+#>   old[3, ]    55
+#> - old[4, ]    18
+#> + new[4, ]    11
 #> 
-#> `old$value`: 2 0 1 0
-#> `new$value`: 2 0 0 0
+#> `old$value`: 17 22 55 18
+#> `new$value`: 17 22 55 11
 ```
 
 `butterfly::loupe()` uses `dplyr::semi_join()` to match the timesteps of
@@ -116,29 +131,29 @@ the previous version. It will not return new rows.
 
 ``` r
 df_caught <- butterfly::catch(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'mar': 
+#> The following rows are new in 'butterflycount$march': 
 #>         time value
-#> 1 2024-03-01  2.22
+#> 1 2024-03-01    23
 #> 
 #> ℹ The following rows have changed from the previous data, and will be returned:
 #> old vs new
 #>            value
-#>   old[1, ]  1.75
-#>   old[2, ]  0.45
-#> - old[3, ]  1.33
-#> + new[3, ]  0.33
-#>   old[4, ]  0.24
+#>   old[1, ]    17
+#>   old[2, ]    22
+#>   old[3, ]    55
+#> - old[4, ]    18
+#> + new[4, ]    11
 #> 
-#> `old$value`: 2 0 1 0
-#> `new$value`: 2 0 0 0
+#> `old$value`: 17 22 55 18
+#> `new$value`: 17 22 55 11
 
 df_caught
 #>         time value
-#> 1 2023-12-01  1.33
+#> 1 2023-11-01    18
 ```
 
 Conversely, `butterfly::release()` drops all rows which had changed from
@@ -146,32 +161,32 @@ the previous version. Note it retains new rows, as these were expected.
 
 ``` r
 df_released <- butterfly::release(
-  mar,
-  feb,
+  butterflycount$march,
+  butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'mar': 
+#> The following rows are new in 'butterflycount$march': 
 #>         time value
-#> 1 2024-03-01  2.22
+#> 1 2024-03-01    23
 #> 
 #> ℹ The following rows have changed from the previous data, and will be dropped:
 #> old vs new
 #>            value
-#>   old[1, ]  1.75
-#>   old[2, ]  0.45
-#> - old[3, ]  1.33
-#> + new[3, ]  0.33
-#>   old[4, ]  0.24
+#>   old[1, ]    17
+#>   old[2, ]    22
+#>   old[3, ]    55
+#> - old[4, ]    18
+#> + new[4, ]    11
 #> 
-#> `old$value`: 2 0 1 0
-#> `new$value`: 2 0 0 0
+#> `old$value`: 17 22 55 18
+#> `new$value`: 17 22 55 11
 
 df_released
 #>         time value
-#> 1 2024-03-01  2.22
-#> 2 2024-02-01  1.75
-#> 3 2024-01-01  0.45
-#> 4 2023-11-01  0.24
+#> 1 2024-03-01    23
+#> 2 2024-02-01    17
+#> 3 2024-01-01    22
+#> 4 2023-12-01    55
 ```
 
 ## Relevant packages and functions
