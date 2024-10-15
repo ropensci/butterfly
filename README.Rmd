@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 The goal of butterfly is to aid in the QA/QC of continually updating/overwritten time-series data where we expect new values over time, but where we want to ensure previous data remains unchanged. Data previously recorded or calculated might change due equipment recalibration, discovery of human error in model code or a change in methodology.
 
-```{r butterfly_diagram, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+```{r butterfly_diagram, echo=FALSE, out.width="100%", fig.cap=""}
 knitr::include_graphics("man/figures/README-butterfly_diagram.png")
 ```
 

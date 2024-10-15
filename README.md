@@ -13,14 +13,7 @@ previously recorded or calculated might change due equipment
 recalibration, discovery of human error in model code or a change in
 methodology.
 
-<div class="figure">
-
-<img src="man/figures/README-butterfly_diagram.png" alt="A nice image." width="50%" />
-<p class="caption">
-A nice image.
-</p>
-
-</div>
+<img src="man/figures/README-butterfly_diagram.png" width="100%" />
 
 This could have unintended consequences, as changes to previous input
 data may also alter future predictions in forecasting models.
