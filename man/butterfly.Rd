@@ -11,8 +11,7 @@ butterfly(df_current, df_previous, datetime_variable)
 
 \item{df_previous}{data.frame, the previous dataset, ie n - 1.}
 
-\item{datetime_variable}{string, which unique ID to use to join x and y.
-Usually a "datetime" variable.}
+\item{datetime_variable}{string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.}
 }
 \description{
 This function is intended to aid in the QA/QC of continually updating
