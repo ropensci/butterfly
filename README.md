@@ -54,7 +54,11 @@ mar <- data.frame(
   time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
   value = c(2.22, 1.75, 0.45, 1.33, 0.24)
 )
+```
 
+We can use `butterfly()` to check if our previous values have changed.
+
+``` r
 # Let's use butterfly() to check if our previous values have changed
 # And if so, where this change occurred
 butterfly(
@@ -97,6 +101,43 @@ the differences.
 `butterfly()` follows the `waldo` philosophy of erring on the side of
 providing too much information, rather than too little. It will give a
 detailed feedback message on the status between two objects.
+
+### Operations
+
+You might want to return changed rows as a dataframe, or drop them
+altogether. For this `butterfly_catch()` and `butterfly_release()` are
+provided.
+
+Here, `butterfly_release()` drops all rows which had changed from the
+previous version. Note it retains new rows, as these were expected.
+
+``` r
+butterfly_release(
+  mar,
+  feb,
+  datetime_variable = "time"
+)
+#> The following rows are new in 'mar': 
+#>         time value
+#> 1 2024-03-01  2.22
+#> 
+#> ℹ The following rows have changed from the previous data, and will be dropped:
+#> old vs new
+#>            value
+#>   old[1, ]  1.75
+#>   old[2, ]  0.45
+#> - old[3, ]  1.33
+#> + new[3, ]  0.33
+#>   old[4, ]  0.24
+#> 
+#> `old$value`: 2 0 1 0
+#> `new$value`: 2 0 0 0
+#>         time value
+#> 1 2024-03-01  2.22
+#> 2 2024-02-01  1.75
+#> 3 2024-01-01  0.45
+#> 4 2023-11-01  0.24
+```
 
 ## Relevant packages and functions
 

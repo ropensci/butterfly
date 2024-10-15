@@ -58,7 +58,11 @@ mar <- data.frame(
   time = c("2024-03-01", "2024-02-01", "2024-01-01", "2023-12-01", "2023-11-01"),
   value = c(2.22, 1.75, 0.45, 1.33, 0.24)
 )
+```
 
+We can use `butterfly()` to check if our previous values have changed.
+
+```{r butterfly_example}
 # Let's use butterfly() to check if our previous values have changed
 # And if so, where this change occurred
 butterfly(
@@ -77,6 +81,20 @@ butterfly(
 `butterfly()` uses `dplyr::semi_join()` to match the timesteps of your current dataframe, to the timesteps already present in the previous dataframe. `waldo::compare()` is then used to compare these and return the differences.
 
 `butterfly()` follows the `waldo` philosophy of erring on the side of providing too much information, rather than too little. It will give a detailed feedback message on the status between two objects.
+
+### Operations
+You might want to return changed rows as a dataframe, or drop them altogether. For this `butterfly_catch()` and `butterfly_release()` are provided.
+
+Here, `butterfly_release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
+
+```{r butterfly_release}
+butterfly_release(
+  mar,
+  feb,
+  datetime_variable = "time"
+)
+
+```
 
 ## Relevant packages and functions
 The butterfly package was created for a specific use case of handling continuously updating/overwritten time-series data, where previous values may change without notice. 
