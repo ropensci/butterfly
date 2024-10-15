@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # butterfly
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the QA/QC of continually updating/overwritten time-series data where we expect new values over time, but where we want to ensure previous data remains unchanged. 

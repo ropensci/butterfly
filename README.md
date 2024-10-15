@@ -4,6 +4,8 @@
 # butterfly
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the QA/QC of continually
@@ -47,7 +49,7 @@ butterflycount$january
 
 # In February an additional row appears, all previous data remains the same
 butterflycount$february
-#>         time value
+#>         time count
 #> 1 2024-02-01    17
 #> 2 2024-01-01    22
 #> 3 2023-12-01    55
@@ -56,7 +58,7 @@ butterflycount$february
 # In March an additional row appears again
 # ...but a previous value has unexpectedly changed
 butterflycount$march
-#>         time value
+#>         time count
 #> 1 2024-03-01    23
 #> 2 2024-02-01    17
 #> 3 2024-01-01    22
@@ -76,18 +78,9 @@ butterfly::loupe(
   datetime_variable = "time"
 )
 #> The following rows are new in 'butterflycount$february': 
-#>         time value
+#>         time count
 #> 1 2024-02-01    17
-#> 
-#> ℹ But the following values have changes from the previous data:
-#> `names(old)`: "time" "value"
-#> `names(new)`: "time" "count"
-#> 
-#> `old$value` is a double vector (22, 55, 11)
-#> `new$value` is absent
-#> 
-#> `old$count` is absent
-#> `new$count` is a double vector (22, 55, 11)
+#> ✔ And there are no differences with previous data.
 
 butterfly::loupe(
   butterflycount$march,
@@ -95,20 +88,20 @@ butterfly::loupe(
   datetime_variable = "time"
 )
 #> The following rows are new in 'butterflycount$march': 
-#>         time value
+#>         time count
 #> 1 2024-03-01    23
 #> 
 #> ℹ But the following values have changes from the previous data:
 #> old vs new
-#>            value
+#>            count
 #>   old[1, ]    17
 #>   old[2, ]    22
 #>   old[3, ]    55
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$value`: 17 22 55 18
-#> `new$value`: 17 22 55 11
+#> `old$count`: 17 22 55 18
+#> `new$count`: 17 22 55 11
 ```
 
 `butterfly::loupe()` uses `dplyr::semi_join()` to match the timesteps of
@@ -136,23 +129,23 @@ df_caught <- butterfly::catch(
   datetime_variable = "time"
 )
 #> The following rows are new in 'butterflycount$march': 
-#>         time value
+#>         time count
 #> 1 2024-03-01    23
 #> 
 #> ℹ The following rows have changed from the previous data, and will be returned:
 #> old vs new
-#>            value
+#>            count
 #>   old[1, ]    17
 #>   old[2, ]    22
 #>   old[3, ]    55
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$value`: 17 22 55 18
-#> `new$value`: 17 22 55 11
+#> `old$count`: 17 22 55 18
+#> `new$count`: 17 22 55 11
 
 df_caught
-#>         time value
+#>         time count
 #> 1 2023-11-01    18
 ```
 
@@ -166,23 +159,23 @@ df_released <- butterfly::release(
   datetime_variable = "time"
 )
 #> The following rows are new in 'butterflycount$march': 
-#>         time value
+#>         time count
 #> 1 2024-03-01    23
 #> 
-#> ℹ The following rows have changed from the previous data, and will be dropped:
+#> ℹ The following rows have changed from the previous data, and will be dropped: 
 #> old vs new
-#>            value
+#>            count
 #>   old[1, ]    17
 #>   old[2, ]    22
 #>   old[3, ]    55
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$value`: 17 22 55 18
-#> `new$value`: 17 22 55 11
+#> `old$count`: 17 22 55 18
+#> `new$count`: 17 22 55 11
 
 df_released
-#>         time value
+#>         time count
 #> 1 2024-03-01    23
 #> 2 2024-02-01    17
 #> 3 2024-01-01    22
