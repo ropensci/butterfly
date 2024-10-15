@@ -1,4 +1,7 @@
-#' Butterfly: compare previous data in continuously updated timeseries
+#' Loupe: compare previous data in continuously updated timeseries
+#'
+#' A loupe is a simple, small magnification device used to see small details
+#' more closely.
 #'
 #' This function is intended to aid in the QA/QC of continually updating
 #' timeseries data where we expect new values, but want to ensure previous data
@@ -20,7 +23,7 @@
 #' @param datetime_variable string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.
 #'
 #' @export
-butterfly <- function(df_current, df_previous, datetime_variable) {
+loupe <- function(df_current, df_previous, datetime_variable) {
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(

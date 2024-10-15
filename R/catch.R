@@ -1,4 +1,4 @@
-#' Butterfly catch: return dataframe containing only rows that have changed
+#' Catch: return dataframe containing only rows that have changed
 #'
 #' This function matches two dataframe objects by their unique identifier
 #' (usually "time" or "datetime in a timeseries), and returns a new dataframe
@@ -10,7 +10,7 @@
 #' @param datetime_variable string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.
 #'
 #' @export
-butterfly_catch <- function(df_current, df_previous, datetime_variable) {
+catch <- function(df_current, df_previous, datetime_variable) {
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(

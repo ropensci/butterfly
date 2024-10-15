@@ -8,15 +8,15 @@
 
 The goal of butterfly is to aid in the QA/QC of continually
 updating/overwritten time-series data where we expect new values over
-time, but where we want to ensure previous data remains unchanged. Data
-previously recorded or calculated might change due equipment
-recalibration, discovery of human error in model code or a change in
-methodology.
+time, but where we want to ensure previous data remains unchanged.
 
 <img src="man/figures/README-butterfly_diagram.png" width="100%" />
 
-This could have unintended consequences, as changes to previous input
-data may also alter future predictions in forecasting models.
+Data previously recorded or calculated might change due equipment
+recalibration, discovery of human error in model code or a change in
+methodology. This could have unintended consequences, as changes to
+previous input data may also alter future predictions in forecasting
+models.
 
 The butterfly package aims to flag changes to previous data to prevent
 data changes going unnoticed.
@@ -58,12 +58,13 @@ mar <- data.frame(
 )
 ```
 
-We can use `butterfly()` to check if our previous values have changed.
+We can use `butterfly::loupe()` to check if our previous values have
+changed.
 
 ``` r
-# Let's use butterfly() to check if our previous values have changed
+# Let's use butterfly::loupe() to check if our previous values have changed
 # And if so, where this change occurred
-butterfly(
+butterfly::loupe(
   feb,
   jan,
   datetime_variable = "time"
@@ -73,7 +74,7 @@ butterfly(
 #> 1 2024-02-01  1.75
 #> ✔ And there are no differences with previous data.
 
-butterfly(
+butterfly::loupe(
   mar,
   feb,
   datetime_variable = "time"
@@ -95,26 +96,26 @@ butterfly(
 #> `new$value`: 2 0 0 0
 ```
 
-`butterfly()` uses `dplyr::semi_join()` to match the timesteps of your
-current dataframe, to the timesteps already present in the previous
+`butterfly::loupe()` uses `dplyr::semi_join()` to match the timesteps of
+your current dataframe, to the timesteps already present in the previous
 dataframe. `waldo::compare()` is then used to compare these and return
 the differences.
 
-`butterfly()` follows the `waldo` philosophy of erring on the side of
+`butterfly` follows the `waldo` philosophy of erring on the side of
 providing too much information, rather than too little. It will give a
 detailed feedback message on the status between two objects.
 
 ### Using butterfly for data wrangling
 
 You might want to return changed rows as a dataframe, or drop them
-altogether. For this `butterfly_catch()` and `butterfly_release()` are
+altogether. For this `butterfly::catch()` and `butterfly::release()` are
 provided.
 
-Here, `butterfly_catch()` only returns rows which have **changed** from
+Here, `butterfly::catch()` only returns rows which have **changed** from
 the previous version. It will not return new rows.
 
 ``` r
-df_caught <- butterfly_catch(
+df_caught <- butterfly::catch(
   mar,
   feb,
   datetime_variable = "time"
@@ -140,11 +141,11 @@ df_caught
 #> 1 2023-12-01  1.33
 ```
 
-Conversely, `butterfly_release()` drops all rows which had changed from
+Conversely, `butterfly::release()` drops all rows which had changed from
 the previous version. Note it retains new rows, as these were expected.
 
 ``` r
-df_released <- butterfly_release(
+df_released <- butterfly::release(
   mar,
   feb,
   datetime_variable = "time"
