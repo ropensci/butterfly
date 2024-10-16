@@ -35,6 +35,14 @@ You can install the development version of butterfly from [GitHub](https://githu
 devtools::install_github("thomaszwagerman/butterfly")
 ```
 
+## Overview
+The butterfly package contains the following:
+
+  * `butterfly::loupe()` - examines in detail whether previous values have changed, and reports them using `waldo::compare()`.
+  * `butterfly::catch()` - returns rows which contain previously changed values in a dataframe.
+  * `butterfly::release()` - drops rows which contain previously changed values, and returns a dataframe containing new and unchanged rows.
+  * `butterflycount` - a list of monthly dataframes, which contain fictional butterfly counts for a given date.
+
 ## How to use butterfly
 
 This is a basic example which shows you how to use butterfly:
@@ -99,6 +107,16 @@ df_released <- butterfly::release(
 
 df_released
 ```
+
+## The butterflycount dataset
+
+This packages includes a small dummy dataset, `butterflycount`, which contains a list of monthly dataframes of butterfly counts for a given date. 
+
+```{r butterfly_count}
+butterflycount
+```
+
+This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
 
 ## Incorporating in data pipeline
 

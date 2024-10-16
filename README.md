@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/thomaszwagerman/butterfly/branch/main/graph/badge.svg)](https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the quality assurance of continually
@@ -39,7 +41,20 @@ You can install the development version of butterfly from
 devtools::install_github("thomaszwagerman/butterfly")
 ```
 
-## Example
+## Overview
+
+The butterfly package contains the following:
+
+- `butterfly::loupe()` - examines in detail whether previous values have
+  changed, and reports them using `waldo::compare()`.
+- `butterfly::catch()` - returns rows which contain previously changed
+  values in a dataframe.
+- `butterfly::release()` - drops rows which contain previously changed
+  values, and returns a dataframe containing new and unchanged rows.
+- `butterflycount` - a list of monthly dataframes, which contain
+  fictional butterfly counts for a given date.
+
+## Examples
 
 This is a basic example which shows you how to use butterfly:
 
@@ -197,6 +212,8 @@ which may suit your specific needs better:
 
 - [waldo](https://github.com/r-lib/waldo)
 - [diffdf](https://github.com/gowerc/diffdf)
+- [assertr](https://github.com/tonyfischetti/assertr)
+- [daquiri](https://github.com/ropensci/daiquiri/)
 
 Other functions include `all.equal()` or
 [dplyr](https://github.com/tidyverse/dplyr)’s `setdiff()`

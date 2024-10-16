@@ -3,3 +3,4 @@
 export(catch)
 export(loupe)
 export(release)
+importFrom(lifecycle,deprecated)
