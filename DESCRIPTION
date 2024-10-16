@@ -22,4 +22,5 @@ Depends:
     R (>= 2.10)
 LazyData: true
 VignetteBuilder: knitr
-URL: https://thomaszwagerman.github.io/butterfly/
+URL: https://github.com/thomaszwagerman/butterfly
+BugReports: https://github.com/thomaszwagerman/butterfly/issues
