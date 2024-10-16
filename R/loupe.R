@@ -24,6 +24,21 @@
 #'
 #' @returns A waldo object containing a message on differences or 'And there are no differences with previous data'.
 #'
+#' @examples
+#' # This example contains no differences with previous data
+#' butterfly::loupe(
+#'  butterflycount$february,
+#'  butterflycount$january,
+#'  datetime_variable = "time"
+#' )
+#'
+#' # This example does contain differences with previous data
+#' butterfly::loupe(
+#'   butterflycount$march,
+#'   butterflycount$february,
+#'   datetime_variable = "time"
+#' )
+#'
 #' @export
 loupe <- function(df_current, df_previous, datetime_variable) {
 

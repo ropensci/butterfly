@@ -14,6 +14,15 @@
 #'
 #' @seealso [loupe()]
 #'
+#' @examples
+#' df_caught <- butterfly::catch(
+#'   butterflycount$march,
+#'   butterflycount$february,
+#'   datetime_variable = "time"
+#' )
+#'
+#' df_caught
+#'
 #' @export
 catch <- function(df_current, df_previous, datetime_variable) {
 

@@ -14,6 +14,15 @@
 #'
 #' @seealso [loupe()]
 #'
+#' @examples
+#' df_released <- butterfly::release(
+#' butterflycount$march,
+#' butterflycount$february,
+#' datetime_variable = "time"
+#' )
+#'
+#' df_released
+#'
 #' @export
 release <- function(df_current, df_previous, datetime_variable) {
 
