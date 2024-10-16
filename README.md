@@ -23,7 +23,7 @@ not always possible.
 
 Unnoticed changes in previous data could have unintended consequences,
 such as invalidating DOIs, or altering future predictions if used as
-input in forecasting models
+input in forecasting models.
 
 This package provides functionality that can be used as part of a data
 pipeline, to check and flag changes to previous data to prevent changes

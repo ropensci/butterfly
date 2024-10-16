@@ -22,7 +22,7 @@ knitr::include_graphics("img/butterfly_diagram_light.png")
 
 Data previously recorded could change for a number of reasons, such as discovery of an error in model code, a change in methodology or instrument recalibration. Monitoring data sources for these changes is not always possible.
 
-Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models
+Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.
 
 This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.
 
