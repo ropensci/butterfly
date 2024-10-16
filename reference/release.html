@@ -56,18 +56,59 @@ changes from previous data will be dropped.</p>
 
 
 <dl><dt id="arg-df-current">df_current<a class="anchor" aria-label="anchor" href="#arg-df-current"></a></dt>
-<dd><p>data.frame, most recent dataset n.</p></dd>
+<dd><p>data.frame, the newest/current version of dataset x.</p></dd>
 
 
 <dt id="arg-df-previous">df_previous<a class="anchor" aria-label="anchor" href="#arg-df-previous"></a></dt>
-<dd><p>data.frame, the previous dataset, ie n - 1.</p></dd>
+<dd><p>data.frame, the old version of dataset, for example x - t1.</p></dd>
 
 
 <dt id="arg-datetime-variable">datetime_variable<a class="anchor" aria-label="anchor" href="#arg-datetime-variable"></a></dt>
-<dd><p>string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.</p></dd>
+<dd><p>string, which variable to use as unique ID to join <code>df_current</code> and <code>df_previous</code>. Usually a "datetime" variable.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A dataframe which contains only rows of <code>df_current</code> that have not changed from <code>df_previous</code>, and includes new rows.
+also returns a waldo object as in <code><a href="loupe.html">loupe()</a></code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="loupe.html">loupe()</a></code></p></div>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df_released</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu">release</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span></span>
+<span class="r-in"><span><span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span></span>
+<span class="r-in"><span>datetime_variable <span class="op">=</span> <span class="st">"time"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The following rows are new in 'butterflycount$march': </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-03-01    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">The following rows have changed from the previous data, and will be dropped: </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> old vs new</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            <span style="font-weight: bold;">count</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">  old[1, ]    17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">  old[2, ]    22</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">  old[3, ]    55</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">- old[4, ]    18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">+ new[4, ]    11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df_released</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-03-01    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2024-02-01    17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2024-01-01    22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2023-12-01    55</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
