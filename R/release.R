@@ -10,6 +10,9 @@
 #' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
 #'
 #' @returns A dataframe which contains only rows of `df_current` that have not changed from `df_previous`, and includes new rows.
+#' also returns a waldo object as in `loupe()`.
+#'
+#' @seealso [loupe()]
 #'
 #' @export
 release <- function(df_current, df_previous, datetime_variable) {
