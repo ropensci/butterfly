@@ -5,12 +5,38 @@
 #' which contains the new rows (if present) but matched rows which contain
 #' changes from previous data will be dropped.
 #'
-#' @param df_current data.frame, most recent dataset n.
-#' @param df_previous data.frame, the previous dataset, ie n - 1.
-#' @param datetime_variable string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.
+#' @param df_current data.frame, the newest/current version of dataset x.
+#' @param df_previous data.frame, the old version of dataset, for example x - t1.
+#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#'
+#' @returns A dataframe which contains only rows of `df_current` that have not changed from `df_previous`, and includes new rows.
+#' also returns a waldo object as in `loupe()`.
+#'
+#' @seealso [loupe()]
+#'
+#' @examples
+#' df_released <- butterfly::release(
+#' butterflycount$march,
+#' butterflycount$february,
+#' datetime_variable = "time"
+#' )
+#'
+#' df_released
 #'
 #' @export
 release <- function(df_current, df_previous, datetime_variable) {
+
+  # Check input is as expected
+  stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
+  stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
+
+  # Check if `datetime_variable` is in both `df_current` and `df_previous`
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+    stop(
+      "`datetime_variable` must be present in both `df_current` and `df_previous`"
+    )
+  }
+
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(
@@ -50,7 +76,7 @@ release <- function(df_current, df_previous, datetime_variable) {
       ),
       col = "green"
     )
-    print(
+    cli::cat_print(
       df_current_new_rows
     )
   }
@@ -76,7 +102,9 @@ release <- function(df_current, df_previous, datetime_variable) {
         bullet_col = "orange"
       )
 
-      print(waldo_object)
+      cli::cat_print(
+        waldo_object
+        )
 
       # By using an inner join, we drop any row which does not match in
       # df_previous.

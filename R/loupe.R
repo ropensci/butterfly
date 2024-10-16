@@ -1,11 +1,11 @@
-#' Loupe: compare previous data in continuously updated timeseries
+#' Loupe: compare new and old data in continuously updated timeseries
 #'
-#' A loupe is a simple, small magnification device used to see small details
+#' A loupe is a simple, small magnification device used to examine small details
 #' more closely.
 #'
-#' This function is intended to aid in the QA/QC of continually updating
-#' timeseries data where we expect new values, but want to ensure previous data
-#' remains unchanged.
+#' This function is intended to aid in the quality assurance of continually
+#' updating timeseries data where we expect new values but want to ensure
+#' previous values remains unchanged.
 #'
 #' This function matches two dataframe objects by their unique identifier
 #' (usually "time" or "datetime in a timeseries).
@@ -14,16 +14,45 @@
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes.
 #'
 #' The main assumption is that `df_current` and `df_previous` are a newer and
-#' older versions of the same data, and that the `datetime_variable` name always
-#' remains the same. Elsewhere new columns can of appear, and this will be
-#' returned.
+#' older versions of the same data, and that the `datetime_variable` variable name always
+#' remains the same. Elsewhere new columns can of appear, and these will be
+#' returned in the report.
 #'
-#' @param df_current data.frame, most recent dataset n.
-#' @param df_previous data.frame, the previous dataset, ie n - 1.
-#' @param datetime_variable string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.
+#' @param df_current data.frame, the newest/current version of dataset x.
+#' @param df_previous data.frame, the old version of dataset, for example x - t1.
+#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#'
+#' @returns A waldo object containing a message on differences or 'And there are no differences with previous data'.
+#'
+#' @examples
+#' # This example contains no differences with previous data
+#' butterfly::loupe(
+#'  butterflycount$february,
+#'  butterflycount$january,
+#'  datetime_variable = "time"
+#' )
+#'
+#' # This example does contain differences with previous data
+#' butterfly::loupe(
+#'   butterflycount$march,
+#'   butterflycount$february,
+#'   datetime_variable = "time"
+#' )
 #'
 #' @export
 loupe <- function(df_current, df_previous, datetime_variable) {
+
+  # Check input is as expected
+  stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
+  stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
+
+  # Check if `datetime_variable` is in both `df_current` and `df_previous`
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+    stop(
+      "`datetime_variable` must be present in both `df_current` and `df_previous`"
+    )
+  }
+
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(
@@ -63,7 +92,7 @@ loupe <- function(df_current, df_previous, datetime_variable) {
       "': ",
       col = "green"
     )
-    print(
+    cli::cat_print(
       df_current_new_rows
     )
   }
@@ -87,7 +116,7 @@ loupe <- function(df_current, df_previous, datetime_variable) {
         col = "orange",
         bullet_col = "orange"
       )
-      waldo_object
+      return(waldo_object)
     }
   }
 }

@@ -7,15 +7,32 @@
 release(df_current, df_previous, datetime_variable)
 }
 \arguments{
-\item{df_current}{data.frame, most recent dataset n.}
+\item{df_current}{data.frame, the newest/current version of dataset x.}
 
-\item{df_previous}{data.frame, the previous dataset, ie n - 1.}
+\item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
-\item{datetime_variable}{string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+}
+\value{
+A dataframe which contains only rows of \code{df_current} that have not changed from \code{df_previous}, and includes new rows.
+also returns a waldo object as in \code{loupe()}.
 }
 \description{
 This function matches two dataframe objects by their unique identifier
 (usually "time" or "datetime in a timeseries), and returns a new dataframe
 which contains the new rows (if present) but matched rows which contain
 changes from previous data will be dropped.
+}
+\examples{
+df_released <- butterfly::release(
+butterflycount$march,
+butterflycount$february,
+datetime_variable = "time"
+)
+
+df_released
+
+}
+\seealso{
+\code{\link[=loupe]{loupe()}}
 }

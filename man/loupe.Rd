@@ -2,25 +2,28 @@
 % Please edit documentation in R/loupe.R
 \name{loupe}
 \alias{loupe}
-\title{Loupe: compare previous data in continuously updated timeseries}
+\title{Loupe: compare new and old data in continuously updated timeseries}
 \usage{
 loupe(df_current, df_previous, datetime_variable)
 }
 \arguments{
-\item{df_current}{data.frame, most recent dataset n.}
+\item{df_current}{data.frame, the newest/current version of dataset x.}
 
-\item{df_previous}{data.frame, the previous dataset, ie n - 1.}
+\item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
-\item{datetime_variable}{string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+}
+\value{
+A waldo object containing a message on differences or 'And there are no differences with previous data'.
 }
 \description{
-A loupe is a simple, small magnification device used to see small details
+A loupe is a simple, small magnification device used to examine small details
 more closely.
 }
 \details{
-This function is intended to aid in the QA/QC of continually updating
-timeseries data where we expect new values, but want to ensure previous data
-remains unchanged.
+This function is intended to aid in the quality assurance of continually
+updating timeseries data where we expect new values but want to ensure
+previous values remains unchanged.
 
 This function matches two dataframe objects by their unique identifier
 (usually "time" or "datetime in a timeseries).
@@ -29,7 +32,23 @@ It informs the user of new (unmatched) rows which have appeared, and then
 returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
 
 The main assumption is that \code{df_current} and \code{df_previous} are a newer and
-older versions of the same data, and that the \code{datetime_variable} name always
-remains the same. Elsewhere new columns can of appear, and this will be
-returned.
+older versions of the same data, and that the \code{datetime_variable} variable name always
+remains the same. Elsewhere new columns can of appear, and these will be
+returned in the report.
+}
+\examples{
+# This example contains no differences with previous data
+butterfly::loupe(
+ butterflycount$february,
+ butterflycount$january,
+ datetime_variable = "time"
+)
+
+# This example does contain differences with previous data
+butterfly::loupe(
+  butterflycount$march,
+  butterflycount$february,
+  datetime_variable = "time"
+)
+
 }
