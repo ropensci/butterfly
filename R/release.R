@@ -11,6 +11,18 @@
 #'
 #' @export
 release <- function(df_current, df_previous, datetime_variable) {
+
+  # Check input is as expected
+  stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
+  stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
+
+  # Check if `datetime_variable` is in both `df_current` and `df_previous`
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+    stop(
+      "`datetime_variable` must be present in both `df_current` and `df_previous`"
+    )
+  }
+
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(

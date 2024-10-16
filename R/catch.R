@@ -7,10 +7,22 @@
 #'
 #' @param df_current data.frame, the newest/current version of dataset x.
 #' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @param datetime_variable character, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
 #'
 #' @export
 catch <- function(df_current, df_previous, datetime_variable) {
+
+  # Check input is as expected
+  stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
+  stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
+
+  # Check if `datetime_variable` is in both `df_current` and `df_previous`
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+    stop(
+      "`datetime_variable` must be present in both `df_current` and `df_previous`"
+    )
+  }
+
   # Using semi_join to extract rows with matching datetime_variables
   # (ie previously generated data)
   df_current_without_new_row <- dplyr::semi_join(
