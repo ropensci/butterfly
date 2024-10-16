@@ -22,8 +22,11 @@
 #' @param df_previous data.frame, the old version of dataset, for example x - t1.
 #' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
 #'
+#' @returns A waldo object containing a message on differences or 'And there are no differences with previous data'.
+#'
 #' @export
 loupe <- function(df_current, df_previous, datetime_variable) {
+
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
