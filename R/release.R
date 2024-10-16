@@ -50,7 +50,7 @@ release <- function(df_current, df_previous, datetime_variable) {
       ),
       col = "green"
     )
-    print(
+    cli::cat_print(
       df_current_new_rows
     )
   }
@@ -76,7 +76,9 @@ release <- function(df_current, df_previous, datetime_variable) {
         bullet_col = "orange"
       )
 
-      print(waldo_object)
+      cli::cat_print(
+        waldo_object
+        )
 
       # By using an inner join, we drop any row which does not match in
       # df_previous.

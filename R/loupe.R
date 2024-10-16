@@ -63,7 +63,7 @@ loupe <- function(df_current, df_previous, datetime_variable) {
       "': ",
       col = "green"
     )
-    print(
+    cli::cat_print(
       df_current_new_rows
     )
   }
@@ -87,7 +87,7 @@ loupe <- function(df_current, df_previous, datetime_variable) {
         col = "orange",
         bullet_col = "orange"
       )
-      waldo_object
+      return(waldo_object)
     }
   }
 }
