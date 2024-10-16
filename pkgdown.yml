@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  butterfly: butterfly.html
+last_built: 2024-10-16T08:27Z
+urls:
+  reference: https://thomaszwagerman.github.io/butterfly/reference
+  article: https://thomaszwagerman.github.io/butterfly/articles
