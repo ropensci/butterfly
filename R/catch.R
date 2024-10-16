@@ -5,9 +5,9 @@
 #' which contains only rows that have changed compared to previous data. It will
 #' not return any new rows.
 #'
-#' @param df_current data.frame, most recent dataset n.
-#' @param df_previous data.frame, the previous dataset, ie n - 1.
-#' @param datetime_variable string, which unique ID to use to join df_current and df_previous. Usually a "datetime" variable.
+#' @param df_current data.frame, the newest/current version of dataset x.
+#' @param df_previous data.frame, the old version of dataset, for example x - t1.
+#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
 #'
 #' @export
 catch <- function(df_current, df_previous, datetime_variable) {
