@@ -1,31 +1,24 @@
 ---
-output: github_document
+title: "butterfly"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{butterfly}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
-
-# butterfly
-
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/thomaszwagerman/butterfly/branch/main/graph/badge.svg)](https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main)
-<!-- badges: end -->
 
 The goal of butterfly is to aid in the quality assurance of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged. 
 
 ```{r butterfly_diagram, echo=FALSE, out.width="100%", fig.cap=""}
-knitr::include_graphics("man/figures/README-butterfly_diagram.png")
+knitr::include_graphics("img/butterfly_diagram_light.png")
 ```
-
 
 Data previously recorded could change for a number of reasons, such as discovery of an error in model code, a change in methodology or instrument recalibration. Monitoring data sources for these changes is not always possible.
 
@@ -42,7 +35,7 @@ You can install the development version of butterfly from [GitHub](https://githu
 devtools::install_github("thomaszwagerman/butterfly")
 ```
 
-## Example
+## How to use butterfly
 
 This is a basic example which shows you how to use butterfly:
 
@@ -107,12 +100,20 @@ df_released <- butterfly::release(
 df_released
 ```
 
-## Relevant packages and functions
-The butterfly package was created for a specific use case of handling continuously updating/overwritten time-series data, where previous values may change without notice. 
+## Incorporating in data pipeline
 
-There are other R packages and functions which handle object comparison, which may suit your specific needs better:
+Examples of using applying butterfly in a pipeline.
 
-* [waldo](https://github.com/r-lib/waldo)
-* [diffdf](https://github.com/gowerc/diffdf)
+## Rationale
 
-Other functions include `all.equal()` or [dplyr](https://github.com/tidyverse/dplyr)'s `setdiff()`
+There are a lot of other data comparison and QA/QC packages out there, why butterfly?
+
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
+
+Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+
+When publishing ERA5-derived datasets, and minting it with a DOI, it is possible to continuously append without invalidating that DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. 
+
+We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user.
+
+This package has intentionally been generalised to accommodate other, but similar, use cases. Other examples could include a correction in instrument calibration, compromised data transfer or unnoticed changes in the parameterisation of a model.
