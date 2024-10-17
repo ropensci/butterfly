@@ -12,10 +12,10 @@ test_that("warning when no new rows", {
 test_that("warning when there are no different rows to drop", {
   # This should occur when dfs are identical
   expect_warning(
-      release(
-        butterflycount$february,
-        butterflycount$january,
-        datetime_variable = "time"
+    release(
+      butterflycount$february,
+      butterflycount$january,
+      datetime_variable = "time"
     )
   )
 })

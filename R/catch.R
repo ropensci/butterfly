@@ -25,13 +25,12 @@
 #'
 #' @export
 catch <- function(df_current, df_previous, datetime_variable) {
-
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
 
   # Check if `datetime_variable` is in both `df_current` and `df_previous`
-  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)) {
     stop(
       "`datetime_variable` must be present in both `df_current` and `df_previous`"
     )
@@ -87,7 +86,6 @@ catch <- function(df_current, df_previous, datetime_variable) {
     stop(
       "There are no differences between current and previous data."
     )
-
   } else {
     # Return detailed breakdown and warning if previous data have changed.
     if (length(waldo_object) > 0) {

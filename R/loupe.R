@@ -27,9 +27,9 @@
 #' @examples
 #' # This example contains no differences with previous data
 #' butterfly::loupe(
-#'  butterflycount$february,
-#'  butterflycount$january,
-#'  datetime_variable = "time"
+#'   butterflycount$february,
+#'   butterflycount$january,
+#'   datetime_variable = "time"
 #' )
 #'
 #' # This example does contain differences with previous data
@@ -41,13 +41,12 @@
 #'
 #' @export
 loupe <- function(df_current, df_previous, datetime_variable) {
-
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
 
   # Check if `datetime_variable` is in both `df_current` and `df_previous`
-  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)) {
     stop(
       "`datetime_variable` must be present in both `df_current` and `df_previous`"
     )

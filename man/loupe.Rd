@@ -39,9 +39,9 @@ returned in the report.
 \examples{
 # This example contains no differences with previous data
 butterfly::loupe(
- butterflycount$february,
- butterflycount$january,
- datetime_variable = "time"
+  butterflycount$february,
+  butterflycount$january,
+  datetime_variable = "time"
 )
 
 # This example does contain differences with previous data

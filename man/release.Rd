@@ -25,9 +25,9 @@ changes from previous data will be dropped.
 }
 \examples{
 df_released <- butterfly::release(
-butterflycount$march,
-butterflycount$february,
-datetime_variable = "time"
+  butterflycount$march,
+  butterflycount$february,
+  datetime_variable = "time"
 )
 
 df_released

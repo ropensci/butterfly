@@ -16,22 +16,21 @@
 #'
 #' @examples
 #' df_released <- butterfly::release(
-#' butterflycount$march,
-#' butterflycount$february,
-#' datetime_variable = "time"
+#'   butterflycount$march,
+#'   butterflycount$february,
+#'   datetime_variable = "time"
 #' )
 #'
 #' df_released
 #'
 #' @export
 release <- function(df_current, df_previous, datetime_variable) {
-
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
 
   # Check if `datetime_variable` is in both `df_current` and `df_previous`
-  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
+  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)) {
     stop(
       "`datetime_variable` must be present in both `df_current` and `df_previous`"
     )
@@ -89,7 +88,6 @@ release <- function(df_current, df_previous, datetime_variable) {
     )
 
     df_release <- df_current
-
   } else {
     # Return detailed breakdown and warning if previous data have changed.
     if (length(waldo_object) > 0) {
@@ -104,7 +102,7 @@ release <- function(df_current, df_previous, datetime_variable) {
 
       cli::cat_print(
         waldo_object
-        )
+      )
 
       # By using an inner join, we drop any row which does not match in
       # df_previous.
