@@ -23,6 +23,9 @@ This function matches two dataframe objects by their unique identifier
 which contains only rows that have changed compared to previous data. It will
 not return any new rows.
 }
+\details{
+The underlying functionality is handled by \code{create_object_list()}.
+}
 \examples{
 df_caught <- butterfly::catch(
   butterflycount$march,
@@ -35,4 +38,6 @@ df_caught
 }
 \seealso{
 \code{\link[=loupe]{loupe()}}
+
+\code{\link[=create_object_list]{create_object_list()}}
 }

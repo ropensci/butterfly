@@ -5,6 +5,8 @@
 #' which contains only rows that have changed compared to previous data. It will
 #' not return any new rows.
 #'
+#' The underlying functionality is handled by `create_object_list()`.
+#'
 #' @param df_current data.frame, the newest/current version of dataset x.
 #' @param df_previous data.frame, the old version of dataset, for example x - t1.
 #' @param datetime_variable character, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
@@ -13,6 +15,7 @@
 #' also returns a waldo object as in `loupe()`.
 #'
 #' @seealso [loupe()]
+#' @seealso [create_object_list()]
 #'
 #' @examples
 #' df_caught <- butterfly::catch(
@@ -25,94 +28,29 @@
 #'
 #' @export
 catch <- function(df_current, df_previous, datetime_variable) {
-
-  # Check input is as expected
-  stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
-  stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
-
-  # Check if `datetime_variable` is in both `df_current` and `df_previous`
-  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)){
-    stop(
-      "`datetime_variable` must be present in both `df_current` and `df_previous`"
-    )
-  }
-
-  # Using semi_join to extract rows with matching datetime_variables
-  # (ie previously generated data)
-  df_current_without_new_row <- dplyr::semi_join(
+  butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
-    by = datetime_variable
+    datetime_variable
   )
 
-  # Compare the current data with the previous data, without "new" values
-  waldo_object <- waldo::compare(
-    df_current_without_new_row,
-    df_previous
+  # By using an inner join, we drop any row which does not match in
+  # df_previous.
+  df_rows_changed_from_previous <- suppressMessages(
+    dplyr::anti_join(
+      butterfly_object_list$df_current_without_new_row,
+      df_previous
+    )
   )
 
-  # Obtaining the new rows to provide in feedback
-  df_current_new_rows <- dplyr::anti_join(
-    df_current,
-    df_previous,
-    by = datetime_variable
+  cli::cat_line()
+
+  cli::cat_bullet(
+    "Only these rows are returned.",
+    bullet = "info",
+    col = "orange",
+    bullet_col = "orange"
   )
 
-  if (nrow(df_current_new_rows) == 0) {
-    warning(
-      "There are no new rows. Check '",
-      deparse(substitute(df_current)),
-      "' is your most recent data, and '",
-      deparse(substitute(df_previous)),
-      "' is your previous data."
-    )
-  } else {
-    # Tell the user which rows are new, regardless of previous data changing
-    cli::cat_line(
-      paste0(
-        "The following rows are new in '",
-        deparse(substitute(df_current)),
-        "': "
-      ),
-      col = "green"
-    )
-
-    cli::cat_print(
-      df_current_new_rows
-    )
-  }
-
-  # Return a simple message if there are no changes in previous data
-  if (length(waldo_object) == 0) {
-    stop(
-      "There are no differences between current and previous data."
-    )
-
-  } else {
-    # Return detailed breakdown and warning if previous data have changed.
-    if (length(waldo_object) > 0) {
-      cli::cat_line()
-
-      cli::cat_bullet(
-        "The following rows have changed from the previous data, and will be returned:",
-        bullet = "info",
-        col = "orange",
-        bullet_col = "orange"
-      )
-
-      cli::cat_print(
-        waldo_object
-      )
-
-      # By using an inner join, we drop any row which does not match in
-      # df_previous.
-      df_rows_changed_from_previous <- suppressMessages(
-        dplyr::anti_join(
-          df_current_without_new_row,
-          df_previous
-        )
-      )
-    }
-  }
   return(df_rows_changed_from_previous)
 }
