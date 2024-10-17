@@ -46,11 +46,14 @@ devtools::install_github("thomaszwagerman/butterfly")
 The butterfly package contains the following:
 
 - `butterfly::loupe()` - examines in detail whether previous values have
-  changed, and reports them using `waldo::compare()`.
+  changed, and returns TRUE/FALSE for no change/change.
 - `butterfly::catch()` - returns rows which contain previously changed
   values in a dataframe.
 - `butterfly::release()` - drops rows which contain previously changed
   values, and returns a dataframe containing new and unchanged rows.
+- `butterfly::create_object_list()` - returns a list of objects required
+  by all of `loupe()`, `catch()` and `release()`. Contains underlying
+  functionality.
 - `butterflycount` - a list of monthly dataframes, which contain
   fictional butterfly counts for a given date.
 
@@ -96,21 +99,22 @@ butterfly::loupe(
   butterflycount$january,
   datetime_variable = "time"
 )
-#> The following rows are new in 'butterflycount$february': 
+#> The following rows are new in 'df_current': 
 #>         time count
 #> 1 2024-02-01    17
 #> ✔ And there are no differences with previous data.
+#> [1] TRUE
 
 butterfly::loupe(
   butterflycount$march,
   butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'butterflycount$march': 
+#> The following rows are new in 'df_current': 
 #>         time count
 #> 1 2024-03-01    23
 #> 
-#> ℹ But the following values have changes from the previous data:
+#> ℹ The following values have changes from the previous data.
 #> old vs new
 #>            count
 #>   old[1, ]    17
@@ -121,6 +125,7 @@ butterfly::loupe(
 #> 
 #> `old$count`: 17 22 55 18
 #> `new$count`: 17 22 55 11
+#> [1] FALSE
 ```
 
 `butterfly::loupe()` uses `dplyr::semi_join()` to match the new and old
@@ -147,11 +152,11 @@ df_caught <- butterfly::catch(
   butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'butterflycount$march': 
+#> The following rows are new in 'df_current': 
 #>         time count
 #> 1 2024-03-01    23
 #> 
-#> ℹ The following rows have changed from the previous data, and will be returned:
+#> ℹ The following values have changes from the previous data.
 #> old vs new
 #>            count
 #>   old[1, ]    17
@@ -162,6 +167,8 @@ df_caught <- butterfly::catch(
 #> 
 #> `old$count`: 17 22 55 18
 #> `new$count`: 17 22 55 11
+#> 
+#> ℹ Only these rows are returned.
 
 df_caught
 #>         time count
@@ -177,11 +184,11 @@ df_released <- butterfly::release(
   butterflycount$february,
   datetime_variable = "time"
 )
-#> The following rows are new in 'butterflycount$march': 
+#> The following rows are new in 'df_current': 
 #>         time count
 #> 1 2024-03-01    23
 #> 
-#> ℹ The following rows have changed from the previous data, and will be dropped: 
+#> ℹ The following values have changes from the previous data.
 #> old vs new
 #>            count
 #>   old[1, ]    17
@@ -192,6 +199,8 @@ df_released <- butterfly::release(
 #> 
 #> `old$count`: 17 22 55 18
 #> `new$count`: 17 22 55 11
+#> 
+#> ℹ These will be dropped, but new rows are included.
 
 df_released
 #>         time count

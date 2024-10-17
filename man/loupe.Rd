@@ -14,7 +14,7 @@ loupe(df_current, df_previous, datetime_variable)
 \item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
 }
 \value{
-A waldo object containing a message on differences or 'And there are no differences with previous data'.
+A boolean where TRUE indicates no changes to previous data and FALSE indicates unexpected changes.
 }
 \description{
 A loupe is a simple, small magnification device used to examine small details
@@ -35,6 +35,8 @@ The main assumption is that \code{df_current} and \code{df_previous} are a newer
 older versions of the same data, and that the \code{datetime_variable} variable name always
 remains the same. Elsewhere new columns can of appear, and these will be
 returned in the report.
+
+The underlying functionality is handled by \code{create_object_list()}.
 }
 \examples{
 # This example contains no differences with previous data
@@ -51,4 +53,7 @@ butterfly::loupe(
   datetime_variable = "time"
 )
 
+}
+\seealso{
+\code{\link[=create_object_list]{create_object_list()}}
 }

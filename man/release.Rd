@@ -4,7 +4,7 @@
 \alias{release}
 \title{Release: return current dataframe without changed old rows}
 \usage{
-release(df_current, df_previous, datetime_variable)
+release(df_current, df_previous, datetime_variable, include_new = TRUE)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
@@ -12,6 +12,8 @@ release(df_current, df_previous, datetime_variable)
 \item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
 \item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{include_new}{boolean, should new rows be included? Default is TRUE.}
 }
 \value{
 A dataframe which contains only rows of \code{df_current} that have not changed from \code{df_previous}, and includes new rows.
@@ -35,4 +37,6 @@ df_released
 }
 \seealso{
 \code{\link[=loupe]{loupe()}}
+
+\code{\link[=create_object_list]{create_object_list()}}
 }

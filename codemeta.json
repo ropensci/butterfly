@@ -128,8 +128,9 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "330.734KB",
+  "fileSize": "337.771KB",
   "readme": "https://github.com/thomaszwagerman/butterfly/blob/main/README.md",
   "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main"],
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental",
   "keywords": ["qaqc", "timeseries"]
 }
