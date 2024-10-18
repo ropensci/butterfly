@@ -1,0 +1,6 @@
+bibentry(
+  bibtype  = "Misc",
+  title    = "{butterfly}: quality assurance of continually updating and overwritten time-series data",
+  author   = c(person("Zwagerman", "Thomas", role = "aut")),
+  year     = "2024"
+)
