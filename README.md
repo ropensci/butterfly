@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# butterfly
+# butterfly <a href="https://thomaszwagerman.github.io/butterfly/"><img src="man/figures/logo.png" align="right" height="139" alt="butterfly website" /></a>
 
 <!-- badges: start -->
 
