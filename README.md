@@ -16,7 +16,15 @@ The goal of butterfly is to aid in the quality assurance of continually
 updating and overwritten time-series data, where we expect new values
 over time, but want to ensure previous data remains unchanged.
 
-<img src="man/figures/README-butterfly_diagram.png" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-butterfly_diagram.png" alt="An illustration of continually updating timeseries data where a previous value unexpectedly changes." width="100%" />
+<p class="caption">
+An illustration of continually updating timeseries data where a previous
+value unexpectedly changes.
+</p>
+
+</div>
 
 Data previously recorded could change for a number of reasons, such as
 discovery of an error in model code, a change in methodology or

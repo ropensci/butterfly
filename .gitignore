@@ -7,3 +7,5 @@
 *.excalidraw
 inst/doc
 docs
+/doc/
+/Meta/
