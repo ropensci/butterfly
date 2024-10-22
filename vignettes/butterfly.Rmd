@@ -119,6 +119,10 @@ butterflycount
 
 This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
 
+## A note on controlling verbosity
+
+Although verbosity is mostly the purpose if this package, **should** you wish to silence messages and warnings, you can do so with `options(rlib_message_verbosity = "quiet")` and options `(rlib_warning_verbosity = "quiet")`.
+
 ## Incorporating in data pipeline
 
 Examples of using applying butterfly in a pipeline.

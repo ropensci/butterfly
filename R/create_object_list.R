@@ -40,7 +40,7 @@ create_object_list <- function(df_current, df_previous, datetime_variable) {
 
   # Check if `datetime_variable` is in both `df_current` and `df_previous`
   if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)) {
-    stop(
+    cli::cli_abort(
       "`datetime_variable` must be present in both `df_current` and `df_previous`"
     )
   }
@@ -76,7 +76,7 @@ create_object_list <- function(df_current, df_previous, datetime_variable) {
   # Creating a feedback message depending on the waldo object's output
   # First checking if there are new rows at all:
   if (nrow(df_current_new_rows) == 0) {
-    stop(
+    cli::cli_abort(
       "There are no new rows. Check '",
       deparse(substitute(df_current)),
       "' is your most recent data, and '",
