@@ -62,7 +62,11 @@
 <!-- badges: start -->
 
 <p>The goal of butterfly is to aid in the quality assurance of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged.</p>
-<p><img src="reference/figures/README-butterfly_diagram.png" width="100%"></p>
+<div class="figure">
+<img src="reference/figures/README-butterfly_diagram.png" alt="An illustration of continually updating timeseries data where a previous value unexpectedly changes." width="100%"><p class="caption">
+An illustration of continually updating timeseries data where a previous value unexpectedly changes.
+</p>
+</div>
 <p>Data previously recorded could change for a number of reasons, such as discovery of an error in model code, a change in methodology or instrument recalibration. Monitoring data sources for these changes is not always possible.</p>
 <p>Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.</p>
 <p>This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.</p>

@@ -68,7 +68,12 @@
 continually updating and overwritten time-series data, where we expect
 new values over time, but want to ensure previous data remains
 unchanged.</p>
-<p><img src="img%2Fbutterfly_diagram_light.png" width="100%"></p>
+<div class="figure">
+<img src="img%2Fbutterfly_diagram_light.png" alt="An illustration of continually updating timeseries data where a previous value unexpectedly changes." width="100%"><p class="caption">
+An illustration of continually updating timeseries data where a previous
+value unexpectedly changes.
+</p>
+</div>
 <p>Data previously recorded could change for a number of reasons, such
 as discovery of an error in model code, a change in methodology or
 instrument recalibration. Monitoring data sources for these changes is
@@ -297,6 +302,11 @@ of butterfly counts for a given date.</p>
 <span><span class="co">#&gt; 6 2023-11-01    18 Admiral</span></span></code></pre></div>
 <p>This dataset is entirely fictional, and merely included to aid
 demonstrating butterfly’s functionality.</p>
+</div>
+<div class="section level2">
+<h2 id="a-note-on-controlling-verbosity">A note on controlling verbosity<a class="anchor" aria-label="anchor" href="#a-note-on-controlling-verbosity"></a>
+</h2>
+<!-- Although verbosity is mostly the purpose if this package, **should** you wish to silence messages and warnings, you can do so with `options(rlib_message_verbosity = "quiet")` and options `(rlib_warning_verbosity = "quiet")`. -->
 </div>
 <div class="section level2">
 <h2 id="incorporating-in-data-pipeline">Incorporating in data pipeline<a class="anchor" aria-label="anchor" href="#incorporating-in-data-pipeline"></a>
