@@ -8,3 +8,5 @@
 ^docs$
 ^pkgdown$
 ^codemeta\.json$
+^doc$
+^Meta$
