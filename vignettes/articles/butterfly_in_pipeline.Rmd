@@ -1,18 +1,5 @@
 ---
 title: 'Using butterfly in a data processing pipeline'
-tags:
-  - R
-  - quality assurance
-  - timeseries
-  - ERA5
-authors:
-  - name: Thomas Zwagerman
-    orcid: 0000-0000-0000-0000
-    affiliation: 1 
-affiliations:
- - name: British Antarctic Survey, UK
-   index: 1
-date: 23 October 2024
 ---
 
 ```{r, include = FALSE}
@@ -22,17 +9,27 @@ knitr::opts_chunk$set(
 )
 ```
 
+<style>
+p.caption {
+  font-size: 0.6em;
+}
+</style>
+
 This article is a **simplified** demonstration of a real data processing pipeline we implemented at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline).
 
 ## Pipeline functionality overview 
 
 Consider a classic input/output (I/O) data processing pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location. In our case, we run this pipeline on a monthly basis.
 
-**simple diagram** here.
+```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data processing pipeline."}
+knitr::include_graphics("img/simple_diagram.png")
+```
 
 Let's fill in this diagram with the specifics of our example at BAS:
 
-**simple diagram with BAS** here.
+```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
+knitr::include_graphics("img/bas_example.png")
+```
 
 For the Amundsen Sea Low Index (ASLI) dataset, we read in ERA5-msl, perform some calculations using the `asli` python package, and move our results to the [UK Polar Data Centre (PDC)](https://www.bas.ac.uk/data/uk-pdc/).
 
@@ -40,7 +37,9 @@ However, as explained in ... the problem with using ERA5, is that it is subject 
 
 Therefore, we want to impose some checks on our data, which abort data transfer should such a change be discovered.
 
-**simple diagram with stop here**
+```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
+knitr::include_graphics("img/full_pipeline_example.png")
+```
 
 ... and this is where butterfly comes in.
 
