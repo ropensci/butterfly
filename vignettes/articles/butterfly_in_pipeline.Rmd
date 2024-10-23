@@ -69,37 +69,8 @@ When developing a pipeline, we separate our **data**, **configuration** and **co
 For the purpose of this article, details of the dataset itself are not important. But for reference, below is a subset of the ASLI dataset:
 
 ```{r asli_dataset, echo = FALSE}
-# A note for maintainers:
-# Currently, to run and built this section of the article, access to asli object store is required.
-# How to obtain access is described in the asli-pipeline repository.
-
-# When this dataset is published on the PDC, this section will be rewritten to read data directly from there.
-s3_config <- ini::read.ini(
-  "~/.s3cfg"
-)
-
-# Get s3 body
-s3 <- paws::s3(
-  credentials = list(
-    creds = list(
-      access_key_id = s3_config$default$access_key,
-      secret_access_key = s3_config$default$secret_key    
-    )
-  ),
-  endpoint = paste0(
-    "https://", s3_config$default$host_base
-  )
-)
-
-s3_bucket <- s3$get_object(
-  # Removing s3:// pre-fix, as paws adds this itself
-  Bucket = "asli",
-  Key = "asli_calculation_2024.csv"
-)
-
-existing_file <- s3_bucket$Body |> 
-  rawToChar() |> 
-  readr::read_csv(
+existing_file <- readr::read_csv(
+    "https://raw.githubusercontent.com/scotthosking/amundsen-sea-low-index/master/asli_era5_v3-latest.csv",
     skip = 29,
     show_col_types = FALSE
   )
