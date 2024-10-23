@@ -34,7 +34,7 @@ Let's fill in this diagram with the specifics of our example at BAS:
 
 **simple diagram with BAS** here.
 
-For the Amundsen Sea Low Index (ASLI) dataset, we read in ERA5-msl, perform some calculations using the `asli` python package, and move our results to the Polar Data Centre (PDC).
+For the Amundsen Sea Low Index (ASLI) dataset, we read in ERA5-msl, perform some calculations using the `asli` python package, and move our results to the [UK Polar Data Centre (PDC)](https://www.bas.ac.uk/data/uk-pdc/).
 
 However, as explained in ... the problem with using ERA5, is that it is subject to recalculation should an error be discovered. Any change in previous data, which has already been submitted to the PDC, would invalidate our DOI.
 
@@ -46,12 +46,21 @@ Therefore, we want to impose some checks on our data, which abort data transfer 
 
 ## A simplified pipeline
 
+We try to separate our data, configuration and code when writing a pipeline.
+
+### Data
+
+Input data is downloaded from the [Climate Data Store API]() and stored in a dedicated input folder. Any subsequent calculation results are then stored in an output folder. 
+
+Results for publication are then moved to a different location, provided to us by the PDC. 
+
+All of these locations are defined in the configuration 
+
 ### Configuration
 
-Let's have a look at some actual scripts now. We try to separate our data, code and configuration when writing a pipeline. Firstly let's look at our configuration, which is stored in an ENVS file:
+Let's have a look at some actual scripts now. We try to separate our data, configuration and code when writing a pipeline. Firstly let's look at our configuration, which is stored in an `ENVS` file:
 
 ```bash
-##
 ## Directories
 # Should not need editing, but you can do so if you wish
 # Location that pipeline is stored, referenced by most scripts
@@ -87,10 +96,8 @@ export DATA_ARGS_ERA5="-s ${START_YEAR} -n ${CURRENT_YEAR}"
 export FILE_IDENTIFIER=${CURRENT_YEAR}
 ```
 
-As for our data, this live in a dedicated folder called `DATA_DIR`. Let's move on to the code.
+### Code
 
-
-### Running the pipeline with shell scripts
 Now that we have set our configuration, let's inspect the shell script which actually runs our pipeline, `run_asli_pipeline.sh`.
 
 ```bash
@@ -115,6 +122,7 @@ do
   fi
 done
 ```
+
 The above concerns setting up our pipeline with input and output directories, as well as fetching all environmental variables.
 
 Next is the calculation step, using the functionality from the `asli` package:
@@ -138,16 +146,19 @@ Lovely, we now have our calculations ready in `$OUTPUT_DIR`, to rsync to a locat
 rsync $OUTPUT_DIR/*.csv $RSYNC_LOCATION
 echo "Writing to $RSYNC_LOCATION."
 ```
+
 Let's pretend this was our first submission to the PDC. For any subsequent submission, we will want to use `butterfly` to compare our new results with the file we have just submitted to the `$RSYNC_LOCATION`, to make sure previous values have not changed.
 
-### Incorporate R and `butterfly` into a shell-scripted pipeline
+#### Incorporate R and `butterfly` into a shell-scripted pipeline
 
 We are going to implement this in an R script called `quality_control.R`, but we will have to provide it with our new calculations and the calculations we did previously and transferred to `$RSYNC_LOCATION`, like:
 
 ```bash
 Rscript quality_control.R "$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv" "$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv"
 ```
-Here, `$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv` is our most recent calculation, in `quality_control.R` this will be referred to as `args[1]`. The previous calculation, `$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv`, will be `args[2]`.
+
+Here, `$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv` is our most recent calculation, in `quality_control.R` this will be referred to as `args[1]`. 
+The previous calculation, `$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv`, will be `args[2]`.
 
 Let's have a look at `quality_control.R` now. We started off with making this script executable by the shell, provide the user with some instructions on how to use the script, and by obtaining the arguments it was given in `args`.
 
@@ -202,14 +213,19 @@ if (!isTRUE(qa_outcome)) {
 
 The last check, `if (!isTRUE(qa_outcome))` will only trigger and stop the entire pipeline if a change has been detected.
 
-### The whole game
+## The whole game
 
 We've inspected every bit of functionality in our pipeline, which can be summarised as:
+
   1. Reading in data, calculating asli values, and putting results in an output folder.
   2. Running quality assurance checks on results in the output folder, and comparing against those in the rsync location.
   3. Transferring results from the output folder to the rsync location, if quality assurance checks have passed.
   
-A sensible way of organising distinct steps in a pipeline, is to move different components of functionality into their own script. In our case we will have: `01_run_asli_calculations.sh`, `02_quality_control.R` and finally `03_export_file_to_pdc.sh`.
+A sensible way of organising distinct steps in a pipeline, is to move different components of functionality into their own script. In our case we will have: 
+  
+  1. `01_run_asli_calculations.sh` 
+  2. `02_quality_control.R`
+  3. `03_export_file_to_pdc.sh`.
 
 Finally, let's update `run_asli_pipeline.sh` to make it easier to read.
 
@@ -244,6 +260,9 @@ Rscript 02_quality_control.R "$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv"
 # If successfuly, export our data to the PDC
 bash 03_export_file_to_pdc.sh
 ```
-And there we are! Importantly, `02_quality_control.R` should be run before `03_export_file_to_pdc.sh`. Any failure in `02_quality_control.R` will prevent our data from reaching its destination. 
+And there we are! Importantly, `02_quality_control.R` should be run before `03_export_file_to_pdc.sh`.
 
 Because `cli::cat_*()` warnings are used in `butterfly`, these should print to the shell automatically and allow you to diagnose where differences might have occurred. `cli::cat_abort()` will automatically stop a pipeline.
+
+Therefore, any failure in `02_quality_control.R` will prevent our data from reaching its destination.
+
