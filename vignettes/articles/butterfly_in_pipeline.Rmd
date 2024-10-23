@@ -11,53 +11,121 @@ knitr::opts_chunk$set(
 
 <style>
 p.caption {
-  font-size: 0.6em;
+font-size: 0.6em;
 }
 </style>
 
-This article is a **simplified** demonstration of a real data processing pipeline we implemented at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline).
+This article is a **simplified** demonstration of a real data processing pipeline we implemented at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby).
 
-## Pipeline functionality overview 
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, **ERA5T**. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
 
-Consider a classic input/output (I/O) data processing pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location. In our case, we run this pipeline on a monthly basis.
+Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+
+In a pipeline that generates ERA5-derived data, and continually updates and **publishes** this data, we therefore need to robustly ensure that previous ERA5 data changing does not affect our published outputs.
+
+## Pipeline overview 
+
+Consider a classic input/output (I/O) data processing pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location.
 
 ```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data processing pipeline."}
 knitr::include_graphics("img/simple_diagram.png")
 ```
 
-Let's fill in this diagram with the specifics of our example at BAS:
+We use a pipeline to calculate the **'Amundsen Sea Low Index'**, or ASLI. The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. If you are interested in ASLI, and why these values are significant for environmental forecasting, please refer to [Hosking et al. (2016)](https://doi.org/10.1002/2015GL067143).
+
+In our case, we run this pipeline on a monthly basis:
 
 ```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
 knitr::include_graphics("img/bas_example.png")
 ```
 
-For the Amundsen Sea Low Index (ASLI) dataset, we read in ERA5-msl, perform some calculations using the `asli` python package, and move our results to the [UK Polar Data Centre (PDC)](https://www.bas.ac.uk/data/uk-pdc/).
+To generate the ASLI dataset, we read in ERA5 mean sea level pressure, perform some calculations using the `asli` [python package](https://github.com/davidwilby/amundsen-sea-low-index) (Hosking & Wilby), and move our results to the [UK Polar Data Centre (PDC)](https://www.bas.ac.uk/data/uk-pdc/), where our dataset will be published and minted with a **Digital Object Identifier (DOI)**. Our aim is to update this dataset on a monthly basis, either appending new rows to it, or re-writing the dataset entirely.
 
-However, as explained in ... the problem with using ERA5, is that it is subject to recalculation should an error be discovered. Any change in previous data, which has already been submitted to the PDC, would invalidate our DOI.
+But remember, any change in previous ERA5 data, will also change the results of all our previous ASLI calculations. 
 
-Therefore, we want to impose some checks on our data, which abort data transfer should such a change be discovered.
+If this happened and we:
+
+  * _overwrite our dataset_, we would be **changing values** in an already-published dataset.
+  * _append our existing dataset_, anyone attempting to **reproduce** our methods would get different results. 
+
+Either way, this would invalidate our DOI and force republication.
+
+Keeping up-to-date with the [Climate Data Store's Forum](https://forum.ecmwf.int/c/announcements/5) to monitor changes would be a time-consuming task, and not a reliable way to detect changes. 
+
+## Quality assurance using `butterfly` in a pipeline
+
+To maintain the integrity of our published dataset, we need to impose robust checks to ensure our new results match our published data, where we expect it to.
 
 ```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
 knitr::include_graphics("img/full_pipeline_example.png")
 ```
 
-... and this is where butterfly comes in.
+... and this is where `butterfly` comes in.
 
-## A simplified pipeline
-
-We try to separate our data, configuration and code when writing a pipeline.
+When developing a pipeline, we separate our **data**, **configuration** and **code**.
 
 ### Data
 
-Input data is downloaded from the [Climate Data Store API]() and stored in a dedicated input folder. Any subsequent calculation results are then stored in an output folder. 
+For the purpose of this article, details of the dataset itself are not important. But for reference, below is a subset of the ASLI dataset:
 
-Results for publication are then moved to a different location, provided to us by the PDC. 
+```{r asli_dataset, echo = FALSE}
+# A note for maintainers:
+# Currently, to run and built this section of the article, access to asli object store is required.
+# How to obtain access is described in the asli-pipeline repository.
 
-All of these locations are defined in the configuration 
+# When this dataset is published on the PDC, this section will be rewritten to read data directly from there.
+s3_config <- ini::read.ini(
+  "~/.s3cfg"
+)
+
+# Get s3 body
+s3 <- paws::s3(
+  credentials = list(
+    creds = list(
+      access_key_id = s3_config$default$access_key,
+      secret_access_key = s3_config$default$secret_key    
+    )
+  ),
+  endpoint = paste0(
+    "https://", s3_config$default$host_base
+  )
+)
+
+s3_bucket <- s3$get_object(
+  # Removing s3:// pre-fix, as paws adds this itself
+  Bucket = "asli",
+  Key = "asli_calculation_2024.csv"
+)
+
+existing_file <- s3_bucket$Body |> 
+  rawToChar() |> 
+  readr::read_csv(
+    skip = 29,
+    show_col_types = FALSE
+  )
+
+kableExtra::kbl(
+  existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,]
+)
+```
+
+In the subsequent month we run the pipeline again, and a row is added, because a new month of ERA5 data has since been released. 
+
+As you can see, all data for previous months are also included in the data:
+
+```{r subsequent_month, echo=FALSE}
+knitr::kable(
+  existing_file[(nrow(existing_file) - 4):nrow(existing_file),]
+) |> 
+    kableExtra::row_spec(5, background = "#4ba371")
+
+```
+
+This is what will be submitted to the PDC.
 
 ### Configuration
 
-Let's have a look at some actual scripts now. We try to separate our data, configuration and code when writing a pipeline. Firstly let's look at our configuration, which is stored in an `ENVS` file:
+Firstly let's look at our configuration, which is stored in an `ENVS` file. This determines the locations of our input data, our output data and where we will eventually publish our data, among other useful parameters:
 
 ```bash
 ## Directories
@@ -164,6 +232,7 @@ Let's have a look at `quality_control.R` now. We started off with making this sc
 ```R
 #!/usr/bin/env Rscript
 # Usage: Rscript 02_quality_control.R <current-file-path> <existing-file-path>
+
 # Obtain passed arguments
 args = commandArgs(trailingOnly=TRUE)
 ```
@@ -173,21 +242,19 @@ Next, we will test if those arguments were actually provided, and if so we read 
 ```R
 # Test if there is two arguments: the output and previous file
 if (length(args)!=2) {
-  stop("Please provide the output file, and the file it is being compared to", call.=FALSE)
+  stop(
+    "Please provide the output file, and the file it is being compared to", call.=FALSE
+  )
 } else {
 
-# We are skipping 29 lines, because our file contains metadata at the top of the csv.
-  current_output <- readr::read_csv(
-    args[1],
-    skip = 29,
-    show_col_types = FALSE
-  )
+current_output <- readr::read_csv(
+  args[1]
+)
 
-  existing_file <- readr::read_csv(
-    args[2],
-    skip = 29,
-    show_col_types = FALSE
-  )
+existing_file <- readr::read_csv(
+  args[2]
+)
+
 }
 ```
 
@@ -205,7 +272,7 @@ qa_outcome <- butterfly::loupe(
 
 if (!isTRUE(qa_outcome)) {
   stop(
-  "Previous values do not match. Stopping data transfer."
+    "Previous values do not match. Stopping data transfer."
   )
 }
 ```
@@ -216,15 +283,15 @@ The last check, `if (!isTRUE(qa_outcome))` will only trigger and stop the entire
 
 We've inspected every bit of functionality in our pipeline, which can be summarised as:
 
-  1. Reading in data, calculating asli values, and putting results in an output folder.
-  2. Running quality assurance checks on results in the output folder, and comparing against those in the rsync location.
-  3. Transferring results from the output folder to the rsync location, if quality assurance checks have passed.
-  
+1. Reading in data, calculating asli values, and putting results in an output folder.
+2. Running quality assurance checks on results in the output folder, and comparing against those in the rsync location.
+3. Transferring results from the output folder to the rsync location, if quality assurance checks have passed.
+
 A sensible way of organising distinct steps in a pipeline, is to move different components of functionality into their own script. In our case we will have: 
-  
-  1. `01_run_asli_calculations.sh` 
-  2. `02_quality_control.R`
-  3. `03_export_file_to_pdc.sh`.
+
+1. `01_run_asli_calculations.sh` 
+2. `02_quality_control.R`
+3. `03_export_file_to_pdc.sh`.
 
 Finally, let's update `run_asli_pipeline.sh` to make it easier to read.
 
@@ -265,3 +332,23 @@ Because `cli::cat_*()` warnings are used in `butterfly`, these should print to t
 
 Therefore, any failure in `02_quality_control.R` will prevent our data from reaching its destination.
 
+## So what's next?
+
+So, `butterfly` did its job, detected changes and stopped data transfer... _now what?_
+
+Currently, it is set up to warn the user, who can intervene in the process manually. The next step would be to make the published data static, as we are now no longer appending it. We then supersede it with out new data, and restart the process.
+
+A future aim would be however, to do this automatically:
+
+```{r pipe_dream, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing next steps in an automated data processing and publishing pipeline, incorporating automated archival and supserceding."}
+knitr::include_graphics("img/pipe_dream_diagram.png")
+```
+
+This is a lot more complex to handle however, especially considering currently DOIs are minted manually, regardless of data state. Perhaps some form of human intervention will always be required, but one can dream! 
+
+## References
+Hosking, J. S., A. Orr, T. J. Bracegirdle, and J. Turner (2016), Future circulation changes off West Antarctica: Sensitivity of the Amundsen Sea Low to projected anthropogenic forcing, Geophys. Res. Lett., 43, 367–376, <doi:10.1002/2015GL067143>.
+
+Hosking, J. S., & Wilby, D. asli [Computer software]. https://github.com/scotthosking/amundsen-sea-low-index
+
+Zwagerman, T., & Wilby, D. asli-pipeline [Computer software]. https://github.com/antarctica/boost-eds-pipeline
