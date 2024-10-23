@@ -1,0 +1,39 @@
+---
+title: 'butterfly: An R package for the quality assurance of continually updating timeseries'
+tags:
+  - R
+  - quality assurance
+  - timeseries
+  - ERA5
+authors:
+  - name: Thomas Zwagerman
+    orcid: 0000-0000-0000-0000
+    equal-contrib: true
+    affiliation: 1 
+affiliations:
+ - name: British Antarctic Survey, UK
+   index: 1
+date: 23 October 2024
+bibliography: paper.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(butterfly)
+```
+
+# Summary
+
+# Statement of Need
+
+# Citations
+
+# Acknowledgements
+
+# References

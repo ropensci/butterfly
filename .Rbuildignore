@@ -10,3 +10,4 @@
 ^codemeta\.json$
 ^doc$
 ^Meta$
+^vignettes/articles$

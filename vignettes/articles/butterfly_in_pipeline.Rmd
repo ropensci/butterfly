@@ -1,0 +1,76 @@
+---
+title: 'Using butterfly in a data processing pipeline'
+tags:
+  - R
+  - quality assurance
+  - timeseries
+  - ERA5
+authors:
+  - name: Thomas Zwagerman
+    orcid: 0000-0000-0000-0000
+    affiliation: 1 
+affiliations:
+ - name: British Antarctic Survey, UK
+   index: 1
+date: 23 October 2024
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(butterfly)
+```
+
+
+In this article, we provide a simplified demonstration of butterfly being used in a data processing pipeline.
+
+
+At the British Antarctic Survey (BAS), we developed this package to deal with a very specific issue.
+
+Quality assurance in continually updating and continually published ERA5-derived data.
+
+At BAS, we frequently use ERA5 (Hersbach et al. 2023) as an input to climate models.
+
+IceNet a sea ice prediction system based on deep learning (Andersson et al. 2021)
+
+ERA5-derived data.
+
+## The issue with ERA5 and ERA5-Interim
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
+
+Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+
+In most cases, this is not an issue. For static data publications which are a snapshot in time, such as data associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526) or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
+
+In our case however we want to continually append ERA5-derived datasets **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Hendrys, 2023), or simply as input data into an environmental forecasting model which itself is frequently running. 
+
+Continually appending **and** publishing will require strict quality assurance. If a published dataset is only appended a DOI can be minted for it.  However, if the previously published data change, this will then invalidate the DOI.  For example, if you developed your code to find a better measure (more accurate, more precise) of the low pressure region, and wanted to reanalyse the previous data and republish.
+
+One such ERA5-derived dataset which we (will hopefully soon!) publish at BAS is the Amundsen Sea Low Index (ASLI).
+
+## What is the Amundsen Sea Low Index
+
+The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016).
+
+## Demonstration of Butterfly in a data processing pipeline
+
+You can inspect the full source code of this pipeline in the repository [asli-pipeline](https://github.com/antarctica/asli-pipeline).
+
+## Citations
+
+Andersson, T., & Hosking, J. (2021). Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning' (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/71820e7d-c628-4e32-969f-464b7efb187c>
+
+Andersson, T.R., Hosking, J.S., Pérez-Ortiz, M. *et al.* Seasonal Arctic sea ice forecasting with probabilistic deep learning. *Nat Commun* **12**, 5124 (2021). <https://doi.org/10.1038/s41467-021-25257-4>
+
+Blair, Gordon S., and Peter A. Henrys. 2023. “The Role of Data Science in Environmental Digital Twins: In Praise of the Arrows.” Environmetrics 34 (January): Not available. https://doi.org/10.1002/env.2789. 
+
+Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47
+
+Hosking, J. S., A. Orr, T. J. Bracegirdle, and J. Turner (2016), Future circulation changes off West Antarctica: Sensitivity of the Amundsen Sea Low to projected anthropogenic forcing, Geophys. Res. Lett., 43, 367–376, <doi:10.1002/2015GL067143>.
+
+Tazi, K. (2023). Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalayas (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/b2099787-b57c-44ae-bf42-0d46d9ec87cc>
