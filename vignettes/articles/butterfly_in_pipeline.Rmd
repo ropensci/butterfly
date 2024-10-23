@@ -69,10 +69,9 @@ When developing a pipeline, we separate our **data**, **configuration** and **co
 For the purpose of this article, details of the dataset itself are not important. But for reference, below is a subset of the ASLI dataset:
 
 ```{r asli_dataset, echo = FALSE}
-existing_file <- readr::read_csv(
+existing_file <- read.csv(
     "https://raw.githubusercontent.com/scotthosking/amundsen-sea-low-index/master/asli_era5_v3-latest.csv",
-    skip = 29,
-    show_col_types = FALSE
+    skip = 29
   )
 
 kableExtra::kbl(
