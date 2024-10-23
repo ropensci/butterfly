@@ -1,5 +1,5 @@
 ---
-title: 'Using butterfly in a data processing pipeline'
+title: 'Using butterfly in an operational data pipeline'
 ---
 
 ```{r, include = FALSE}
@@ -15,7 +15,7 @@ font-size: 0.6em;
 }
 </style>
 
-This article is a **simplified** demonstration of a real data processing pipeline we implemented at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby).
+This article is a **simplified** demonstration of a real operational data pipeline we are implementing at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby).
 
 This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, **ERA5T**. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
 
@@ -25,9 +25,9 @@ In a pipeline that generates ERA5-derived data, and continually updates and **pu
 
 ## Pipeline overview 
 
-Consider a classic input/output (I/O) data processing pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location.
+Consider a classic input/output (I/O) data pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location.
 
-```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data processing pipeline."}
+```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data pipeline."}
 knitr::include_graphics("img/simple_diagram.png")
 ```
 
@@ -35,7 +35,7 @@ We use a pipeline to calculate the **'Amundsen Sea Low Index'**, or ASLI. The Am
 
 In our case, we run this pipeline on a monthly basis:
 
-```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
+```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
 knitr::include_graphics("img/bas_example.png")
 ```
 
@@ -56,7 +56,7 @@ Keeping up-to-date with the [Climate Data Store's Forum](https://forum.ecmwf.int
 
 To maintain the integrity of our published dataset, we need to impose robust checks to ensure our new results match our published data, where we expect it to.
 
-```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
+```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
 knitr::include_graphics("img/full_pipeline_example.png")
 ```
 
@@ -75,7 +75,8 @@ existing_file <- read.csv(
   )
 
 knitr::kable(
-  existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,]
+  existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,],
+    row.names = FALSE
 )
 ```
 
@@ -85,7 +86,8 @@ As you can see, all data for previous months are also included in the data:
 
 ```{r subsequent_month, echo=FALSE}
 knitr::kable(
-  existing_file[(nrow(existing_file) - 4):nrow(existing_file),]
+  existing_file[(nrow(existing_file) - 4):nrow(existing_file),],
+      row.names = FALSE
 ) 
 ```
 
