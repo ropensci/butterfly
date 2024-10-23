@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Using butterfly in a data processing pipeline • butterfly</title>
+<title>Using butterfly in an operational data pipeline • butterfly</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using butterfly in a data processing pipeline">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using butterfly in an operational data pipeline">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,7 +40,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/butterfly_in_pipeline.html">Using butterfly in a data processing pipeline</a></li>
+<li><a class="dropdown-item" href="../articles/butterfly_in_pipeline.html">Using butterfly in an operational data pipeline</a></li>
   </ul>
 </li>
       </ul>
@@ -61,7 +61,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Using butterfly in a data processing pipeline</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Using butterfly in an operational data pipeline</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/thomaszwagerman/butterfly/blob/main/vignettes/articles/butterfly_in_pipeline.Rmd" class="external-link"><code>vignettes/articles/butterfly_in_pipeline.Rmd</code></a></small>
@@ -76,9 +76,9 @@ font-size: 0.6em;
 }
 </style>
 <p>This article is a <strong>simplified</strong> demonstration of a real
-data processing pipeline we implemented at the British Antarctic Survey
-called asli-pipeline. You can inspect the full source code of this
-pipeline in the repository: <a href="https://github.com/antarctica/asli-pipeline" class="external-link">asli-pipeline
+operational data pipeline we are implementing at the British Antarctic
+Survey called asli-pipeline. You can inspect the full source code of
+this pipeline in the repository: <a href="https://github.com/antarctica/asli-pipeline" class="external-link">asli-pipeline
 repository</a> (Zwagerman &amp; Wilby).</p>
 <p>This package was originally developed to deal with <a href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation" class="external-link">ERA5</a>’s
 initial release data, <strong>ERA5T</strong>. ERA5T data for a month is
@@ -96,13 +96,12 @@ published outputs.</p>
 <div class="section level2">
 <h2 id="pipeline-overview">Pipeline overview<a class="anchor" aria-label="anchor" href="#pipeline-overview"></a>
 </h2>
-<p>Consider a classic input/output (I/O) data processing pipeline where
-we read in data from an external source, perform some sort of
-calculation to it, and transfer the output to a different location.</p>
+<p>Consider a classic input/output (I/O) data pipeline where we read in
+data from an external source, perform some sort of calculation to it,
+and transfer the output to a different location.</p>
 <div class="figure" style="text-align: center">
-<img src="img%2Fsimple_diagram.png" alt="A simple diagram showing the steps in a generic data processing pipeline." width="100%"><p class="caption">
-A simple diagram showing the steps in a generic data processing
-pipeline.
+<img src="img%2Fsimple_diagram.png" alt="A simple diagram showing the steps in a generic data pipeline." width="100%"><p class="caption">
+A simple diagram showing the steps in a generic data pipeline.
 </p>
 </div>
 <p>We use a pipeline to calculate the <strong>‘Amundsen Sea Low
@@ -114,10 +113,9 @@ refer to <a href="https://doi.org/10.1002/2015GL067143" class="external-link">Ho
 al. (2016)</a>.</p>
 <p>In our case, we run this pipeline on a monthly basis:</p>
 <div class="figure" style="text-align: center">
-<img src="img%2Fbas_example.png" alt="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset." width="100%"><p class="caption">
+<img src="img%2Fbas_example.png" alt="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset." width="100%"><p class="caption">
 A diagram showing the steps in our British Antarctic Survey data
-processing pipeline to calculate and publish the Amundsen Sea Low Index
-dataset.
+pipeline to calculate and publish the Amundsen Sea Low Index dataset.
 </p>
 </div>
 <p>To generate the ASLI dataset, we read in ERA5 mean sea level
@@ -151,11 +149,10 @@ reliable way to detect changes.</p>
 robust checks to ensure our new results match our published data, where
 we expect it to.</p>
 <div class="figure" style="text-align: center">
-<img src="img%2Ffull_pipeline_example.png" alt="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results." width="100%"><p class="caption">
+<img src="img%2Ffull_pipeline_example.png" alt="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results." width="100%"><p class="caption">
 A diagram showing the steps in our British Antarctic Survey data
-processing pipeline to calculate and publish the Amundsen Sea Low Index
-dataset, while using butterfly to check for unexpected changes in our
-results.
+pipeline to calculate and publish the Amundsen Sea Low Index dataset,
+while using butterfly to check for unexpected changes in our results.
 </p>
 </div>
 <p>… and this is where <code>butterfly</code> comes in.</p>
@@ -167,19 +164,17 @@ results.
 <p>For the purpose of this article, details of the dataset itself are
 not important. But for reference, below is a subset of the ASLI
 dataset:</p>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="5%">
 <col width="15%">
-<col width="9%">
-<col width="9%">
+<col width="10%">
+<col width="10%">
 <col width="15%">
 <col width="15%">
 <col width="15%">
 <col width="15%">
 </colgroup>
 <thead><tr class="header">
-<th align="left"></th>
 <th align="left">time</th>
 <th align="right">lon</th>
 <th align="right">lat</th>
@@ -190,7 +185,6 @@ dataset:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">781</td>
 <td align="left">2024-01-01</td>
 <td align="right">201.50</td>
 <td align="right">-74.75</td>
@@ -200,7 +194,6 @@ dataset:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="even">
-<td align="left">782</td>
 <td align="left">2024-02-01</td>
 <td align="right">258.75</td>
 <td align="right">-70.00</td>
@@ -210,7 +203,6 @@ dataset:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="odd">
-<td align="left">783</td>
 <td align="left">2024-03-01</td>
 <td align="right">190.75</td>
 <td align="right">-71.25</td>
@@ -220,7 +212,6 @@ dataset:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="even">
-<td align="left">784</td>
 <td align="left">2024-04-01</td>
 <td align="right">193.75</td>
 <td align="right">-70.75</td>
@@ -235,19 +226,17 @@ dataset:</p>
 added, because a new month of ERA5 data has since been released.</p>
 <p>As you can see, all data for previous months are also included in the
 data:</p>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="5%">
 <col width="15%">
-<col width="9%">
-<col width="9%">
+<col width="10%">
+<col width="10%">
 <col width="15%">
 <col width="15%">
 <col width="15%">
 <col width="15%">
 </colgroup>
 <thead><tr class="header">
-<th align="left"></th>
 <th align="left">time</th>
 <th align="right">lon</th>
 <th align="right">lat</th>
@@ -258,7 +247,6 @@ data:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">781</td>
 <td align="left">2024-01-01</td>
 <td align="right">201.50</td>
 <td align="right">-74.75</td>
@@ -268,7 +256,6 @@ data:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="even">
-<td align="left">782</td>
 <td align="left">2024-02-01</td>
 <td align="right">258.75</td>
 <td align="right">-70.00</td>
@@ -278,7 +265,6 @@ data:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="odd">
-<td align="left">783</td>
 <td align="left">2024-03-01</td>
 <td align="right">190.75</td>
 <td align="right">-71.25</td>
@@ -288,7 +274,6 @@ data:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="even">
-<td align="left">784</td>
 <td align="left">2024-04-01</td>
 <td align="right">193.75</td>
 <td align="right">-70.75</td>
@@ -298,7 +283,6 @@ data:</p>
 <td align="left">ERA5</td>
 </tr>
 <tr class="odd">
-<td align="left">785</td>
 <td align="left">2024-05-01</td>
 <td align="right">197.75</td>
 <td align="right">-73.75</td>
