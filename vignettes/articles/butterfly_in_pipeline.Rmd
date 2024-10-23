@@ -74,7 +74,7 @@ existing_file <- read.csv(
     skip = 29
   )
 
-kableExtra::kbl(
+knitr::kable(
   existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,]
 )
 ```
@@ -86,9 +86,7 @@ As you can see, all data for previous months are also included in the data:
 ```{r subsequent_month, echo=FALSE}
 knitr::kable(
   existing_file[(nrow(existing_file) - 4):nrow(existing_file),]
-) |> 
-    kableExtra::row_spec(5, background = "#4ba371")
-
+) 
 ```
 
 This is what will be submitted to the PDC.
