@@ -143,7 +143,7 @@ Forum</a> to monitor changes would be a time-consuming task, and not a
 reliable way to detect changes.</p>
 </div>
 <div class="section level2">
-<h2 id="quality-assurance-using-butterfly-in-a-pipeline">Quality assurance using <code>butterfly</code> in a pipeline<a class="anchor" aria-label="anchor" href="#quality-assurance-using-butterfly-in-a-pipeline"></a>
+<h2 id="verification-using-butterfly-in-a-pipeline">Verification using <code>butterfly</code> in a pipeline<a class="anchor" aria-label="anchor" href="#verification-using-butterfly-in-a-pipeline"></a>
 </h2>
 <p>To maintain the integrity of our published dataset, we need to impose
 robust checks to ensure our new results match our published data, where
@@ -429,8 +429,8 @@ so we read in our files:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Great! Now that the files have been read in, we can start our quality
-assurance using <code>butterfly</code>.</p>
+<p>Great! Now that the files have been read in, we can start our
+verification using <code>butterfly</code>.</p>
 <p>In this case, we will use <code><a href="../reference/loupe.html">butterfly::loupe()</a></code> to give us
 our report, and return either TRUE (previous data has not changed, we
 are happy to proceed) or FALSE (a change in previous data has been
@@ -461,10 +461,10 @@ be summarised as:</p>
 <ol style="list-style-type: decimal">
 <li>Reading in data, calculating asli values, and putting results in an
 output folder.</li>
-<li>Running quality assurance checks on results in the output folder,
-and comparing against those in the rsync location.</li>
+<li>Running verification checks on results in the output folder, and
+comparing against those in the rsync location.</li>
 <li>Transferring results from the output folder to the rsync location,
-if quality assurance checks have passed.</li>
+if verification checks have passed.</li>
 </ol>
 <p>A sensible way of organising distinct steps in a pipeline, is to move
 different components of functionality into their own script. In our case

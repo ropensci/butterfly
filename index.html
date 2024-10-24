@@ -17,8 +17,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="QA/QC For Continually Updating Timeseries Data">
-<meta name="description" content="QA/QC of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.">
-<meta property="og:description" content="QA/QC of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.">
+<meta name="description" content="Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.">
+<meta property="og:description" content="Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.">
 <meta property="og:image" content="https://thomaszwagerman.github.io/butterfly/logo.png">
 </head>
 <body>
@@ -67,7 +67,7 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of butterfly is to aid in the quality assurance of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged.</p>
+<p>The goal of butterfly is to aid in the verification of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged.</p>
 <div class="figure">
 <img src="reference/figures/README-butterfly_diagram.png" alt="An illustration of continually updating timeseries data where a previous value unexpectedly changes." width="100%"><p class="caption">
 An illustration of continually updating timeseries data where a previous value unexpectedly changes.
@@ -237,14 +237,18 @@ An illustration of continually updating timeseries data where a previous value u
 <h2 id="relevant-packages-and-functions">Relevant packages and functions<a class="anchor" aria-label="anchor" href="#relevant-packages-and-functions"></a>
 </h2>
 <p>The butterfly package was created for a specific use case of handling continuously updating/overwritten time-series data, where previous values may change without notice.</p>
-<p>There are other R packages and functions which handle object comparison, which may suit your specific needs better:</p>
+<p>There are other R packages and functions which handle object comparison, which may suit your specific needs better. Below we describe their overlap and differences to <code>butterfly</code>:</p>
 <ul>
-<li><a href="https://github.com/r-lib/waldo" class="external-link">waldo</a></li>
-<li><a href="https://github.com/gowerc/diffdf" class="external-link">diffdf</a></li>
-<li><a href="https://github.com/tonyfischetti/assertr" class="external-link">assertr</a></li>
-<li><a href="https://github.com/ropensci/daiquiri/" class="external-link">daquiri</a></li>
+<li>
+<a href="https://github.com/r-lib/waldo" class="external-link">waldo</a> - <code>butterfly</code> uses <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> in every function to provide a report on difference. There is therefore significant overlap, however <code>butterfly</code> builds on <code>waldo</code> by providing the functionality of comparing objects where we expect some changes, with previous versions but not others. <code>butterfly</code> also provides extra user feedback to provide clarity on what it is and isn’t comparing, due to the nature of comparing only “matched” rows.</li>
+<li>
+<a href="https://github.com/gowerc/diffdf" class="external-link">diffdf</a> - similar to <code>waldo</code>, but specifically for data frames, <code>diffdf</code> provides the ability to compare data frames directly. We could have used <code>diffdf::diffdf()</code> in our case, but we prefer <code>waldo</code>’s more explicit and clear user feedback. That said, there is significant overlap in functionality: <code><a href="reference/loupe.html">butterfly::loupe()</a></code> and <code>diffdf::diffdf_has_issues()</code> both provide a TRUE/FALSE difference check, while <code>diffdf::diffdf_issue_rows()</code> and <code><a href="reference/catch.html">butterfly::catch()</a></code> both return the rows where changes have occurred. However, it lacks the flexibility of <code>butterfly</code> to compare object where we expect some changes, but not others.</li>
+<li>
+<a href="https://github.com/tonyfischetti/assertr" class="external-link">assertr</a> - <code>assertr</code> provides assertion functionality that can be used as part of a pipeline, and test assertions on a particular dataset, but it does not offer tools for comparison. We do highly recommend using <code>assertr</code> for checks, prior to using <code>butterfly</code>, as any data quality issues will be caught first.</li>
+<li>
+<a href="https://github.com/ropensci/daiquiri/" class="external-link">daquiri</a> - <code>daquiri</code> provides tools to check data quality and visually inspect timeseries data. It is also quality assurance package for timeseries, but has a very different purpose to <code>butterfly</code>.</li>
 </ul>
-<p>Other functions include <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code> or <a href="https://github.com/tidyverse/dplyr" class="external-link">dplyr</a>’s <code><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff()</a></code></p>
+<p>Other functions include <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code> (base R) or <a href="https://github.com/tidyverse/dplyr" class="external-link">dplyr</a>’s <code><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff()</a></code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
