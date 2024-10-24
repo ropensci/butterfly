@@ -25,9 +25,9 @@
 #'
 #' @examples
 #' butterfly_object_list <- butterfly::create_object_list(
-#'   butterflycount$february,
-#'   butterflycount$january,
-#'   datetime_variable = "time"
+#'   butterflycount$february, # This is your new or current dataset
+#'   butterflycount$january, # This is the previous version you are comparing it to
+#'   datetime_variable = "time" # This is the unique ID variable they have in common
 #' )
 #'
 #' butterfly_object_list

@@ -17,10 +17,12 @@
 #' @seealso [create_object_list()]
 #'
 #' @examples
+#' # Dropping matched rows which contain changes, and returning unchanged rows
 #' df_released <- butterfly::release(
-#'   butterflycount$march,
-#'   butterflycount$february,
-#'   datetime_variable = "time"
+#'   butterflycount$march, # This is your new or current dataset
+#'   butterflycount$february, # This is the previous version you are comparing it to
+#'   datetime_variable = "time", # This is the unique ID variable they have in common
+#'   include_new = TRUE # Whether to include new rows or not, default is TRUE
 #' )
 #'
 #' df_released

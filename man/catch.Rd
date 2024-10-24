@@ -27,10 +27,11 @@ not return any new rows.
 The underlying functionality is handled by \code{create_object_list()}.
 }
 \examples{
+# Returning only matched rows which contain changes
 df_caught <- butterfly::catch(
-  butterflycount$march,
-  butterflycount$february,
-  datetime_variable = "time"
+  butterflycount$march, # This is your new or current dataset
+  butterflycount$february, # This is the previous version you are comparing it to
+  datetime_variable = "time" # This is the unique ID variable they have in common
 )
 
 df_caught

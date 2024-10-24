@@ -39,11 +39,12 @@ returned in the report.
 The underlying functionality is handled by \code{create_object_list()}.
 }
 \examples{
+# Checking two dataframes for changes, and returning TRUE (no changes) or FALSE (changes)
 # This example contains no differences with previous data
 butterfly::loupe(
-  butterflycount$february,
-  butterflycount$january,
-  datetime_variable = "time"
+  butterflycount$february, # This is your new or current dataset
+  butterflycount$january, # This is the previous version you are comparing it to
+  datetime_variable = "time" # This is the unique ID variable they have in common
 )
 
 # This example does contain differences with previous data
