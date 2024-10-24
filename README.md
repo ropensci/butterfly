@@ -32,8 +32,9 @@ instrument recalibration. Monitoring data sources for these changes is
 not always possible.
 
 Unnoticed changes in previous data could have unintended consequences,
-such as invalidating DOIs, or altering future predictions if used as
-input in forecasting models.
+such as invalidating a published dataset’s Digital Object Identfier
+(DOI), or altering future predictions if used as input in forecasting
+models.
 
 This package provides functionality that can be used as part of a data
 pipeline, to check and flag changes to previous data to prevent changes
@@ -259,3 +260,9 @@ overlap and differences to `butterfly`:
 
 Other functions include `all.equal()` (base R) or
 [dplyr](https://github.com/tidyverse/dplyr)’s `setdiff()`.
+
+## `butterfly` in production
+
+Read more about how `butterfly` is [used in an operational data
+pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html)
+to verify a continually updated **and** published dataset.

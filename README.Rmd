@@ -30,7 +30,7 @@ knitr::include_graphics("man/figures/README-butterfly_diagram.png")
 
 Data previously recorded could change for a number of reasons, such as discovery of an error in model code, a change in methodology or instrument recalibration. Monitoring data sources for these changes is not always possible.
 
-Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.
+Unnoticed changes in previous data could have unintended consequences, such as invalidating a published dataset's Digital Object Identfier (DOI), or altering future predictions if used as input in forecasting models.
 
 This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.
 
@@ -128,3 +128,7 @@ There are other R packages and functions which handle object comparison, which m
 * [daquiri](https://github.com/ropensci/daiquiri/) - `daquiri` provides tools to check data quality and visually inspect timeseries data. It is also quality assurance package for timeseries, but has a very different purpose to `butterfly`.
 
 Other functions include `all.equal()` (base R) or [dplyr](https://github.com/tidyverse/dplyr)'s `setdiff()`.
+
+## `butterfly` in production
+
+Read more about how `butterfly` is [used in an operational data pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html) to verify a continually updated **and** published dataset.
