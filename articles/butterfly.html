@@ -74,16 +74,6 @@
 continually updating and overwritten time-series data, where we expect
 new values over time, but want to ensure previous data remains
 unchanged.</p>
-<div class="figure">
-<img src="img%2Fbutterfly_diagram_light.png" alt="An illustration of continually updating timeseries data where a previous value unexpectedly changes." width="100%"><p class="caption">
-An illustration of continually updating timeseries data where a previous
-value unexpectedly changes.
-</p>
-</div>
-<p>Data previously recorded could change for a number of reasons, such
-as discovery of an error in model code, a change in methodology or
-instrument recalibration. Monitoring data sources for these changes is
-not always possible.</p>
 <p>Unnoticed changes in previous data could have unintended
 consequences, such as invalidating DOIs, or altering future predictions
 if used as input in forecasting models.</p>
@@ -91,72 +81,52 @@ if used as input in forecasting models.</p>
 data pipeline, to check and flag changes to previous data to prevent
 changes going unnoticed.</p>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p>You can install the development version of butterfly from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>This packages includes a small dummy dataset,
+<code>butterflycount</code>, which contains a list of monthly dataframes
+of butterfly counts for a given date.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"thomaszwagerman/butterfly"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h2>
-<p>The butterfly package contains the following:</p>
-<ul>
-<li>
-<code><a href="../reference/loupe.html">butterfly::loupe()</a></code> - examines in detail whether
-previous values have changed, and returns TRUE/FALSE for no
-change/change.</li>
-<li>
-<code><a href="../reference/catch.html">butterfly::catch()</a></code> - returns rows which contain
-previously changed values in a dataframe.</li>
-<li>
-<code><a href="../reference/release.html">butterfly::release()</a></code> - drops rows which contain
-previously changed values, and returns a dataframe containing new and
-unchanged rows.</li>
-<li>
-<code><a href="../reference/create_object_list.html">butterfly::create_object_list()</a></code> - returns a list of
-objects required by all of <code><a href="../reference/loupe.html">loupe()</a></code>, <code><a href="../reference/catch.html">catch()</a></code>
-and <code><a href="../reference/release.html">release()</a></code>. Contains underlying functionality.</li>
-<li>
-<code>butterflycount</code> - a list of monthly dataframes, which
-contain fictional butterfly counts for a given date.</li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="how-to-use-butterfly">How to use butterfly<a class="anchor" aria-label="anchor" href="#how-to-use-butterfly"></a>
-</h2>
-<p>This is a basic example which shows you how to use butterfly:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/thomaszwagerman/butterfly" class="external-link">butterfly</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Imagine a continually updated dataset that starts in January and is updated once a month</span></span>
-<span><span class="va">butterflycount</span><span class="op">$</span><span class="va">january</span></span>
+<span><span class="va">butterflycount</span></span>
+<span><span class="co">#&gt; $january</span></span>
 <span><span class="co">#&gt;         time count</span></span>
 <span><span class="co">#&gt; 1 2024-01-01    22</span></span>
 <span><span class="co">#&gt; 2 2023-12-01    55</span></span>
 <span><span class="co">#&gt; 3 2023-11-01    11</span></span>
-<span></span>
-<span><span class="co"># In February an additional row appears, all previous data remains the same</span></span>
-<span><span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $february</span></span>
 <span><span class="co">#&gt;         time count</span></span>
 <span><span class="co">#&gt; 1 2024-02-01    17</span></span>
 <span><span class="co">#&gt; 2 2024-01-01    22</span></span>
 <span><span class="co">#&gt; 3 2023-12-01    55</span></span>
 <span><span class="co">#&gt; 4 2023-11-01    11</span></span>
-<span></span>
-<span><span class="co"># In March an additional row appears again</span></span>
-<span><span class="co"># ...but a previous value has unexpectedly changed</span></span>
-<span><span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $march</span></span>
 <span><span class="co">#&gt;         time count</span></span>
 <span><span class="co">#&gt; 1 2024-03-01    23</span></span>
 <span><span class="co">#&gt; 2 2024-02-01    17</span></span>
 <span><span class="co">#&gt; 3 2024-01-01    22</span></span>
 <span><span class="co">#&gt; 4 2023-12-01    55</span></span>
-<span><span class="co">#&gt; 5 2023-11-01    18</span></span></code></pre></div>
+<span><span class="co">#&gt; 5 2023-11-01    18</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $april</span></span>
+<span><span class="co">#&gt;         time value species</span></span>
+<span><span class="co">#&gt; 1 2024-04-01    12 Admiral</span></span>
+<span><span class="co">#&gt; 2 2024-03-01    23 Admiral</span></span>
+<span><span class="co">#&gt; 3 2024-02-01    NA Admiral</span></span>
+<span><span class="co">#&gt; 4 2024-01-01    22 Admiral</span></span>
+<span><span class="co">#&gt; 5 2023-12-01    55 Admiral</span></span>
+<span><span class="co">#&gt; 6 2023-11-01    18 Admiral</span></span></code></pre></div>
+<p>This dataset is entirely fictional, and merely included to aid
+demonstrating butterfly’s functionality.</p>
+</div>
+<div class="section level2">
+<h2 id="examining-datasets-loupe">Examining datasets: loupe()<a class="anchor" aria-label="anchor" href="#examining-datasets-loupe"></a>
+</h2>
 <p>We can use <code><a href="../reference/loupe.html">butterfly::loupe()</a></code> to examine in detail
 whether previous values have changed.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">january</span>,</span>
@@ -198,16 +168,16 @@ differences.</p>
 erring on the side of providing too much information, rather than too
 little. It will give a detailed feedback message on the status between
 two objects.</p>
-<div class="section level3">
-<h3 id="using-butterfly-for-data-wrangling">Using butterfly for data wrangling<a class="anchor" aria-label="anchor" href="#using-butterfly-for-data-wrangling"></a>
-</h3>
-<p>You might want to return changed rows as a dataframe, or drop them
-altogether. For this <code><a href="../reference/catch.html">butterfly::catch()</a></code> and
-<code><a href="../reference/release.html">butterfly::release()</a></code> are provided.</p>
-<p>Here, <code><a href="../reference/catch.html">butterfly::catch()</a></code> only returns rows which have
+</div>
+<div class="section level2">
+<h2 id="extracting-unexpected-changes-catch">Extracting unexpected changes: catch()<a class="anchor" aria-label="anchor" href="#extracting-unexpected-changes-catch"></a>
+</h2>
+<p>You might want to return changed rows as a dataframe. For this
+<code><a href="../reference/catch.html">butterfly::catch()</a></code>is provided.</p>
+<p><code><a href="../reference/catch.html">butterfly::catch()</a></code> only returns rows which have
 <strong>changed</strong> from the previous version. It will not return
 new rows.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_caught</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/catch.html">catch</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -234,10 +204,14 @@ new rows.</p>
 <span><span class="va">df_caught</span></span>
 <span><span class="co">#&gt;         time count</span></span>
 <span><span class="co">#&gt; 1 2023-11-01    18</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="dropping-unexpecrted-changes-release">Dropping unexpecrted changes: release()<a class="anchor" aria-label="anchor" href="#dropping-unexpecrted-changes-release"></a>
+</h2>
 <p>Conversely, <code><a href="../reference/release.html">butterfly::release()</a></code> drops all rows which
 had changed from the previous version. Note it retains new rows, as
 these were expected.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_released</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -267,47 +241,38 @@ these were expected.</p>
 <span><span class="co">#&gt; 2 2024-02-01    17</span></span>
 <span><span class="co">#&gt; 3 2024-01-01    22</span></span>
 <span><span class="co">#&gt; 4 2023-12-01    55</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="the-butterflycount-dataset">The butterflycount dataset<a class="anchor" aria-label="anchor" href="#the-butterflycount-dataset"></a>
-</h2>
-<p>This packages includes a small dummy dataset,
-<code>butterflycount</code>, which contains a list of monthly dataframes
-of butterfly counts for a given date.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">butterflycount</span></span>
-<span><span class="co">#&gt; $january</span></span>
+<p>However, you do have the option to exclude new rows as well with the
+argument <code>include_new</code> set to <code>FALSE</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df_release_without_new</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
+<span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
+<span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
+<span>  datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  include_new <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">The following rows are new in 'df_current': </span></span></span>
 <span><span class="co">#&gt;         time count</span></span>
-<span><span class="co">#&gt; 1 2024-01-01    22</span></span>
-<span><span class="co">#&gt; 2 2023-12-01    55</span></span>
-<span><span class="co">#&gt; 3 2023-11-01    11</span></span>
+<span><span class="co">#&gt; 1 2024-03-01    23</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $february</span></span>
+<span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">The following values have changes from the previous data.</span></span></span>
+<span><span class="co">#&gt; old vs new</span></span>
+<span><span class="co">#&gt;            <span style="font-weight: bold;">count</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">  old[1, ]    17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">  old[2, ]    22</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">  old[3, ]    55</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">- old[4, ]    18</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">+ new[4, ]    11</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span></span>
+<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">These will be dropped, along with new rows.</span></span></span>
+<span></span>
+<span><span class="va">df_release_without_new</span></span>
 <span><span class="co">#&gt;         time count</span></span>
 <span><span class="co">#&gt; 1 2024-02-01    17</span></span>
 <span><span class="co">#&gt; 2 2024-01-01    22</span></span>
-<span><span class="co">#&gt; 3 2023-12-01    55</span></span>
-<span><span class="co">#&gt; 4 2023-11-01    11</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $march</span></span>
-<span><span class="co">#&gt;         time count</span></span>
-<span><span class="co">#&gt; 1 2024-03-01    23</span></span>
-<span><span class="co">#&gt; 2 2024-02-01    17</span></span>
-<span><span class="co">#&gt; 3 2024-01-01    22</span></span>
-<span><span class="co">#&gt; 4 2023-12-01    55</span></span>
-<span><span class="co">#&gt; 5 2023-11-01    18</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $april</span></span>
-<span><span class="co">#&gt;         time value species</span></span>
-<span><span class="co">#&gt; 1 2024-04-01    12 Admiral</span></span>
-<span><span class="co">#&gt; 2 2024-03-01    23 Admiral</span></span>
-<span><span class="co">#&gt; 3 2024-02-01    NA Admiral</span></span>
-<span><span class="co">#&gt; 4 2024-01-01    22 Admiral</span></span>
-<span><span class="co">#&gt; 5 2023-12-01    55 Admiral</span></span>
-<span><span class="co">#&gt; 6 2023-11-01    18 Admiral</span></span></code></pre></div>
-<p>This dataset is entirely fictional, and merely included to aid
-demonstrating butterfly’s functionality.</p>
+<span><span class="co">#&gt; 3 2023-12-01    55</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="using-butterfly-in-a-data-processing-pipeline">Using <code>butterfly</code> in a data processing pipeline<a class="anchor" aria-label="anchor" href="#using-butterfly-in-a-data-processing-pipeline"></a>
