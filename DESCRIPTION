@@ -1,5 +1,5 @@
 Package: butterfly
-Title: QA/QC For Continually Updating Timeseries Data
+Title: Verification For Continually Updating Timeseries Data
 Version: 1.0.0
 Authors@R: 
     person("Thomas", "Zwagerman", , "thozwa@bas.ac.uk", role = c("aut", "cre"),
