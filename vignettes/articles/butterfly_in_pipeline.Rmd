@@ -306,7 +306,7 @@ Therefore, any failure in `02_quality_control.R` will prevent our data from reac
 
 So, `butterfly` did its job, detected changes and stopped data transfer... _now what?_
 
-Currently, it is set up to warn the user, who can intervene in the process manually. The next step would be to make the published data static, as we are now no longer appending it. We then supersede it with out new data, and restart the process.
+Currently, it is set up to warn the user, who can intervene in the process manually. The next step would be to make the published data static, as we are now no longer appending it. We then supersede it with our new data, and restart the process.
 
 A future aim would be however, to do this automatically:
 
