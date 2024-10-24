@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/butterfly_in_pipeline: butterfly_in_pipeline.html
   butterfly: butterfly.html
-last_built: 2024-10-24T14:18Z
+last_built: 2024-10-24T14:24Z
 urls:
   reference: https://thomaszwagerman.github.io/butterfly/reference
   article: https://thomaszwagerman.github.io/butterfly/articles
