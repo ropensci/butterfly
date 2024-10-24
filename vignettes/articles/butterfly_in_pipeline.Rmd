@@ -52,7 +52,7 @@ Either way, this would invalidate our DOI and force republication.
 
 Keeping up-to-date with the [Climate Data Store's Forum](https://forum.ecmwf.int/c/announcements/5) to monitor changes would be a time-consuming task, and not a reliable way to detect changes. 
 
-## Quality assurance using `butterfly` in a pipeline
+## Verification using `butterfly` in a pipeline
 
 To maintain the integrity of our published dataset, we need to impose robust checks to ensure our new results match our published data, where we expect it to.
 
@@ -228,7 +228,7 @@ existing_file <- readr::read_csv(
 }
 ```
 
-Great! Now that the files have been read in, we can start our quality assurance using `butterfly`.
+Great! Now that the files have been read in, we can start our verification using `butterfly`.
 
 In this case, we will use `butterfly::loupe()` to give us our report, and return either TRUE (previous data has not changed, we are happy to proceed) or FALSE (a change in previous data has been detected, and we should abort data transfer).
 
@@ -254,8 +254,8 @@ The last check, `if (!isTRUE(qa_outcome))` will only trigger and stop the entire
 We've inspected every bit of functionality in our pipeline, which can be summarised as:
 
 1. Reading in data, calculating asli values, and putting results in an output folder.
-2. Running quality assurance checks on results in the output folder, and comparing against those in the rsync location.
-3. Transferring results from the output folder to the rsync location, if quality assurance checks have passed.
+2. Running verification checks on results in the output folder, and comparing against those in the rsync location.
+3. Transferring results from the output folder to the rsync location, if verification checks have passed.
 
 A sensible way of organising distinct steps in a pipeline, is to move different components of functionality into their own script. In our case we will have: 
 

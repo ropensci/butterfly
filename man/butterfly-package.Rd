@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-QA/QC of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
+Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
 }
 \seealso{
 Useful links:

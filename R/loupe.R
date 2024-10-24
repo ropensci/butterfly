@@ -3,7 +3,7 @@
 #' A loupe is a simple, small magnification device used to examine small details
 #' more closely.
 #'
-#' This function is intended to aid in the quality assurance of continually
+#' This function is intended to aid in the verification of continually
 #' updating timeseries data where we expect new values but want to ensure
 #' previous values remains unchanged.
 #'
