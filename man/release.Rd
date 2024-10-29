@@ -9,19 +9,21 @@ release(df_current, df_previous, datetime_variable, include_new = TRUE, ...)
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
-\item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
+\item{df_previous}{data.frame, the old version of dataset,
+for example x - t1.}
 
 \item{datetime_variable}{string, which variable to use as unique ID to join
 \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
 
 \item{include_new}{boolean, should new rows be included? Default is TRUE.}
 
-\item{...}{Other \code{waldo::compare()} arguments can be supplied here,
-such as \code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here, such as
+\code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
-A dataframe which contains only rows of \code{df_current} that have not changed from \code{df_previous}, and includes new rows.
-also returns a waldo object as in \code{loupe()}.
+A dataframe which contains only rows of \code{df_current} that have not
+changed from \code{df_previous}, and includes new rows. Also returns a waldo
+object as in \code{loupe()}.
 }
 \description{
 This function matches two dataframe objects by their unique identifier
@@ -32,9 +34,9 @@ changes from previous data will be dropped.
 \examples{
 # Dropping matched rows which contain changes, and returning unchanged rows
 df_released <- butterfly::release(
-  butterflycount$march, # This is your new or current dataset
-  butterflycount$february, # This is the previous version you are comparing it to
-  datetime_variable = "time", # This is the unique ID variable they have in common
+  butterflycount$march, # New or current dataset
+  butterflycount$february, # Previous version you are comparing it to
+  datetime_variable = "time", # Unique ID variable they have in common
   include_new = TRUE # Whether to include new rows or not, default is TRUE
 )
 

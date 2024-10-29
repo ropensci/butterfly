@@ -9,8 +9,9 @@
 #'
 #' @inheritParams create_object_list
 #'
-#' @returns A dataframe which contains only rows of `df_current` that have changes from `df_previous`, but without new rows.
-#' also returns a waldo object as in `loupe()`.
+#' @returns A dataframe which contains only rows of `df_current` that have
+#' changes from `df_previous`, but without new rows. Also returns a waldo
+#' object as in `loupe()`.
 #'
 #' @seealso [loupe()]
 #' @seealso [create_object_list()]
@@ -18,15 +19,20 @@
 #' @examples
 #' # Returning only matched rows which contain changes
 #' df_caught <- butterfly::catch(
-#'   butterflycount$march, # This is your new or current dataset
-#'   butterflycount$february, # This is the previous version you are comparing it to
-#'   datetime_variable = "time" # This is the unique ID variable they have in common
+#'   butterflycount$march, # New or current dataset
+#'   butterflycount$february, # Previous version you are comparing it to
+#'   datetime_variable = "time" # Unique ID variable they have in common
 #' )
 #'
 #' df_caught
 #'
 #' @export
-catch <- function(df_current, df_previous, datetime_variable, ...) {
+catch <- function(
+    df_current,
+    df_previous,
+    datetime_variable,
+    ...
+) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
@@ -36,7 +42,8 @@ catch <- function(df_current, df_previous, datetime_variable, ...) {
 
   if (butterfly_object_list$butterfly_status == TRUE) {
     cli::cat_bullet(
-      "There are no differences, so there are no rows to return Did you specify a tolerance that exceeds number of differences?",
+      "There are no differences, so there are no rows to return.
+      Did you specify a tolerance that exceeds number of differences?",
       bullet = "info",
       col = "orange",
       bullet_col = "orange"

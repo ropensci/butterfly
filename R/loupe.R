@@ -14,25 +14,27 @@
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes.
 #'
 #' The main assumption is that `df_current` and `df_previous` are a newer and
-#' older versions of the same data, and that the `datetime_variable` variable name always
-#' remains the same. Elsewhere new columns can of appear, and these will be
-#' returned in the report.
+#' older versions of the same data, and that the `datetime_variable` variable
+#' name always remains the same. Elsewhere new columns can of appear, and these
+#' will be returned in the report.
 #'
 #' The underlying functionality is handled by `create_object_list()`.
 #'
 #' @inheritParams create_object_list
 #'
-#' @returns A boolean where TRUE indicates no changes to previous data and FALSE indicates unexpected changes.
+#' @returns A boolean where TRUE indicates no changes to previous data and
+#' FALSE indicates unexpected changes.
 #'
 #' @seealso [create_object_list()]
 #'
 #' @examples
-#' # Checking two dataframes for changes, and returning TRUE (no changes) or FALSE (changes)
+#' # Checking two dataframes for changes
+#' # Returning TRUE (no changes) or FALSE (changes)
 #' # This example contains no differences with previous data
 #' butterfly::loupe(
-#'   butterflycount$february, # This is your new or current dataset
-#'   butterflycount$january, # This is the previous version you are comparing it to
-#'   datetime_variable = "time" # This is the unique ID variable they have in common
+#'   butterflycount$february, # New or current dataset
+#'   butterflycount$january, # Previous version you are comparing it to
+#'   datetime_variable = "time" # Unique ID variable they have in common
 #' )
 #'
 #' # This example does contain differences with previous data

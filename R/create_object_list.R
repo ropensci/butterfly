@@ -10,16 +10,17 @@
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes.
 #'
 #' The main assumption is that `df_current` and `df_previous` are a newer and
-#' older versions of the same data, and that the `datetime_variable` variable name always
-#' remains the same. Elsewhere new columns can of appear, and these will be
-#' returned in the report.
+#' older versions of the same data, and that the `datetime_variable` variable
+#' name always remains the same. Elsewhere new columns can of appear,
+#' and these will be returned in the report.
 #'
 #' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
+#' @param df_previous data.frame, the old version of dataset,
+#' for example x - t1.
 #' @param datetime_variable string, which variable to use as unique ID to join
 #'  `df_current` and `df_previous`. Usually a "datetime" variable.
-#' @param ... Other `waldo::compare()` arguments can be supplied here,
-#'   such as `tolerance` or `max_diffs`. See `?waldo::compare()` for a full list.
+#' @param ... Other `waldo::compare()` arguments can be supplied here, such as
+#'  `tolerance` or `max_diffs`. See `?waldo::compare()` for a full list.
 #'
 #' @returns A list containing boolean where TRUE indicates no changes to
 #' previous data and FALSE indicates unexpected changes, a dataframe of
@@ -27,18 +28,18 @@
 #'
 #' @examples
 #' butterfly_object_list <- butterfly::create_object_list(
-#'   butterflycount$february, # This is your new or current dataset
-#'   butterflycount$january, # This is the previous version you are comparing it to
-#'   datetime_variable = "time" # This is the unique ID variable they have in common
+#'   butterflycount$february, # New or current dataset
+#'   butterflycount$january, # Previous version you are comparing to
+#'   datetime_variable = "time" # Unique ID variable they have in common
 #' )
 #'
 #' butterfly_object_list
 #'
 #' # You can pass other `waldo::compare()` options such as tolerance here
 #' butterfly_object_list <- butterfly::create_object_list(
-#'   butterflycount$march, # This is your new or current dataset
-#'   butterflycount$february, # This is the previous version you are comparing it to
-#'   datetime_variable = "time", # This is the unique ID variable they have in common
+#'   butterflycount$march, # New or current dataset
+#'   butterflycount$february, # Previous version you are comparing it to
+#'   datetime_variable = "time", # Unique ID variable they have in common
 #'   tolerance = 2
 #' )
 #'
@@ -50,19 +51,23 @@ create_object_list <- function(
     df_previous,
     datetime_variable,
     ...
-    ) {
+) {
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
 
   # Check if `datetime_variable` is in both `df_current` and `df_previous`
-  if (!datetime_variable %in% names(df_current) || !datetime_variable %in% names(df_previous)) {
+  if (
+    !datetime_variable %in% names(df_current)
+    ||
+    !datetime_variable %in% names(df_previous)
+  ) {
     cli::cli_abort(
-      "`datetime_variable` must be present in both `df_current` and `df_previous`"
+      "`datetime_variable` must be present in `df_current` and `df_previous`"
     )
   }
 
-  # Initialise list to store objects used by `loupe()`, `catch()` and `release()`
+  # Initialise list for objects used by `loupe()`, `catch()` and `release()`
   list_butterfly <- list(
     "waldo_object" = character(),
     "df_current_without_new_row" = data.frame(),
@@ -99,7 +104,7 @@ create_object_list <- function(
       deparse(substitute(df_current)),
       "' is your most recent data, and '",
       deparse(substitute(df_previous)),
-      "' is your previous data. If comparing like for like, try waldo::compare()."
+      "' is your previous data. If comparing directly use waldo::compare()."
     )
   } else {
     # Tell the user which rows are new, regardless of previous data changing

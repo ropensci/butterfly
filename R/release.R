@@ -8,8 +8,9 @@
 #' @inheritParams create_object_list
 #' @param include_new boolean, should new rows be included? Default is TRUE.
 #'
-#' @returns A dataframe which contains only rows of `df_current` that have not changed from `df_previous`, and includes new rows.
-#' also returns a waldo object as in `loupe()`.
+#' @returns A dataframe which contains only rows of `df_current` that have not
+#' changed from `df_previous`, and includes new rows. Also returns a waldo
+#' object as in `loupe()`.
 #'
 #' @seealso [loupe()]
 #' @seealso [create_object_list()]
@@ -17,16 +18,22 @@
 #' @examples
 #' # Dropping matched rows which contain changes, and returning unchanged rows
 #' df_released <- butterfly::release(
-#'   butterflycount$march, # This is your new or current dataset
-#'   butterflycount$february, # This is the previous version you are comparing it to
-#'   datetime_variable = "time", # This is the unique ID variable they have in common
+#'   butterflycount$march, # New or current dataset
+#'   butterflycount$february, # Previous version you are comparing it to
+#'   datetime_variable = "time", # Unique ID variable they have in common
 #'   include_new = TRUE # Whether to include new rows or not, default is TRUE
 #' )
 #'
 #' df_released
 #'
 #' @export
-release <- function(df_current, df_previous, datetime_variable, include_new = TRUE, ...) {
+release <- function(
+    df_current,
+    df_previous,
+    datetime_variable,
+    include_new = TRUE,
+    ...
+) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
@@ -37,7 +44,8 @@ release <- function(df_current, df_previous, datetime_variable, include_new = TR
   if (butterfly_object_list$butterfly_status == TRUE){
 
     cli::cat_bullet(
-      "There are no differences, so there are no rows to drop. Did you specify a tolerance that exceeds number of differences?",
+      "There are no differences, so there are no rows to drop.
+      Did you specify a tolerance that exceeds number of differences?",
       bullet = "info",
       col = "orange",
       bullet_col = "orange"
