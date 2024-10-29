@@ -70,6 +70,7 @@ For the purpose of this article, details of the dataset itself are not important
 
 ```{r asli_dataset, echo = FALSE}
 existing_file <- read.csv(
+  # This url will be replaced when data is deposited in the Polar Data Centre
     "https://raw.githubusercontent.com/scotthosking/amundsen-sea-low-index/master/asli_era5_v3-latest.csv",
     skip = 29
   )

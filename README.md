@@ -13,6 +13,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![pkgcheck](https://github.com/thomaszwagerman/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck)
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the verification of continually
