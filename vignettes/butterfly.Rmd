@@ -53,6 +53,23 @@ butterfly::loupe(
 
 `butterfly` follows the `waldo` philosophy of erring on the side of providing too much information, rather than too little. It will give a detailed feedback message on the status between two objects.
 
+### Additional arguments from `waldo::compare()`
+
+You have the flexibility to pass further arguments that `waldo::compare()` accepts, to any butterfly function, for instance to specify the tolerance.
+
+If we add a tolerance of 2 to the previous example, no differences should be returned:
+
+```{r tolerance_example}
+butterfly::loupe(
+  butterflycount$march,
+  butterflycount$february,
+  datetime_variable = "time",
+  tolerance = 2 # <- setting a tolerance of 2
+)
+```
+
+Call `?waldo::compare()` to see the full list of arguments.
+
 ## Extracting unexpected changes: catch()
 
 You might want to return changed rows as a dataframe. For this `butterfly::catch()`is provided.
