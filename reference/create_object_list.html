@@ -35,7 +35,7 @@ catch() and release()."><meta property="og:image" content="https://thomaszwagerm
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>create_object_list: creates a list of objects used in all butterfly functions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/thomaszwagerman/butterfly/blob/1.0.0/R/create_object_list.R" class="external-link"><code>R/create_object_list.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/thomaszwagerman/butterfly/blob/main/R/create_object_list.R" class="external-link"><code>R/create_object_list.R</code></a></small>
       <div class="d-none name"><code>create_object_list.Rd</code></div>
     </div>
 
@@ -46,7 +46,7 @@ catch() and release()."><meta property="og:image" content="https://thomaszwagerm
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_object_list</span><span class="op">(</span><span class="va">df_current</span>, <span class="va">df_previous</span>, <span class="va">datetime_variable</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_object_list</span><span class="op">(</span><span class="va">df_current</span>, <span class="va">df_previous</span>, <span class="va">datetime_variable</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,6 +64,11 @@ catch() and release()."><meta property="og:image" content="https://thomaszwagerm
 <dt id="arg-datetime-variable">datetime_variable<a class="anchor" aria-label="anchor" href="#arg-datetime-variable"></a></dt>
 <dd><p>string, which variable to use as unique ID to join
 <code>df_current</code> and <code>df_previous</code>. Usually a "datetime" variable.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Other <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> arguments can be supplied here,
+such as <code>tolerance</code> or <code>max_diffs</code>. See <code>?waldo::compare()</code> for a full list.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -109,6 +114,34 @@ returned in the report.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $df_current_new_rows</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-02-01    17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can pass other `waldo::compare()` options such as tolerance here</span></span></span>
+<span class="r-in"><span><span class="va">butterfly_object_list</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu">create_object_list</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>, <span class="co"># This is your new or current dataset</span></span></span>
+<span class="r-in"><span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>, <span class="co"># This is the previous version you are comparing it to</span></span></span>
+<span class="r-in"><span>  datetime_variable <span class="op">=</span> <span class="st">"time"</span>, <span class="co"># This is the unique ID variable they have in common</span></span></span>
+<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The following rows are new in 'butterflycount$march': </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-03-01    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">And there are no differences with previous data.</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">butterfly_object_list</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $butterfly_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $df_current_without_new_row</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-02-01    17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2024-01-01    22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2023-12-01    55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2023-11-01    18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $df_current_new_rows</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         time count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2024-03-01    23</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -65,7 +65,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>butterfly</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/thomaszwagerman/butterfly/blob/1.0.0/vignettes/butterfly.Rmd" class="external-link"><code>vignettes/butterfly.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/thomaszwagerman/butterfly/blob/main/vignettes/butterfly.Rmd" class="external-link"><code>vignettes/butterfly.Rmd</code></a></small>
       <div class="d-none name"><code>butterfly.Rmd</code></div>
     </div>
 
@@ -168,6 +168,29 @@ differences.</p>
 erring on the side of providing too much information, rather than too
 little. It will give a detailed feedback message on the status between
 two objects.</p>
+<div class="section level3">
+<h3 id="additional-arguments-from-waldocompare">Additional arguments from <code>waldo::compare()</code><a class="anchor" aria-label="anchor" href="#additional-arguments-from-waldocompare"></a>
+</h3>
+<p>You have the flexibility to pass further arguments that
+<code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> accepts, to any butterfly function, for
+instance to specify the tolerance.</p>
+<p>If we add a tolerance of 2 to the previous example, no differences
+should be returned:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>
+<span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
+<span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
+<span>  datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  tolerance <span class="op">=</span> <span class="fl">2</span> <span class="co"># &lt;- setting a tolerance of 2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">The following rows are new in 'df_current': </span></span></span>
+<span><span class="co">#&gt;         time count</span></span>
+<span><span class="co">#&gt; 1 2024-03-01    23</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">And there are no differences with previous data.</span></span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Call <code>?waldo::compare()</code> to see the full list of
+arguments.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="extracting-unexpected-changes-catch">Extracting unexpected changes: catch()<a class="anchor" aria-label="anchor" href="#extracting-unexpected-changes-catch"></a>
@@ -177,7 +200,7 @@ two objects.</p>
 <p><code><a href="../reference/catch.html">butterfly::catch()</a></code> only returns rows which have
 <strong>changed</strong> from the previous version. It will not return
 new rows.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_caught</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/catch.html">catch</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -211,7 +234,7 @@ new rows.</p>
 <p>Conversely, <code><a href="../reference/release.html">butterfly::release()</a></code> drops all rows which
 had changed from the previous version. Note it retains new rows, as
 these were expected.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_released</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -243,7 +266,7 @@ these were expected.</p>
 <span><span class="co">#&gt; 4 2023-12-01    55</span></span></code></pre></div>
 <p>However, you do have the option to exclude new rows as well with the
 argument <code>include_new</code> set to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_release_without_new</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
