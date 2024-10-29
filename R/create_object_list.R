@@ -18,6 +18,7 @@
 #' @param df_previous data.frame, the old version of dataset, for example x - t1.
 #' @param datetime_variable string, which variable to use as unique ID to join
 #'  `df_current` and `df_previous`. Usually a "datetime" variable.
+#'  @param ... Other `waldo::compare()` arguments are supported.
 #'
 #' @returns A list containing boolean where TRUE indicates no changes to
 #' previous data and FALSE indicates unexpected changes, a dataframe of
@@ -33,7 +34,12 @@
 #' butterfly_object_list
 #'
 #' @export
-create_object_list <- function(df_current, df_previous, datetime_variable) {
+create_object_list <- function(
+    df_current,
+    df_previous,
+    datetime_variable,
+    ...
+    ) {
   # Check input is as expected
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
   stopifnot("`df_previous` must be a data.frame" = is.data.frame(df_previous))
@@ -70,7 +76,8 @@ create_object_list <- function(df_current, df_previous, datetime_variable) {
   # Compare the current data with the previous data, without "new" values
   waldo_object <- waldo::compare(
     df_current_without_new_row,
-    df_previous
+    df_previous,
+    ...
   )
 
   # Creating a feedback message depending on the waldo object's output

@@ -7,9 +7,7 @@
 #'
 #' The underlying functionality is handled by `create_object_list()`.
 #'
-#' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable character, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @inheritParams create_object_list
 #'
 #' @returns A dataframe which contains only rows of `df_current` that have changes from `df_previous`, but without new rows.
 #' also returns a waldo object as in `loupe()`.
@@ -32,7 +30,8 @@ catch <- function(df_current, df_previous, datetime_variable) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
-    datetime_variable
+    datetime_variable,
+    ...
   )
 
   # By using an inner join, we drop any row which does not match in
