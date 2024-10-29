@@ -27,18 +27,14 @@ knitr::opts_chunk$set(
 
 # Summary
 
-When ... specific version of data used to
+Previously recorded data could be revised after initial publication number of reasons, such as discovery of an inconsistency or error, a change in methodology or instrument re-calibration. When using other data to generate your own, it is crucial to reference the exact version of the data used, in order to maintain data provenance. Unnoticed changes in previous data could have unintended consequences, such as invalidating a published dataset’s Digital Object Identfier (DOI), or altering future predictions if used as input in forecasting models.
 
-maintain data provenance.
+But what if you are not aware of upstream changes to your input data? Monitoring data sources for these changes is not always possible. Here we present butterfly, an R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
 
-When using other data to generate your own, it is crucial to reference the exact version of the data used, in order to maintain data provenance.
+The intention of butterfly is to check for changes in previously published data, and warn the user with a report that contains as much details as possible. This will allow them to stop unintended data transfer, revise their published data, release a new version and communicate the significance of the change to their users.
 
-In other instances it may be required to revise data publications, due to the discovery of an inconsistency or error.
 
-But what if you are not aware of upstream changes to your input data?
-
-Here we present butterfly, an R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
-
+# Statement of Need
 
 Importance of citing exact extract of data [(Klump et al. 2021)](https://datascience.codata.org/articles/10.5334/dsj-2021-012)
 
@@ -58,7 +54,6 @@ tools and methods
 
 ... for a FAIR implementation (Wilkinson et al. 2016).
 
-# Statement of Need
 At the British Antarctic Survey (BAS), we developed this package to deal with a very specific issue.
 
 Quality assurance in continually updating and continually published ERA5-derived data.
