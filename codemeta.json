@@ -2,12 +2,12 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "butterfly",
-  "description": "QA/QC of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.",
-  "name": "butterfly: QA/QC For Continually Updating Timeseries Data",
+  "description": "Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.",
+  "name": "butterfly: Verification For Continually Updating Timeseries Data",
   "codeRepository": "https://github.com/thomaszwagerman/butterfly",
   "issueTracker": "https://github.com/thomaszwagerman/butterfly/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.9000",
+  "version": "1.0.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -128,9 +128,24 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "337.771KB",
+  "fileSize": "408.569KB",
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Zwagerman",
+          "familyName": "Thomas"
+        }
+      ],
+      "name": "{butterfly}: quality assurance of continually updating and overwritten time-series data"
+    }
+  ],
+  "releaseNotes": "https://github.com/thomaszwagerman/butterfly/blob/master/NEWS.md",
   "readme": "https://github.com/thomaszwagerman/butterfly/blob/main/README.md",
-  "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main"],
-  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental",
-  "keywords": ["qaqc", "timeseries"]
+  "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main", "https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck"],
+  "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html#stable", "https://www.repostatus.org/#active"],
+  "keywords": ["qaqc", "timeseries", "r", "r-package", "rstats", "data-versioning", "verification"]
 }
