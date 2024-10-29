@@ -19,7 +19,7 @@
 #' @param datetime_variable string, which variable to use as unique ID to join
 #'  `df_current` and `df_previous`. Usually a "datetime" variable.
 #' @param ... Other `waldo::compare()` arguments can be supplied here,
-#'   such as `tolerance` or `max_diffs`. See ?waldo::compare() for a full list.
+#'   such as `tolerance` or `max_diffs`. See `?waldo::compare()` for a full list.
 #'
 #' @returns A list containing boolean where TRUE indicates no changes to
 #' previous data and FALSE indicates unexpected changes, a dataframe of

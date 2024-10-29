@@ -15,7 +15,7 @@ create_object_list(df_current, df_previous, datetime_variable, ...)
 \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
 
 \item{...}{Other \code{waldo::compare()} arguments can be supplied here,
-such as \code{tolerance} or \code{max_diffs}. See ?waldo::compare() for a full list.}
+such as \code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
 A list containing boolean where TRUE indicates no changes to
