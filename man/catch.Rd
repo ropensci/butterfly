@@ -4,14 +4,18 @@
 \alias{catch}
 \title{Catch: return dataframe containing only rows that have changed}
 \usage{
-catch(df_current, df_previous, datetime_variable)
+catch(df_current, df_previous, datetime_variable, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
 \item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
-\item{datetime_variable}{character, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join
+\code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here,
+such as \code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
 A dataframe which contains only rows of \code{df_current} that have changes from \code{df_previous}, but without new rows.

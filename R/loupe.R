@@ -20,9 +20,7 @@
 #'
 #' The underlying functionality is handled by `create_object_list()`.
 #'
-#' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @inheritParams create_object_list
 #'
 #' @returns A boolean where TRUE indicates no changes to previous data and FALSE indicates unexpected changes.
 #'
@@ -45,11 +43,12 @@
 #' )
 #'
 #' @export
-loupe <- function(df_current, df_previous, datetime_variable) {
+loupe <- function(df_current, df_previous, datetime_variable, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
-    datetime_variable
+    datetime_variable,
+    ...
   )
 
   return(butterfly_object_list$butterfly_status)

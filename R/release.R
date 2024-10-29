@@ -5,9 +5,7 @@
 #' which contains the new rows (if present) but matched rows which contain
 #' changes from previous data will be dropped.
 #'
-#' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @inheritParams create_object_list
 #' @param include_new boolean, should new rows be included? Default is TRUE.
 #'
 #' @returns A dataframe which contains only rows of `df_current` that have not changed from `df_previous`, and includes new rows.
@@ -28,52 +26,64 @@
 #' df_released
 #'
 #' @export
-release <- function(df_current, df_previous, datetime_variable, include_new = TRUE) {
+release <- function(df_current, df_previous, datetime_variable, include_new = TRUE, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
-    datetime_variable
+    datetime_variable,
+    ...
   )
 
-  # By using an inner join, we drop any row which does not match in
-  # df_previous.
-  df_current_without_changed_rows <- suppressMessages(
-    dplyr::inner_join(
-      butterfly_object_list$df_current_without_new_row,
-      df_previous
-    )
-  )
-
-  # Returng the dataframe with or without new rows added
-  if (include_new == TRUE) {
-    # Then we add the new rows back in and return the dataframe as such
-    df_release <- dplyr::bind_rows(
-      butterfly_object_list$df_current_new_rows,
-      df_current_without_changed_rows
-    )
-
-    cli::cat_line()
+  if (butterfly_object_list$butterfly_status == TRUE){
 
     cli::cat_bullet(
-      "These will be dropped, but new rows are included.",
+      "There are no differences, so there are no rows to drop. Did you specify a tolerance that exceeds number of differences?",
       bullet = "info",
       col = "orange",
       bullet_col = "orange"
     )
 
-    return(df_release)
-
-  } else if (include_new == FALSE) {
-    cli::cat_line()
-
-    cli::cat_bullet(
-      "These will be dropped, along with new rows.",
-      bullet = "info",
-      col = "orange",
-      bullet_col = "orange"
+  } else {
+    # By using an inner join, we drop any row which does not match in
+    # df_previous.
+    df_current_without_changed_rows <- suppressMessages(
+      dplyr::inner_join(
+        butterfly_object_list$df_current_without_new_row,
+        df_previous
+      )
     )
 
-    # If new rows are not included, simply return the df without changed rows
-    return(df_current_without_changed_rows)
+    # Returng the dataframe with or without new rows added
+    if (include_new == TRUE) {
+      # Then we add the new rows back in and return the dataframe as such
+      df_release <- dplyr::bind_rows(
+        butterfly_object_list$df_current_new_rows,
+        df_current_without_changed_rows
+      )
+
+      cli::cat_line()
+
+      cli::cat_bullet(
+        "These will be dropped, but new rows are included.",
+        bullet = "info",
+        col = "orange",
+        bullet_col = "orange"
+      )
+
+      return(df_release)
+
+    } else if (include_new == FALSE) {
+      cli::cat_line()
+
+      cli::cat_bullet(
+        "These will be dropped, along with new rows.",
+        bullet = "info",
+        col = "orange",
+        bullet_col = "orange"
+      )
+
+      # If new rows are not included, simply return the df without changed rows
+      return(df_current_without_changed_rows)
+    }
   }
 }

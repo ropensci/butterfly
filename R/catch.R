@@ -7,9 +7,7 @@
 #'
 #' The underlying functionality is handled by `create_object_list()`.
 #'
-#' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable character, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @inheritParams create_object_list
 #'
 #' @returns A dataframe which contains only rows of `df_current` that have changes from `df_previous`, but without new rows.
 #' also returns a waldo object as in `loupe()`.
@@ -28,30 +26,40 @@
 #' df_caught
 #'
 #' @export
-catch <- function(df_current, df_previous, datetime_variable) {
+catch <- function(df_current, df_previous, datetime_variable, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
-    datetime_variable
+    datetime_variable,
+    ...
   )
 
-  # By using an inner join, we drop any row which does not match in
-  # df_previous.
-  df_rows_changed_from_previous <- suppressMessages(
-    dplyr::anti_join(
-      butterfly_object_list$df_current_without_new_row,
-      df_previous
+  if (butterfly_object_list$butterfly_status == TRUE) {
+    cli::cat_bullet(
+      "There are no differences, so there are no rows to return Did you specify a tolerance that exceeds number of differences?",
+      bullet = "info",
+      col = "orange",
+      bullet_col = "orange"
     )
-  )
+  } else {
+    # By using an inner join, we drop any row which does not match in
+    # df_previous.
+    df_rows_changed_from_previous <- suppressMessages(
+      dplyr::anti_join(
+        butterfly_object_list$df_current_without_new_row,
+        df_previous
+      )
+    )
 
-  cli::cat_line()
+    cli::cat_line()
 
-  cli::cat_bullet(
-    "Only these rows are returned.",
-    bullet = "info",
-    col = "orange",
-    bullet_col = "orange"
-  )
+    cli::cat_bullet(
+      "Only these rows are returned.",
+      bullet = "info",
+      col = "orange",
+      bullet_col = "orange"
+    )
 
-  return(df_rows_changed_from_previous)
+    return(df_rows_changed_from_previous)
+  }
 }

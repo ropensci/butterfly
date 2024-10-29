@@ -4,16 +4,20 @@
 \alias{release}
 \title{Release: return current dataframe without changed old rows}
 \usage{
-release(df_current, df_previous, datetime_variable, include_new = TRUE)
+release(df_current, df_previous, datetime_variable, include_new = TRUE, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
 \item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
-\item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join
+\code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
 
 \item{include_new}{boolean, should new rows be included? Default is TRUE.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here,
+such as \code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
 A dataframe which contains only rows of \code{df_current} that have not changed from \code{df_previous}, and includes new rows.
