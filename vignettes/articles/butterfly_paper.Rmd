@@ -1,6 +1,5 @@
 ---
-title: 'butterfly: An R package for the quality assurance of continually updating
-  timeseries'
+title: 'butterfly: An R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.'
 tags:
 - R
 - quality assurance
@@ -28,13 +27,24 @@ knitr::opts_chunk$set(
 
 # Summary
 
+When ... specific version of data used to
+
+maintain data provenance.
+
+When using other data to generate your own, it is crucial to reference the exact version of the data used, in order to maintain data provenance.
+
+In other instances it may be required to revise data publications, due to the discovery of an inconsistency or error.
+
+But what if you are not aware of upstream changes to your input data?
+
+Here we present butterfly, an R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
+
+
 Importance of citing exact extract of data [(Klump et al. 2021)](https://datascience.codata.org/articles/10.5334/dsj-2021-012)
 
 Semantic versioning is widely adopted in research software [(Preston-Werner 2013)](https://semver.org/spec/v2.0.0.html)
 
 Generating a derived data product
-
-But what if you are not aware of upstream changes to your input data?
 
 A key recommendation in Siddorn et al.'s (2022) report "An Information Management Framework for Environmental Digital Twins (IMFe)...
 
