@@ -32,25 +32,34 @@ catch <- function(df_current, df_previous, datetime_variable, ...) {
     df_previous,
     datetime_variable,
     ...
-    )
-
-  # By using an inner join, we drop any row which does not match in
-  # df_previous.
-  df_rows_changed_from_previous <- suppressMessages(
-    dplyr::anti_join(
-      butterfly_object_list$df_current_without_new_row,
-      df_previous
-    )
   )
 
-  cli::cat_line()
+  if (butterfly_object_list$butterfly_status == TRUE) {
+    cli::cat_bullet(
+      "There are no differences, so there are no rows to return Did you specify a tolerance that exceeds number of differences?",
+      bullet = "info",
+      col = "orange",
+      bullet_col = "orange"
+    )
+  } else {
+    # By using an inner join, we drop any row which does not match in
+    # df_previous.
+    df_rows_changed_from_previous <- suppressMessages(
+      dplyr::anti_join(
+        butterfly_object_list$df_current_without_new_row,
+        df_previous
+      )
+    )
 
-  cli::cat_bullet(
-    "Only these rows are returned.",
-    bullet = "info",
-    col = "orange",
-    bullet_col = "orange"
-  )
+    cli::cat_line()
 
-  return(df_rows_changed_from_previous)
+    cli::cat_bullet(
+      "Only these rows are returned.",
+      bullet = "info",
+      col = "orange",
+      bullet_col = "orange"
+    )
+
+    return(df_rows_changed_from_previous)
+  }
 }

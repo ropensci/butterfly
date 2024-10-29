@@ -68,3 +68,17 @@ test_that("comparison object is returned when not equal", {
     0
   )
 })
+
+test_that("passing of additional waldo arguments works as expected", {
+  # Adding a tolerance of 2 should now "ignore" the single change
+  create_object_list_output <- create_object_list(
+    butterflycount$march,
+    butterflycount$february,
+    datetime_variable = "time",
+    tolerance = 2
+  )
+
+  testthat::expect_true(
+    create_object_list_output$butterfly_status
+  )
+})

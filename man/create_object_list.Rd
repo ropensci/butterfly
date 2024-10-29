@@ -4,7 +4,7 @@
 \alias{create_object_list}
 \title{create_object_list: creates a list of objects used in all butterfly functions}
 \usage{
-create_object_list(df_current, df_previous, datetime_variable)
+create_object_list(df_current, df_previous, datetime_variable, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
@@ -13,6 +13,9 @@ create_object_list(df_current, df_previous, datetime_variable)
 
 \item{datetime_variable}{string, which variable to use as unique ID to join
 \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here,
+such as \code{tolerance} or \code{max_diffs}. See ?waldo::compare() for a full list.}
 }
 \value{
 A list containing boolean where TRUE indicates no changes to
@@ -40,6 +43,16 @@ butterfly_object_list <- butterfly::create_object_list(
   butterflycount$february, # This is your new or current dataset
   butterflycount$january, # This is the previous version you are comparing it to
   datetime_variable = "time" # This is the unique ID variable they have in common
+)
+
+butterfly_object_list
+
+# You can pass other `waldo::compare()` options such as tolerance here
+butterfly_object_list <- butterfly::create_object_list(
+  butterflycount$march, # This is your new or current dataset
+  butterflycount$february, # This is the previous version you are comparing it to
+  datetime_variable = "time", # This is the unique ID variable they have in common
+  tolerance = 2
 )
 
 butterfly_object_list

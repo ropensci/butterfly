@@ -4,14 +4,18 @@
 \alias{loupe}
 \title{Loupe: compare new and old data in continuously updated timeseries}
 \usage{
-loupe(df_current, df_previous, datetime_variable)
+loupe(df_current, df_previous, datetime_variable, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
 \item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
 
-\item{datetime_variable}{string, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join
+\code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here,
+such as \code{tolerance} or \code{max_diffs}. See ?waldo::compare() for a full list.}
 }
 \value{
 A boolean where TRUE indicates no changes to previous data and FALSE indicates unexpected changes.
