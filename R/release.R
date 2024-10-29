@@ -26,7 +26,7 @@
 #' df_released
 #'
 #' @export
-release <- function(df_current, df_previous, datetime_variable, include_new = TRUE) {
+release <- function(df_current, df_previous, datetime_variable, include_new = TRUE, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,

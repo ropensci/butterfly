@@ -43,7 +43,7 @@
 #' )
 #'
 #' @export
-loupe <- function(df_current, df_previous, datetime_variable) {
+loupe <- function(df_current, df_previous, datetime_variable, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,

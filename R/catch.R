@@ -26,13 +26,13 @@
 #' df_caught
 #'
 #' @export
-catch <- function(df_current, df_previous, datetime_variable) {
+catch <- function(df_current, df_previous, datetime_variable, ...) {
   butterfly_object_list <- create_object_list(
     df_current,
     df_previous,
     datetime_variable,
     ...
-  )
+    )
 
   # By using an inner join, we drop any row which does not match in
   # df_previous.

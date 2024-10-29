@@ -18,7 +18,7 @@
 #' @param df_previous data.frame, the old version of dataset, for example x - t1.
 #' @param datetime_variable string, which variable to use as unique ID to join
 #'  `df_current` and `df_previous`. Usually a "datetime" variable.
-#'  @param ... Other `waldo::compare()` arguments are supported.
+#'  @param ... Other `waldo::compare()` arguments can be supplied here.
 #'
 #' @returns A list containing boolean where TRUE indicates no changes to
 #' previous data and FALSE indicates unexpected changes, a dataframe of
@@ -29,6 +29,16 @@
 #'   butterflycount$february, # This is your new or current dataset
 #'   butterflycount$january, # This is the previous version you are comparing it to
 #'   datetime_variable = "time" # This is the unique ID variable they have in common
+#' )
+#'
+#' butterfly_object_list
+#'
+#' # You can pass other `waldo::compare()` options such as tolerance here
+#' butterfly_object_list <- butterfly::create_object_list(
+#'   butterflycount$march, # This is your new or current dataset
+#'   butterflycount$february, # This is the previous version you are comparing it to
+#'   datetime_variable = "time", # This is the unique ID variable they have in common
+#'   tolerance = 2
 #' )
 #'
 #' butterfly_object_list
