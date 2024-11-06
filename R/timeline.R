@@ -1,7 +1,17 @@
 #' timeline: check if a timeseries is continuous
 #'
-#' A loupe is a simple, small magnification device used to examine small details
-#' more closely.
+#' Check if a timeseries is continuous. Even if a timeseries does not contain
+#' obvious gaps, this does not automatically mean it is also continuous.
+#'
+#' Measuring instruments can have different behaviours when they fail. For
+#' example, during power failure an internal clock could reset to "1970-01-01",
+#' or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
+#' ways of checking if a dataset is continuous.
+#'
+#' The `group_timelines()` and `timeline()` functions attempt to give the user
+#' control over how to check for continuity by providing an `expected_lag`. The
+#' difference between timesteps in a dataset should not exceed the
+#' `expected_lag`.
 #'
 #' @param df_current data.frame, the newest/current version of dataset x.
 #' @param datetime_variable string, the "datetime" variable that should be
@@ -12,10 +22,10 @@
 #' The smallest units of measurement present in the column will be used. For
 #' example in a column formatted YYYY-MM, month will be used. In a column
 #' formatted YYYY-MM-DD day will be used.
-#' @param direction character, is this timeseries orderd by ascending or by
+#' @param direction character, is this timeseries ordered by ascending or by
 #' descending?
 #'
-#' @seealso [timeline_group()]
+#' @seealso [group_timelines()]
 #'
 #' @returns A boolean, TRUE if the timeseries is continuous, and FALSE if there
 #' are more than one continuous timeseries within the dataset.
@@ -46,18 +56,38 @@ timeline <- function(
     direction
   )
 
-  if (length(unique(df_timelines$continuous_timeline)) < 1) {
+  if (length(unique(df_timelines$timeline_group)) < 1) {
     is_continuous <- TRUE
-  } else if (length(unique(df_timelines$continuous_timeline)) > 1 ) {
+
+    cli::cat_bullet(
+      "There are no time lags which are greater than the expected lag: ",
+      deparse(substitute(expected_lag)),
+      " ",
+      units(df_timelines$timelag),
+      ". By this measure, the timeseries is continuous.",
+      bullet = "tick",
+      col = "green",
+      bullet_col = "green"
+    )
+
+  } else if (length(unique(df_timelines$timeline_group)) > 1 ) {
     is_continuous <- FALSE
 
     cli::cat_bullet(
       "There are time lags which are greater than the expected lag: ",
       deparse(substitute(expected_lag)),
-      ". This indicates the timeseries is not continuous.",
+      " ",
+      units(df_timelines$timelag),
+      ". This indicates the timeseries is not continuous. There are ",
+      length(unique(df_timelines$timeline_group)),
+      " distinct continuous sequences. Use `group_timelines()` to extract.",
       bullet = "info",
       col = "orange",
       bullet_col = "orange"
-    )
+      )
   }
+
+  return(is_continuous)
 }
+
+

@@ -1,7 +1,9 @@
-#' get_continuous_timelines: check if a timeseries is continuous
+#' group_timelines: check if a timeseries is continuous
 #'
-#' A loupe is a simple, small magnification device used to examine small details
-#' more closely.
+#' If after using `timeline()` you have established a timeseries is not
+#' continuous, or if you are working with data where you expect distinct
+#' sequences or events, you can use `group_timelines()` to extract and
+#' classify different distinct continuous chunks of your data.
 #'
 #' @param df_current data.frame, the newest/current version of dataset x.
 #' @param datetime_variable string, the "datetime" variable that should be
@@ -38,11 +40,19 @@ group_timelines <- function(
     direction = c("ascending", "descending")
 ) {
   stopifnot("`df_current` must be a data.frame" = is.data.frame(df_current))
+  stopifnot("`expected_lag` must be numeric" = is.numeric(expected_lag))
 
   # Check if `datetime_variable` is in `df_current`
   if (!datetime_variable %in% names(df_current)) {
     cli::cli_abort(
       "`datetime_variable` must be present in `df_current`"
+    )
+  }
+
+  # Check if `direction` is in "ascending or descending"
+  if (!direction %in% c("ascending", "descending")) {
+    cli::cli_abort(
+      "`direction` must be one of 'ascending' or 'descending'"
     )
   }
   # A direction multiplier will allow checking of expected lag difference
@@ -86,7 +96,7 @@ group_timelines <- function(
       timeline_group = cumsum(timeline_group1 == 1)
     ) |>
     dplyr::select(
-      -timeline_group
+      -timeline_group1
     )
 
   return(df_timeline)
