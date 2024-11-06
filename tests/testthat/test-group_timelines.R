@@ -52,3 +52,32 @@ test_that("returns expected number of sequences", {
     2
   )
 })
+
+test_that("expected errors work", {
+  expect_error(
+    df_timelines <- butterfly::group_timelines(
+      forestprecipitation$january,
+      datetime_variable = "foo",
+      expected_lag = 1
+    ),
+    "`datetime_variable` must be present in `df_current`"
+  )
+
+  df_timelines <- butterfly::group_timelines(
+    forestprecipitation$january,
+    datetime_variable = "time",
+    expected_lag = 1
+  )
+
+  df_timelines$time <- as.character(df_timelines$time)
+
+  expect_error(
+    df_timelines <- butterfly::group_timelines(
+      df_timelines,
+      datetime_variable = "time",
+      expected_lag = 1
+    ),
+    "`datetime_variable` must be class of POSIXct, POSIXlt, POSIXt, Date"
+  )
+
+})
