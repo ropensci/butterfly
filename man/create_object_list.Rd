@@ -9,7 +9,8 @@ create_object_list(df_current, df_previous, datetime_variable)
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
-\item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
+\item{df_previous}{data.frame, the old version of dataset,
+for example x - t1.}
 
 \item{datetime_variable}{string, which variable to use as unique ID to join
 \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
@@ -31,9 +32,9 @@ It informs the user of new (unmatched) rows which have appeared, and then
 returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
 
 The main assumption is that \code{df_current} and \code{df_previous} are a newer and
-older versions of the same data, and that the \code{datetime_variable} variable name always
-remains the same. Elsewhere new columns can of appear, and these will be
-returned in the report.
+older versions of the same data, and that the \code{datetime_variable} variable
+name always remains the same. Elsewhere new columns can of appear, and these
+will be returned in the report.
 }
 \examples{
 butterfly_object_list <- butterfly::create_object_list(

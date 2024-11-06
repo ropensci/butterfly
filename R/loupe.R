@@ -14,17 +14,20 @@
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes.
 #'
 #' The main assumption is that `df_current` and `df_previous` are a newer and
-#' older versions of the same data, and that the `datetime_variable` variable name always
-#' remains the same. Elsewhere new columns can of appear, and these will be
-#' returned in the report.
+#' older versions of the same data, and that the `datetime_variable` variable
+#' name always remains the same. Elsewhere new columns can of appear, and these
+#' will be returned in the report.
 #'
 #' The underlying functionality is handled by `create_object_list()`.
 #'
 #' @param df_current data.frame, the newest/current version of dataset x.
-#' @param df_previous data.frame, the old version of dataset, for example x - t1.
-#' @param datetime_variable string, which variable to use as unique ID to join `df_current` and `df_previous`. Usually a "datetime" variable.
+#' @param df_previous data.frame, the old version of dataset,
+#' for example x - t1.
+#' @param datetime_variable string, which variable to use as unique ID to
+#' join `df_current` and `df_previous`. Usually a "datetime" variable.
 #'
-#' @returns A boolean where TRUE indicates no changes to previous data and FALSE indicates unexpected changes.
+#' @returns A boolean where TRUE indicates no changes to previous data and
+#' FALSE indicates unexpected changes.
 #'
 #' @seealso [create_object_list()]
 #'

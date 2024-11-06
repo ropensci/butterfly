@@ -17,6 +17,17 @@ test_that("error when no new rows", {
   )
 })
 
+test_that("error when no datetime_variable not present in both dfs", {
+  expect_error(
+    create_object_list(
+      butterflycount$january,
+      butterflycount$february,
+      datetime_variable = "foo"
+    ),
+    "`datetime_variable` must be present in `df_current` and `df_previous`"
+  )
+})
+
 test_that("correct message is fed back", {
   expect_output(
     create_object_list(

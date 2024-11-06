@@ -2,9 +2,9 @@
 
 export(catch)
 export(create_object_list)
-export(group_timelines)
 export(loupe)
 export(release)
 export(timeline)
+export(timeline_group)
 importFrom(lifecycle,deprecated)
 importFrom(rlang,.data)

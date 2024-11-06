@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -110,6 +110,18 @@
     },
     "4": {
       "@type": "SoftwareApplication",
+      "identifier": "rlang",
+      "name": "rlang",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
       "identifier": "waldo",
       "name": "waldo",
       "provider": {
@@ -120,7 +132,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=waldo"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
@@ -128,9 +140,23 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "337.771KB",
+  "fileSize": "416.405KB",
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Zwagerman",
+          "familyName": "Thomas"
+        }
+      ],
+      "name": "{butterfly}: quality assurance of continually updating and overwritten time-series data"
+    }
+  ],
   "readme": "https://github.com/thomaszwagerman/butterfly/blob/main/README.md",
   "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental",
-  "keywords": ["qaqc", "timeseries"]
+  "keywords": ["qaqc", "timeseries", "r", "r-package", "rstats", "data-versioning", "verification"]
 }

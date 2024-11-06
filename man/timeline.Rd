@@ -33,7 +33,7 @@ example, during power failure an internal clock could reset to "1970-01-01",
 or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
 ways of checking if a dataset is continuous.
 
-The \code{group_timelines()} and \code{timeline()} functions attempt to give the user
+The \code{timeline_group()} and \code{timeline()} functions attempt to give the user
 control over how to check for continuity by providing an \code{expected_lag}. The
 difference between timesteps in a dataset should not exceed the
 \code{expected_lag}.
@@ -50,5 +50,5 @@ butterfly::timeline(
 
 }
 \seealso{
-\code{\link[=group_timelines]{group_timelines()}}
+\code{\link[=timeline_group]{timeline_group()}}
 }

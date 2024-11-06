@@ -9,13 +9,16 @@ catch(df_current, df_previous, datetime_variable)
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
 
-\item{df_previous}{data.frame, the old version of dataset, for example x - t1.}
+\item{df_previous}{data.frame, the old version of dataset,
+for example x - t1.}
 
-\item{datetime_variable}{character, which variable to use as unique ID to join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{character, which variable to use as unique ID to
+join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
 }
 \value{
-A dataframe which contains only rows of \code{df_current} that have changes from \code{df_previous}, but without new rows.
-also returns a waldo object as in \code{loupe()}.
+A dataframe which contains only rows of \code{df_current} that have
+changes from \code{df_previous}, but without new rows. Also returns a waldo
+object as in \code{loupe()}.
 }
 \description{
 This function matches two dataframe objects by their unique identifier

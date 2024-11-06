@@ -1,5 +1,5 @@
 test_that("returns dataframe", {
-  df_timelines <- butterfly::group_timelines(
+  df_timelines <- butterfly::timeline_group(
     forestprecipitation$january,
     datetime_variable = "time",
     expected_lag = 1
@@ -22,7 +22,7 @@ test_that("returns dataframe", {
 })
 
 test_that("returns expected number of sequences", {
-  df_timelines <- butterfly::group_timelines(
+  df_timelines <- butterfly::timeline_group(
     forestprecipitation$january,
     datetime_variable = "time",
     expected_lag = 1
@@ -37,7 +37,7 @@ test_that("returns expected number of sequences", {
     1
   )
 
-  df_reset <- butterfly::group_timelines(
+  df_reset <- butterfly::timeline_group(
     forestprecipitation$february,
     datetime_variable = "time",
     expected_lag = 1
@@ -55,7 +55,7 @@ test_that("returns expected number of sequences", {
 
 test_that("expected errors work", {
   expect_error(
-    df_timelines <- butterfly::group_timelines(
+    df_timelines <- butterfly::timeline_group(
       forestprecipitation$january,
       datetime_variable = "foo",
       expected_lag = 1
@@ -63,7 +63,7 @@ test_that("expected errors work", {
     "`datetime_variable` must be present in `df_current`"
   )
 
-  df_timelines <- butterfly::group_timelines(
+  df_timelines <- butterfly::timeline_group(
     forestprecipitation$january,
     datetime_variable = "time",
     expected_lag = 1
@@ -72,7 +72,7 @@ test_that("expected errors work", {
   df_timelines$time <- as.character(df_timelines$time)
 
   expect_error(
-    df_timelines <- butterfly::group_timelines(
+    df_timelines <- butterfly::timeline_group(
       df_timelines,
       datetime_variable = "time",
       expected_lag = 1

@@ -8,7 +8,7 @@
 #' or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
 #' ways of checking if a dataset is continuous.
 #'
-#' The `group_timelines()` and `timeline()` functions attempt to give the user
+#' The `timeline_group()` and `timeline()` functions attempt to give the user
 #' control over how to check for continuity by providing an `expected_lag`. The
 #' difference between timesteps in a dataset should not exceed the
 #' `expected_lag`.
@@ -23,7 +23,7 @@
 #' example in a column formatted YYYY-MM, month will be used. In a column
 #' formatted YYYY-MM-DD day will be used.
 #'
-#' @seealso [group_timelines()]
+#' @seealso [timeline_group()]
 #'
 #' @returns A boolean, TRUE if the timeseries is continuous, and FALSE if there
 #' are more than one continuous timeseries within the dataset.
@@ -45,7 +45,7 @@ timeline <- function(
     expected_lag = 1
 ) {
 
-  df_timelines <- group_timelines(
+  df_timelines <- timeline_group(
     df_current,
     datetime_variable,
     expected_lag
@@ -75,7 +75,7 @@ timeline <- function(
       units(df_timelines$timelag),
       ". This indicates the timeseries is not continuous. There are ",
       length(unique(df_timelines$timeline_group)),
-      " distinct continuous sequences. Use `group_timelines()` to extract.",
+      " distinct continuous sequences. Use `timeline_group()` to extract.",
       bullet = "info",
       col = "orange",
       bullet_col = "orange"

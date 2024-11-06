@@ -1,8 +1,8 @@
-#' group_timelines: check if a timeseries is continuous
+#' timeline_group: check if a timeseries is continuous
 #'
 #' If after using `timeline()` you have established a timeseries is not
 #' continuous, or if you are working with data where you expect distinct
-#' sequences or events, you can use `group_timelines()` to extract and
+#' sequences or events, you can use `timeline_group()` to extract and
 #' classify different distinct continuous chunks of your data.
 #'
 #' We attempt to do this without sorting, or changing the data for a couple
@@ -33,7 +33,7 @@
 #' data and `timelag` which specifies the time lags between rows.
 #'
 #' @examples
-#' butterfly::group_timelines(
+#' butterfly::timeline_group(
 #'   forestprecipitation$january,
 #'   datetime_variable = "time",
 #'   expected_lag = 1
@@ -42,7 +42,7 @@
 #' @importFrom rlang .data
 #'
 #' @export
-group_timelines <- function(
+timeline_group <- function(
     df_current,
     datetime_variable,
     expected_lag = 1
