@@ -41,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/butterfly_in_pipeline.html">Using butterfly in an operational data pipeline</a></li>
+    <li><a class="dropdown-item" href="../articles/butterfly_paper.html">butterfly: An R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -117,12 +118,21 @@ of butterfly counts for a given date.</p>
 <span><span class="co">#&gt; 3 2024-02-01    NA Admiral</span></span>
 <span><span class="co">#&gt; 4 2024-01-01    22 Admiral</span></span>
 <span><span class="co">#&gt; 5 2023-12-01    55 Admiral</span></span>
-<span><span class="co">#&gt; 6 2023-11-01    18 Admiral</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 2023-11-01    18 Admiral</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $may</span></span>
+<span><span class="co">#&gt;         time value species</span></span>
+<span><span class="co">#&gt; 1 2024-05-01    70 Admiral</span></span>
+<span><span class="co">#&gt; 2 2024-04-01    12 Admiral</span></span>
+<span><span class="co">#&gt; 3 2024-03-01    23 Admiral</span></span>
+<span><span class="co">#&gt; 4 2024-01-01    22 Admiral</span></span>
+<span><span class="co">#&gt; 5 2024-12-01    55 Admiral</span></span>
+<span><span class="co">#&gt; 6 2024-11-01    18 Admiral</span></span></code></pre></div>
 <p>This dataset is entirely fictional, and merely included to aid
 demonstrating butterfly’s functionality.</p>
 </div>
 <div class="section level2">
-<h2 id="examining-datasets-loupe">Examining datasets: loupe()<a class="anchor" aria-label="anchor" href="#examining-datasets-loupe"></a>
+<h2 id="examining-datasets-loupe">Examining datasets: <code>loupe()</code><a class="anchor" aria-label="anchor" href="#examining-datasets-loupe"></a>
 </h2>
 <p>We can use <code><a href="../reference/loupe.html">butterfly::loupe()</a></code> to examine in detail
 whether previous values have changed.</p>
@@ -156,8 +166,8 @@ whether previous values have changed.</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">- old[4, ]    18</span></span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">+ new[4, ]    11</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span></span>
-<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span></span>
+<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">18.0</span></span></span>
+<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">11.0</span></span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p><code><a href="../reference/loupe.html">butterfly::loupe()</a></code> uses <code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">dplyr::semi_join()</a></code>
 to match the new and old objects using a common unique identifier, which
@@ -193,7 +203,7 @@ arguments.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="extracting-unexpected-changes-catch">Extracting unexpected changes: catch()<a class="anchor" aria-label="anchor" href="#extracting-unexpected-changes-catch"></a>
+<h2 id="extracting-unexpected-changes-catch">Extracting unexpected changes: <code>catch()</code><a class="anchor" aria-label="anchor" href="#extracting-unexpected-changes-catch"></a>
 </h2>
 <p>You might want to return changed rows as a dataframe. For this
 <code><a href="../reference/catch.html">butterfly::catch()</a></code>is provided.</p>
@@ -219,8 +229,8 @@ new rows.</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">- old[4, ]    18</span></span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">+ new[4, ]    11</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span></span>
-<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span></span>
+<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">18.0</span></span></span>
+<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">11.0</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">Only these rows are returned.</span></span></span>
 <span></span>
@@ -229,7 +239,7 @@ new rows.</p>
 <span><span class="co">#&gt; 1 2023-11-01    18</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="dropping-unexpecrted-changes-release">Dropping unexpecrted changes: release()<a class="anchor" aria-label="anchor" href="#dropping-unexpecrted-changes-release"></a>
+<h2 id="dropping-unexpected-changes-release">Dropping unexpected changes: <code>release()</code><a class="anchor" aria-label="anchor" href="#dropping-unexpected-changes-release"></a>
 </h2>
 <p>Conversely, <code><a href="../reference/release.html">butterfly::release()</a></code> drops all rows which
 had changed from the previous version. Note it retains new rows, as
@@ -253,8 +263,8 @@ these were expected.</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">- old[4, ]    18</span></span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">+ new[4, ]    11</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span></span>
-<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span></span>
+<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">18.0</span></span></span>
+<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">11.0</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">These will be dropped, but new rows are included.</span></span></span>
 <span></span>
@@ -286,8 +296,8 @@ argument <code>include_new</code> set to <code>FALSE</code>.</p>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">- old[4, ]    18</span></span></span>
 <span><span class="co">#&gt; <span style="color: #0000BB;">+ new[4, ]    11</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">18</span></span></span>
-<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17</span> <span style="color: #555555;">22</span> <span style="color: #555555;">55</span> <span style="color: #00BB00;">11</span></span></span>
+<span><span class="co">#&gt; `old$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">18.0</span></span></span>
+<span><span class="co">#&gt; `new$count`: <span style="color: #555555;">17.0</span> <span style="color: #555555;">22.0</span> <span style="color: #555555;">55.0</span> <span style="color: #00BB00;">11.0</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">These will be dropped, along with new rows.</span></span></span>
 <span></span>
@@ -296,6 +306,72 @@ argument <code>include_new</code> set to <code>FALSE</code>.</p>
 <span><span class="co">#&gt; 1 2024-02-01    17</span></span>
 <span><span class="co">#&gt; 2 2024-01-01    22</span></span>
 <span><span class="co">#&gt; 3 2023-12-01    55</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="checking-for-continuity-timeline">Checking for continuity: <code>timeline()</code><a class="anchor" aria-label="anchor" href="#checking-for-continuity-timeline"></a>
+</h2>
+<p>To check if a timeseries is continuous, <code><a href="../reference/timeline.html">timeline()</a></code> and
+<code><a href="../reference/timeline_group.html">timeline_group()</a></code> are provided. Even if a timeseries does
+not contain obvious gaps, this does not automatically mean it is also
+continuous.</p>
+<p>Measuring instruments can have different behaviours when they fail.
+For example, during power failure an internal clock could reset to
+“1970-01-01”, or the manufacturing date (say, “2021-01-01”). This leads
+to unpredictable ways of checking if a dataset is continuous.</p>
+<p>To check if a timeseries is continuous:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/timeline.html">timeline</a></span><span class="op">(</span></span>
+<span>   <span class="va">forestprecipitation</span><span class="op">$</span><span class="va">january</span>,</span>
+<span>   datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>   expected_lag <span class="op">=</span> <span class="fl">1</span></span>
+<span> <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">There are no time lags which are greater than the expected lag: 1 days. By this measure, the timeseries is continuous.</span></span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>The above is a nice continuous dataset, where there is no more than a
+difference of 1 day between timesteps.</p>
+<p>However, in February our imaginary rain gauge’s onboard computer had
+a failure.</p>
+<p>The timestamp was reset to 1970-01-01:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">forestprecipitation</span><span class="op">$</span><span class="va">february</span></span>
+<span><span class="co">#&gt;                  time rainfall_mm</span></span>
+<span><span class="co">#&gt; 1 2024-02-01 00:00:00         1.1</span></span>
+<span><span class="co">#&gt; 2 2024-02-02 00:00:00         0.0</span></span>
+<span><span class="co">#&gt; 3 2024-02-03 00:00:00         1.4</span></span>
+<span><span class="co">#&gt; 4 2024-02-04 00:00:00         2.2</span></span>
+<span><span class="co">#&gt; 5 1969-12-31 23:00:00         3.4</span></span>
+<span><span class="co">#&gt; 6 1970-01-01 23:00:00         0.6</span></span>
+<span></span>
+<span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/timeline.html">timeline</a></span><span class="op">(</span></span>
+<span>  <span class="va">forestprecipitation</span><span class="op">$</span><span class="va">february</span>,</span>
+<span>   datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>   expected_lag <span class="op">=</span> <span class="fl">1</span></span>
+<span> <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #FFAF00;">ℹ</span> <span style="color: #FFAF00;">There are time lags which are greater than the expected lag: 1 days. This indicates the timeseries is not continuous. There are 2 distinct continuous sequences. Use `timeline_group()` to extract.</span></span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="grouping-distinct-continuous-sequences-timeline_group">Grouping distinct continuous sequences:
+<code>timeline_group()</code><a class="anchor" aria-label="anchor" href="#grouping-distinct-continuous-sequences-timeline_group"></a>
+</h2>
+<p>If we wanted to group chunks of our timeseries that are distinct, or
+broken up in some way, but still continuous, we can use
+<code><a href="../reference/timeline_group.html">timeline_group()</a></code>:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/timeline_group.html">timeline_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">forestprecipitation</span><span class="op">$</span><span class="va">february</span>,</span>
+<span>   datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>   expected_lag <span class="op">=</span> <span class="fl">1</span></span>
+<span> <span class="op">)</span></span>
+<span><span class="co">#&gt;                  time rainfall_mm        timelag timeline_group</span></span>
+<span><span class="co">#&gt; 1 2024-02-01 00:00:00         1.1        NA days              1</span></span>
+<span><span class="co">#&gt; 2 2024-02-02 00:00:00         0.0      1.00 days              1</span></span>
+<span><span class="co">#&gt; 3 2024-02-03 00:00:00         1.4      1.00 days              1</span></span>
+<span><span class="co">#&gt; 4 2024-02-04 00:00:00         2.2      1.00 days              1</span></span>
+<span><span class="co">#&gt; 5 1969-12-31 23:00:00         3.4 -19757.04 days              2</span></span>
+<span><span class="co">#&gt; 6 1970-01-01 23:00:00         0.6      1.00 days              2</span></span></code></pre></div>
+<p>We now have groups 1 &amp; 2, which are both continuous sets of data,
+but there is no continuity between them.</p>
 </div>
 <div class="section level2">
 <h2 id="using-butterfly-in-a-data-processing-pipeline">Using <code>butterfly</code> in a data processing pipeline<a class="anchor" aria-label="anchor" href="#using-butterfly-in-a-data-processing-pipeline"></a>

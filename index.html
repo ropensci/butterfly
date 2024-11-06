@@ -44,6 +44,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/butterfly_in_pipeline.html">Using butterfly in an operational data pipeline</a></li>
+    <li><a class="dropdown-item" href="articles/butterfly_paper.html">butterfly: An R package for the verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -99,7 +100,13 @@ An illustration of continually updating timeseries data where a previous value u
 <li>
 <code><a href="reference/create_object_list.html">butterfly::create_object_list()</a></code> - returns a list of objects required by all of <code><a href="reference/loupe.html">loupe()</a></code>, <code><a href="reference/catch.html">catch()</a></code> and <code><a href="reference/release.html">release()</a></code>. Contains underlying functionality.</li>
 <li>
+<code><a href="reference/timeline.html">butterfly::timeline()</a></code> - check if a timeseries is continuous between timesteps.</li>
+<li>
+<code><a href="reference/timeline_group.html">butterfly::timeline_group()</a></code> - group distinct, but continuous sequences of a timeseres.</li>
+<li>
 <code>butterflycount</code> - a list of monthly dataframes, which contain fictional butterfly counts for a given date.</li>
+<li>
+<code>forestprecipitation</code> - a list of monthly dataframes, which contain fictional daily precipitation measurements for a given date.</li>
 </ul>
 </div>
 <div class="section level2">
