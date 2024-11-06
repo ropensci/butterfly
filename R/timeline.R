@@ -13,15 +13,7 @@
 #' difference between timesteps in a dataset should not exceed the
 #' `expected_lag`.
 #'
-#' @param df_current data.frame, the newest/current version of dataset x.
-#' @param datetime_variable string, the "datetime" variable that should be
-#' checked for continuity.
-#' @param expected_lag numeric, the acceptable difference between timestep for
-#' a timeseries to be classed as continuous. Any difference greater than
-#' `expected_lag` will indicate a timeseries is not continuous. Default is 1.
-#' The smallest units of measurement present in the column will be used. For
-#' example in a column formatted YYYY-MM, month will be used. In a column
-#' formatted YYYY-MM-DD day will be used.
+#' @inheritParams timeline_group
 #'
 #' @seealso [timeline_group()]
 #'
@@ -29,13 +21,19 @@
 #' are more than one continuous timeseries within the dataset.
 #'
 #' @examples
-#' # This example contains no differences with previous data
-#' # Our datetime column is formatted YYYY-MM-DD, and we expect an observation
-#' # every month, therefore our expected lag is 31 (days).
+#' # A nice continuous dataset should return TRUE
 #' butterfly::timeline(
-#'   butterflycount$april,
+#'   forestprecipitation$january,
 #'   datetime_variable = "time",
-#'   expected_lag = 31
+#'   expected_lag = 1
+#' )
+#'
+#' # In February, our imaginary rain gauge's onboard computer had a failure.
+#' # The timestamp was reset to 1970-01-01
+#' butterfly::timeline(
+#'   forestprecipitation$february,
+#'   datetime_variable = "time",
+#'   expected_lag = 1
 #' )
 #'
 #' @export

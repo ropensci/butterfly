@@ -15,9 +15,8 @@ checked for continuity.}
 \item{expected_lag}{numeric, the acceptable difference between timestep for
 a timeseries to be classed as continuous. Any difference greater than
 \code{expected_lag} will indicate a timeseries is not continuous. Default is 1.
-The smallest units of measurement present in the column will be used. For
-example in a column formatted YYYY-MM, month will be used. In a column
-formatted YYYY-MM-DD day will be used.}
+The smallest units of measurement present in the column will be used. In a
+column formatted YYYY-MM-DD day will be used.}
 }
 \value{
 A boolean, TRUE if the timeseries is continuous, and FALSE if there
@@ -39,13 +38,19 @@ difference between timesteps in a dataset should not exceed the
 \code{expected_lag}.
 }
 \examples{
-# This example contains no differences with previous data
-# Our datetime column is formatted YYYY-MM-DD, and we expect an observation
-# every month, therefore our expected lag is 31 (days).
+# A nice continuous dataset should return TRUE
 butterfly::timeline(
-  butterflycount$april,
+  forestprecipitation$january,
   datetime_variable = "time",
-  expected_lag = 31
+  expected_lag = 1
+)
+
+# In February, our imaginary rain gauge's onboard computer had a failure.
+# The timestamp was reset to 1970-01-01
+butterfly::timeline(
+  forestprecipitation$february,
+  datetime_variable = "time",
+  expected_lag = 1
 )
 
 }

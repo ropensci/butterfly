@@ -67,8 +67,14 @@ The butterfly package contains the following:
 - `butterfly::create_object_list()` - returns a list of objects required
   by all of `loupe()`, `catch()` and `release()`. Contains underlying
   functionality.
+- `butterfly::timeline()` - check if a timeseries is continuous between
+  timesteps.
+- `butterfly::timeline_group()` - group distinct, but continuous
+  sequences of a timeseres.
 - `butterflycount` - a list of monthly dataframes, which contain
   fictional butterfly counts for a given date.
+- `forestprecipitation` - a list of monthly dataframes, which contain
+  fictional daily precipitation measurements for a given date.
 
 ## Examples
 

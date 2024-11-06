@@ -31,7 +31,7 @@ butterflycount
 
 This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
 
-## Examining datasets: loupe()
+## Examining datasets: `loupe()`
 
 We can use `butterfly::loupe()` to examine in detail whether previous values have changed.
 
@@ -70,7 +70,7 @@ butterfly::loupe(
 
 Call `?waldo::compare()` to see the full list of arguments.
 
-## Extracting unexpected changes: catch()
+## Extracting unexpected changes: `catch()`
 
 You might want to return changed rows as a dataframe. For this `butterfly::catch()`is provided.
 
@@ -86,7 +86,7 @@ df_caught <- butterfly::catch(
 df_caught
 ```
 
-## Dropping unexpecrted changes: release()
+## Dropping unexpected changes: `release()`
 
 Conversely, `butterfly::release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
 
@@ -113,6 +113,59 @@ df_release_without_new <- butterfly::release(
 df_release_without_new
 
 ```
+
+## Checking for continuity: `timeline()`
+To check if a timeseries is continuous, `timeline()` and `timeline_group()` are
+provided. Even if a timeseries does not contain obvious gaps, this does not
+automatically mean it is also continuous.
+
+Measuring instruments can have different behaviours when they fail. For
+example, during power failure an internal clock could reset to "1970-01-01",
+or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
+ways of checking if a dataset is continuous.
+
+To check if a timeseries is continuous:
+
+```{r check_continuity}
+butterfly::timeline(
+   forestprecipitation$january,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+```
+
+The above is a nice continuous dataset, where there is no more than a difference
+of 1 day between timesteps.
+
+However, in February our imaginary rain gauge's onboard computer had a failure.
+
+The timestamp was reset to 1970-01-01:
+ 
+```{r not_continuous}
+forestprecipitation$february
+
+butterfly::timeline(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+```
+
+## Grouping distinct continuous sequences: `timeline_group()`
+
+If we wanted to group chunks of our timeseries that are distinct, or broken up
+in some way, but still continuous, we can use `timeline_group()`:
+
+```{r timeline_group}
+butterfly::timeline_group(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+```
+
+We now have groups 1 & 2, which are both continuous sets of data, but there is
+no continuity between them.
 
 ## Using `butterfly` in a data processing pipeline
 

@@ -33,8 +33,13 @@
 #' data and `timelag` which specifies the time lags between rows.
 #'
 #' @examples
+#' # A nice continuous dataset should return TRUE
+#' # In February, our imaginary rain gauge's onboard computer had a failure.
+#' # The timestamp was reset to 1970-01-01
+#'
+#' # We want to group these different distinct continuous sequences:
 #' butterfly::timeline_group(
-#'   forestprecipitation$january,
+#'   forestprecipitation$february,
 #'   datetime_variable = "time",
 #'   expected_lag = 1
 #' )
