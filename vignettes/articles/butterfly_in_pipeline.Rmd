@@ -1,5 +1,5 @@
 ---
-title: 'Using butterfly in a data processing pipeline'
+title: 'Using butterfly in an operational data pipeline'
 ---
 
 ```{r, include = FALSE}
@@ -15,7 +15,7 @@ font-size: 0.6em;
 }
 </style>
 
-This article is a **simplified** demonstration of a real data processing pipeline we implemented at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby).
+This article is a **simplified** demonstration of a real operational data pipeline we are implementing at the British Antarctic Survey called asli-pipeline. You can inspect the full source code of this pipeline in the repository: [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby).
 
 This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, **ERA5T**. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
 
@@ -25,9 +25,9 @@ In a pipeline that generates ERA5-derived data, and continually updates and **pu
 
 ## Pipeline overview 
 
-Consider a classic input/output (I/O) data processing pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location.
+Consider a classic input/output (I/O) data pipeline where we read in data from an external source, perform some sort of calculation to it, and transfer the output to a different location.
 
-```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data processing pipeline."}
+```{r simple_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A simple diagram showing the steps in a generic data pipeline."}
 knitr::include_graphics("img/simple_diagram.png")
 ```
 
@@ -35,7 +35,7 @@ We use a pipeline to calculate the **'Amundsen Sea Low Index'**, or ASLI. The Am
 
 In our case, we run this pipeline on a monthly basis:
 
-```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
+```{r bas_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset."}
 knitr::include_graphics("img/bas_example.png")
 ```
 
@@ -52,11 +52,11 @@ Either way, this would invalidate our DOI and force republication.
 
 Keeping up-to-date with the [Climate Data Store's Forum](https://forum.ecmwf.int/c/announcements/5) to monitor changes would be a time-consuming task, and not a reliable way to detect changes. 
 
-## Quality assurance using `butterfly` in a pipeline
+## Verification using `butterfly` in a pipeline
 
 To maintain the integrity of our published dataset, we need to impose robust checks to ensure our new results match our published data, where we expect it to.
 
-```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data processing pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
+```{r full_example, out.width = '100%', fig.align='center', echo = FALSE, fig.cap="A diagram showing the steps in our British Antarctic Survey data pipeline to calculate and publish the Amundsen Sea Low Index dataset, while using butterfly to check for unexpected changes in our results."}
 knitr::include_graphics("img/full_pipeline_example.png")
 ```
 
@@ -69,43 +69,15 @@ When developing a pipeline, we separate our **data**, **configuration** and **co
 For the purpose of this article, details of the dataset itself are not important. But for reference, below is a subset of the ASLI dataset:
 
 ```{r asli_dataset, echo = FALSE}
-# A note for maintainers:
-# Currently, to run and built this section of the article, access to asli object store is required.
-# How to obtain access is described in the asli-pipeline repository.
-
-# When this dataset is published on the PDC, this section will be rewritten to read data directly from there.
-s3_config <- ini::read.ini(
-  "~/.s3cfg"
-)
-
-# Get s3 body
-s3 <- paws::s3(
-  credentials = list(
-    creds = list(
-      access_key_id = s3_config$default$access_key,
-      secret_access_key = s3_config$default$secret_key    
-    )
-  ),
-  endpoint = paste0(
-    "https://", s3_config$default$host_base
-  )
-)
-
-s3_bucket <- s3$get_object(
-  # Removing s3:// pre-fix, as paws adds this itself
-  Bucket = "asli",
-  Key = "asli_calculation_2024.csv"
-)
-
-existing_file <- s3_bucket$Body |> 
-  rawToChar() |> 
-  readr::read_csv(
-    skip = 29,
-    show_col_types = FALSE
+existing_file <- read.csv(
+  # This url will be replaced when data is deposited in the Polar Data Centre
+    "https://raw.githubusercontent.com/scotthosking/amundsen-sea-low-index/master/asli_era5_v3-latest.csv",
+    skip = 29
   )
 
-kableExtra::kbl(
-  existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,]
+knitr::kable(
+  existing_file[(nrow(existing_file) - 3):nrow(existing_file) - 1,],
+    row.names = FALSE
 )
 ```
 
@@ -115,10 +87,9 @@ As you can see, all data for previous months are also included in the data:
 
 ```{r subsequent_month, echo=FALSE}
 knitr::kable(
-  existing_file[(nrow(existing_file) - 4):nrow(existing_file),]
-) |> 
-    kableExtra::row_spec(5, background = "#4ba371")
-
+  existing_file[(nrow(existing_file) - 4):nrow(existing_file),],
+      row.names = FALSE
+) 
 ```
 
 This is what will be submitted to the PDC.
@@ -258,7 +229,7 @@ existing_file <- readr::read_csv(
 }
 ```
 
-Great! Now that the files have been read in, we can start our quality assurance using `butterfly`.
+Great! Now that the files have been read in, we can start our verification using `butterfly`.
 
 In this case, we will use `butterfly::loupe()` to give us our report, and return either TRUE (previous data has not changed, we are happy to proceed) or FALSE (a change in previous data has been detected, and we should abort data transfer).
 
@@ -284,8 +255,8 @@ The last check, `if (!isTRUE(qa_outcome))` will only trigger and stop the entire
 We've inspected every bit of functionality in our pipeline, which can be summarised as:
 
 1. Reading in data, calculating asli values, and putting results in an output folder.
-2. Running quality assurance checks on results in the output folder, and comparing against those in the rsync location.
-3. Transferring results from the output folder to the rsync location, if quality assurance checks have passed.
+2. Running verification checks on results in the output folder, and comparing against those in the rsync location.
+3. Transferring results from the output folder to the rsync location, if verification checks have passed.
 
 A sensible way of organising distinct steps in a pipeline, is to move different components of functionality into their own script. In our case we will have: 
 
@@ -336,7 +307,7 @@ Therefore, any failure in `02_quality_control.R` will prevent our data from reac
 
 So, `butterfly` did its job, detected changes and stopped data transfer... _now what?_
 
-Currently, it is set up to warn the user, who can intervene in the process manually. The next step would be to make the published data static, as we are now no longer appending it. We then supersede it with out new data, and restart the process.
+Currently, it is set up to warn the user, who can intervene in the process manually. The next step would be to make the published data static, as we are now no longer appending it. We then supersede it with our new data, and restart the process.
 
 A future aim would be however, to do this automatically:
 

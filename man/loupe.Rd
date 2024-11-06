@@ -4,7 +4,7 @@
 \alias{loupe}
 \title{Loupe: compare new and old data in continuously updated timeseries}
 \usage{
-loupe(df_current, df_previous, datetime_variable)
+loupe(df_current, df_previous, datetime_variable, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
@@ -12,8 +12,11 @@ loupe(df_current, df_previous, datetime_variable)
 \item{df_previous}{data.frame, the old version of dataset,
 for example x - t1.}
 
-\item{datetime_variable}{string, which variable to use as unique ID to
-join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join
+\code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here, such as
+\code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
 A boolean where TRUE indicates no changes to previous data and
@@ -24,7 +27,7 @@ A loupe is a simple, small magnification device used to examine small details
 more closely.
 }
 \details{
-This function is intended to aid in the quality assurance of continually
+This function is intended to aid in the verification of continually
 updating timeseries data where we expect new values but want to ensure
 previous values remains unchanged.
 
@@ -42,11 +45,13 @@ will be returned in the report.
 The underlying functionality is handled by \code{create_object_list()}.
 }
 \examples{
+# Checking two dataframes for changes
+# Returning TRUE (no changes) or FALSE (changes)
 # This example contains no differences with previous data
 butterfly::loupe(
-  butterflycount$february,
-  butterflycount$january,
-  datetime_variable = "time"
+  butterflycount$february, # New or current dataset
+  butterflycount$january, # Previous version you are comparing it to
+  datetime_variable = "time" # Unique ID variable they have in common
 )
 
 # This example does contain differences with previous data

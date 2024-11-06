@@ -4,7 +4,7 @@
 \alias{catch}
 \title{Catch: return dataframe containing only rows that have changed}
 \usage{
-catch(df_current, df_previous, datetime_variable)
+catch(df_current, df_previous, datetime_variable, ...)
 }
 \arguments{
 \item{df_current}{data.frame, the newest/current version of dataset x.}
@@ -12,8 +12,11 @@ catch(df_current, df_previous, datetime_variable)
 \item{df_previous}{data.frame, the old version of dataset,
 for example x - t1.}
 
-\item{datetime_variable}{character, which variable to use as unique ID to
-join \code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+\item{datetime_variable}{string, which variable to use as unique ID to join
+\code{df_current} and \code{df_previous}. Usually a "datetime" variable.}
+
+\item{...}{Other \code{waldo::compare()} arguments can be supplied here, such as
+\code{tolerance} or \code{max_diffs}. See \code{?waldo::compare()} for a full list.}
 }
 \value{
 A dataframe which contains only rows of \code{df_current} that have
@@ -30,10 +33,11 @@ not return any new rows.
 The underlying functionality is handled by \code{create_object_list()}.
 }
 \examples{
+# Returning only matched rows which contain changes
 df_caught <- butterfly::catch(
-  butterflycount$march,
-  butterflycount$february,
-  datetime_variable = "time"
+  butterflycount$march, # New or current dataset
+  butterflycount$february, # Previous version you are comparing it to
+  datetime_variable = "time" # Unique ID variable they have in common
 )
 
 df_caught

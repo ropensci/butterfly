@@ -9,10 +9,14 @@
 [![Codecov test
 coverage](https://codecov.io/gh/thomaszwagerman/butterfly/branch/main/graph/badge.svg)](https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![pkgcheck](https://github.com/thomaszwagerman/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck)
 <!-- badges: end -->
 
-The goal of butterfly is to aid in the quality assurance of continually
+The goal of butterfly is to aid in the verification of continually
 updating and overwritten time-series data, where we expect new values
 over time, but want to ensure previous data remains unchanged.
 
@@ -32,8 +36,9 @@ instrument recalibration. Monitoring data sources for these changes is
 not always possible.
 
 Unnoticed changes in previous data could have unintended consequences,
-such as invalidating DOIs, or altering future predictions if used as
-input in forecasting models.
+such as invalidating a published dataset’s Digital Object Identfier
+(DOI), or altering future predictions if used as input in forecasting
+models.
 
 This package provides functionality that can be used as part of a data
 pipeline, to check and flag changes to previous data to prevent changes
@@ -225,12 +230,43 @@ continuously updating/overwritten time-series data, where previous
 values may change without notice.
 
 There are other R packages and functions which handle object comparison,
-which may suit your specific needs better:
+which may suit your specific needs better. Below we describe their
+overlap and differences to `butterfly`:
 
-- [waldo](https://github.com/r-lib/waldo)
-- [diffdf](https://github.com/gowerc/diffdf)
-- [assertr](https://github.com/tonyfischetti/assertr)
-- [daquiri](https://github.com/ropensci/daiquiri/)
+- [waldo](https://github.com/r-lib/waldo) - `butterfly` uses
+  `waldo::compare()` in every function to provide a report on
+  difference. There is therefore significant overlap, however
+  `butterfly` builds on `waldo` by providing the functionality of
+  comparing objects where we expect some changes, with previous versions
+  but not others. `butterfly` also provides extra user feedback to
+  provide clarity on what it is and isn’t comparing, due to the nature
+  of comparing only “matched” rows.
+- [diffdf](https://github.com/gowerc/diffdf) - similar to `waldo`, but
+  specifically for data frames, `diffdf` provides the ability to compare
+  data frames directly. We could have used `diffdf::diffdf()` in our
+  case, but we prefer `waldo`’s more explicit and clear user feedback.
+  That said, there is significant overlap in functionality:
+  `butterfly::loupe()` and `diffdf::diffdf_has_issues()` both provide a
+  TRUE/FALSE difference check, while `diffdf::diffdf_issue_rows()` and
+  `butterfly::catch()` both return the rows where changes have occurred.
+  However, it lacks the flexibility of `butterfly` to compare object
+  where we expect some changes, but not others.
+- [assertr](https://github.com/tonyfischetti/assertr) - `assertr`
+  provides assertion functionality that can be used as part of a
+  pipeline, and test assertions on a particular dataset, but it does not
+  offer tools for comparison. We do highly recommend using `assertr` for
+  checks, prior to using `butterfly`, as any data quality issues will be
+  caught first.
+- [daquiri](https://github.com/ropensci/daiquiri/) - `daquiri` provides
+  tools to check data quality and visually inspect timeseries data. It
+  is also quality assurance package for timeseries, but has a very
+  different purpose to `butterfly`.
 
-Other functions include `all.equal()` or
-[dplyr](https://github.com/tidyverse/dplyr)’s `setdiff()`
+Other functions include `all.equal()` (base R) or
+[dplyr](https://github.com/tidyverse/dplyr)’s `setdiff()`.
+
+## `butterfly` in production
+
+Read more about how `butterfly` is [used in an operational data
+pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html)
+to verify a continually updated **and** published dataset.

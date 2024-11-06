@@ -4,11 +4,11 @@
 \name{butterfly-package}
 \alias{butterfly}
 \alias{butterfly-package}
-\title{butterfly: QA/QC For Continually Updating Timeseries Data}
+\title{butterfly: Verification For Continually Updating Timeseries Data}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-QA/QC of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
+Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
 }
 \seealso{
 Useful links:

@@ -55,6 +55,17 @@ test_that("correct message is fed back", {
   )
 })
 
+test_that("error when datetime is not in both objects", {
+  expect_error(
+    create_object_list(
+      butterflycount$april,
+      butterflycount$march,
+      datetime_variable = "species"
+    ),
+    "`datetime_variable` must be present in `df_current` and `df_previous`"
+  )
+})
+
 test_that("a list of three objects is returned", {
   expect_length(
     create_object_list(
@@ -77,5 +88,19 @@ test_that("comparison object is returned when not equal", {
       create_object_list_output
     ),
     0
+  )
+})
+
+test_that("passing of additional waldo arguments works as expected", {
+  # Adding a tolerance of 2 should now "ignore" the single change
+  create_object_list_output <- create_object_list(
+    butterflycount$march,
+    butterflycount$february,
+    datetime_variable = "time",
+    tolerance = 2
+  )
+
+  testthat::expect_true(
+    create_object_list_output$butterfly_status
   )
 })

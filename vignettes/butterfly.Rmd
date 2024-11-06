@@ -14,53 +14,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of butterfly is to aid in the quality assurance of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged. 
-
-```{r butterfly_diagram, echo=FALSE, out.width="100%", fig.cap="An illustration of continually updating timeseries data where a previous value unexpectedly changes."}
-knitr::include_graphics("img/butterfly_diagram_light.png")
-```
-
-Data previously recorded could change for a number of reasons, such as discovery of an error in model code, a change in methodology or instrument recalibration. Monitoring data sources for these changes is not always possible.
+The goal of butterfly is to aid in the verification of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged. 
 
 Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.
 
 This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.
 
-## Installation
+## Data
 
-You can install the development version of butterfly from [GitHub](https://github.com/) with:
+This packages includes a small dummy dataset, `butterflycount`, which contains a list of monthly dataframes of butterfly counts for a given date. 
 
-``` r
-# install.packages("devtools")
-devtools::install_github("thomaszwagerman/butterfly")
-```
-
-## Overview
-The butterfly package contains the following:
-
-  * `butterfly::loupe()` - examines in detail whether previous values have changed, and returns TRUE/FALSE for no change/change.
-  * `butterfly::catch()` - returns rows which contain previously changed values in a dataframe.
-  * `butterfly::release()` - drops rows which contain previously changed values, and returns a dataframe containing new and unchanged rows.
-  * `butterfly::create_object_list()` - returns a list of objects required by all of `loupe()`, `catch()` and `release()`. Contains underlying functionality.
-  * `butterflycount` - a list of monthly dataframes, which contain fictional butterfly counts for a given date.
-
-## How to use butterfly
-
-This is a basic example which shows you how to use butterfly:
-
-```{r simple_example}
+```{r butterfly_count}
 library(butterfly)
-
-# Imagine a continually updated dataset that starts in January and is updated once a month
-butterflycount$january
-
-# In February an additional row appears, all previous data remains the same
-butterflycount$february
-
-# In March an additional row appears again
-# ...but a previous value has unexpectedly changed
-butterflycount$march
+butterflycount
 ```
+
+This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
+
+## Examining datasets: loupe()
 
 We can use `butterfly::loupe()` to examine in detail whether previous values have changed.
 
@@ -82,10 +53,28 @@ butterfly::loupe(
 
 `butterfly` follows the `waldo` philosophy of erring on the side of providing too much information, rather than too little. It will give a detailed feedback message on the status between two objects.
 
-### Using butterfly for data wrangling
-You might want to return changed rows as a dataframe, or drop them altogether. For this `butterfly::catch()` and `butterfly::release()` are provided.
+### Additional arguments from `waldo::compare()`
 
-Here, `butterfly::catch()` only returns rows which have **changed** from the previous version. It will not return new rows.
+You have the flexibility to pass further arguments that `waldo::compare()` accepts, to any butterfly function, for instance to specify the tolerance.
+
+If we add a tolerance of 2 to the previous example, no differences should be returned:
+
+```{r tolerance_example}
+butterfly::loupe(
+  butterflycount$march,
+  butterflycount$february,
+  datetime_variable = "time",
+  tolerance = 2 # <- setting a tolerance of 2
+)
+```
+
+Call `?waldo::compare()` to see the full list of arguments.
+
+## Extracting unexpected changes: catch()
+
+You might want to return changed rows as a dataframe. For this `butterfly::catch()`is provided.
+
+`butterfly::catch()` only returns rows which have **changed** from the previous version. It will not return new rows.
 
 ```{r butterfly_catch}
 df_caught <- butterfly::catch(
@@ -96,6 +85,8 @@ df_caught <- butterfly::catch(
 
 df_caught
 ```
+
+## Dropping unexpecrted changes: release()
 
 Conversely, `butterfly::release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
 
@@ -109,23 +100,27 @@ df_released <- butterfly::release(
 df_released
 ```
 
-## The butterflycount dataset
+However, you do have the option to exclude new rows as well with the argument `include_new` set to `FALSE`.
 
-This packages includes a small dummy dataset, `butterflycount`, which contains a list of monthly dataframes of butterfly counts for a given date. 
+```{r butterfly_release_no_new_rows}
+df_release_without_new <- butterfly::release(
+  butterflycount$march,
+  butterflycount$february,
+  datetime_variable = "time",
+  include_new = FALSE
+)
 
-```{r butterfly_count}
-butterflycount
+df_release_without_new
+
 ```
 
-This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
+## Using `butterfly` in a data processing pipeline
+
+If you would like to know more about using `butterfly` in an operational data processing pipeline, please refer to the article on  [using `butterfly` in an operational pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html).
 
 ## A note on controlling verbosity
 
 Although verbosity is mostly the purpose if this package, **should** you wish to silence messages and warnings, you can do so with `options(rlib_message_verbosity = "quiet")` and options `(rlib_warning_verbosity = "quiet")`.
-
-## Incorporating in data pipeline
-
-Examples of using applying butterfly in a pipeline.
 
 ## Rationale
 
