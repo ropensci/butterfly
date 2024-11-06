@@ -22,8 +22,6 @@
 #' The smallest units of measurement present in the column will be used. For
 #' example in a column formatted YYYY-MM, month will be used. In a column
 #' formatted YYYY-MM-DD day will be used.
-#' @param direction character, is this timeseries ordered by ascending or by
-#' descending?
 #'
 #' @seealso [group_timelines()]
 #'
@@ -34,29 +32,26 @@
 #' # This example contains no differences with previous data
 #' # Our datetime column is formatted YYYY-MM-DD, and we expect an observation
 #' # every month, therefore our expected lag is 31 (days).
-#' butterfly::is_continuous_timelines(
+#' butterfly::timeline(
 #'   butterflycount$april,
 #'   datetime_variable = "time",
 #'   expected_lag = 31
-#'   direction = "descending"
 #' )
 #'
 #' @export
 timeline <- function(
     df_current,
     datetime_variable,
-    expected_lag = 1,
-    direction = c("ascending", "descending")
+    expected_lag = 1
 ) {
 
   df_timelines <- group_timelines(
     df_current,
     datetime_variable,
-    expected_lag,
-    direction
+    expected_lag
   )
 
-  if (length(unique(df_timelines$timeline_group)) < 1) {
+  if (length(unique(df_timelines$timeline_group)) == 1) {
     is_continuous <- TRUE
 
     cli::cat_bullet(
