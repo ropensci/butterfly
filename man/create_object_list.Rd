@@ -36,8 +36,8 @@ returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
 
 The main assumption is that \code{df_current} and \code{df_previous} are a newer and
 older versions of the same data, and that the \code{datetime_variable} variable
-name always remains the same. Elsewhere new columns can of appear,
-and these will be returned in the report.
+name always remains the same. Elsewhere new columns can of appear, and these
+will be returned in the report.
 }
 \examples{
 butterfly_object_list <- butterfly::create_object_list(
