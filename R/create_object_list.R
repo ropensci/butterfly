@@ -99,12 +99,16 @@ create_object_list <- function(
   # Creating a feedback message depending on the waldo object's output
   # First checking if there are new rows at all:
   if (nrow(df_current_new_rows) == 0) {
-    cli::cli_abort(
+    cli::cat_line(
       "There are no new rows. Check '",
       deparse(substitute(df_current)),
       "' is your most recent data, and '",
       deparse(substitute(df_previous)),
       "' is your previous data. If comparing directly, try waldo::compare()."
+    )
+
+    cli::cli_abort(
+      "Stopping process"
     )
   } else {
     # Tell the user which rows are new, regardless of previous data changing
