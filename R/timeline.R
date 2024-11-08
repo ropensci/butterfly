@@ -13,6 +13,10 @@
 #' difference between timesteps in a dataset should not exceed the
 #' `expected_lag`.
 #'
+#' Note: for monthly data it is recommended you convert your Date column to a
+#' monthly format (e.g 2024-October, 10-2024, Oct-2024 etc.), so a constant
+#' expected lag can be set (not a range of 29 - 31 days).
+#'
 #' @inheritParams timeline_group
 #'
 #' @seealso [timeline_group()]
