@@ -17,8 +17,9 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the verification of continually
-updating and overwritten time-series data, where we expect new values
-over time, but want to ensure previous data remains unchanged.
+updating timeseries data, where we expect new values over time, but want
+to ensure previous data remains unchanged, and timesteps remain
+continuous.
 
 <div class="figure">
 
@@ -56,7 +57,7 @@ devtools::install_github("thomaszwagerman/butterfly")
 
 ## Overview
 
-The butterfly package contains the following:
+The butterfly package contains the following functions:
 
 - `butterfly::loupe()` - examines in detail whether previous values have
   changed, and returns TRUE/FALSE for no change/change.
@@ -70,7 +71,11 @@ The butterfly package contains the following:
 - `butterfly::timeline()` - check if a timeseries is continuous between
   timesteps.
 - `butterfly::timeline_group()` - group distinct, but continuous
-  sequences of a timeseres.
+  sequences of a timeseries.
+
+There are also dummy datasets, which a fictional and purely to
+demonstrate butterfly functionality:
+
 - `butterflycount` - a list of monthly dataframes, which contain
   fictional butterfly counts for a given date.
 - `forestprecipitation` - a list of monthly dataframes, which contain
@@ -142,8 +147,8 @@ butterfly::loupe(
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$count`: 17 22 55 18
-#> `new$count`: 17 22 55 11
+#> `old$count`: 17.0 22.0 55.0 18.0
+#> `new$count`: 17.0 22.0 55.0 11.0
 #> [1] FALSE
 ```
 
@@ -184,8 +189,8 @@ df_caught <- butterfly::catch(
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$count`: 17 22 55 18
-#> `new$count`: 17 22 55 11
+#> `old$count`: 17.0 22.0 55.0 18.0
+#> `new$count`: 17.0 22.0 55.0 11.0
 #> 
 #> ℹ Only these rows are returned.
 
@@ -216,8 +221,8 @@ df_released <- butterfly::release(
 #> - old[4, ]    18
 #> + new[4, ]    11
 #> 
-#> `old$count`: 17 22 55 18
-#> `new$count`: 17 22 55 11
+#> `old$count`: 17.0 22.0 55.0 18.0
+#> `new$count`: 17.0 22.0 55.0 11.0
 #> 
 #> ℹ These will be dropped, but new rows are included.
 
@@ -232,8 +237,8 @@ df_released
 ## Relevant packages and functions
 
 The butterfly package was created for a specific use case of handling
-continuously updating/overwritten time-series data, where previous
-values may change without notice.
+continuously updating/overwritten timeseries data, where previous values
+may change without notice.
 
 There are other R packages and functions which handle object comparison,
 which may suit your specific needs better. Below we describe their

@@ -19,6 +19,10 @@
 #' This is something we would like to discover. This is accounted for in the
 #' logic in case_when().
 #'
+#' Note: for monthly data it is recommended you convert your Date column to a
+#' monthly format (e.g 2024-October, 10-2024, Oct-2024 etc.), so a constant
+#' expected lag can be set (not a range of 29 - 31 days).
+#'
 #' @param df_current data.frame, the newest/current version of dataset x.
 #' @param datetime_variable string, the "datetime" variable that should be
 #' checked for continuity.

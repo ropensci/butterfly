@@ -25,6 +25,8 @@ knitr::opts_chunk$set(
 
 #\> left out bibliography: paper.bib from yaml
 
+# **Active work in progress!**
+
 # Summary
 
 Previously recorded data could be revised after initial publication number of reasons, such as discovery of an inconsistency or error, a change in methodology or instrument re-calibration. When using other data to generate your own, it is crucial to reference the exact version of the data used, in order to maintain data provenance. Unnoticed changes in previous data could have unintended consequences, such as invalidating a published dataset’s Digital Object Identfier (DOI), or altering future predictions if used as input in forecasting models.
@@ -71,7 +73,7 @@ Usually ERA5 and ERA5T are identical, but occasionally an issue with input data 
 
 In most cases, this is not an issue. For static data publications which are a snapshot in time, such as data associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526)[@Andersson_2021] or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
 
-In our case however we want to continually append ERA5-derived datasets **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Hnerys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
+In our case however we want to continually append ERA5-derived datasets **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Henrys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
 
 Continually appending **and** publishing will require strict quality assurance. If a published dataset is only appended a DOI can be minted for it.  However, if the previously published data change, this will then invalidate the DOI.  For example, if you developed your code to find a better measure (more accurate, more precise) of the low pressure region, and wanted to reanalyse the previous data and republish.
 
@@ -81,11 +83,40 @@ One such ERA5-derived dataset which we (will hopefully soon!) publish at BAS is 
 
 The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016).
 
+### Unexpected changes in models
+
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
+
+Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+
+When publishing ERA5-derived datasets, and minting it with a DOI, it is possible to continuously append without invalidating that DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. 
+
+We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user.
+
+### Unexpected changes in data acquisition
+
+Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. This could have consequences for any calculation happening downstream.
+
+To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`.
+
+### Variable measurement frequencies
+
+In other cases, a non-continuous timeseries is intentional, for example when there is temporal variability in the measurements taken depending on events. At BAS, we collect data from a penguin weighbridge on weighbridge on Bird Island, South Georgia. This weighbridge measure weight on two different load cells (scales) to determine penguin weight and direction.
+
+You can read about this work in more detail in [Afanasyev et al. (2015)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292), but the important point here is that the weighbridge does not collect continuous measurement. When no weight is detected on the load cells, it only samples at 1hz, but as soon as any change in weight is detected it will start collecting data at 100hz. This is of course intentional, to reduce the sheer volume of data we need to process, but also has another benefit in isolating (or attempting to) individual crossings.
+
+The individual crossings are the most valuables pieces of data, as these allow us to deduce some sort of information like weight, direction (from colony to sea, or sea to colony) and hopefully ultimately, diet.
+
+In this case separating distinct, but continuous segments of data is required. This is the reasoning behind `timeline_group()`. This function allows us to split our timeseries in groups of individual crossings.
+
 # Citations
 
 # Acknowledgements
 
 # References
+
+Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. (2015) Increasing Accuracy: A New Design and Algorithm for Automatically Measuring Weights, Travel Direction and Radio Frequency Identification (RFID) of Penguins. PLOS ONE 10(4): e0126292. https://doi.org/10.1371/journal.pone.0126292
+
 
 Andersson, T., & Hosking, J. (2021). Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning' (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/71820e7d-c628-4e32-969f-464b7efb187c>
 

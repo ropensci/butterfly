@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of butterfly is to aid in the verification of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged. 
+The goal of butterfly is to aid in the verification of continually updating timeseries data, where we expect new values over time, but want to ensure previous data remains unchanged, and timesteps remain continuous. 
 
 Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.
 
@@ -30,6 +30,12 @@ butterflycount
 ```
 
 This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
+
+Another dummy dataset, `forestprecipitation`, also contains a list of monthly dataframes, but for fictional rainfall data. This dataset is intended to illustrate an instance of instrument failure leading to timesteps being recorded out of sync.
+
+``` {r precipitation}
+forestprecipitation
+```
 
 ## Examining datasets: `loupe()`
 
@@ -179,6 +185,8 @@ Although verbosity is mostly the purpose if this package, **should** you wish to
 
 There are a lot of other data comparison and QA/QC packages out there, why butterfly?
 
+### Unexpected changes in models
+
 This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
 
 Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
@@ -186,5 +194,23 @@ Usually ERA5 and ERA5T are identical, but occasionally an issue with input data 
 When publishing ERA5-derived datasets, and minting it with a DOI, it is possible to continuously append without invalidating that DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. 
 
 We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user.
+
+### Unexpected changes in data acquisition
+
+Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. This could have consequences for any calculation happening downstream.
+
+To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`.
+
+### Variable measurement frequencies
+
+In other cases, a non-continuous timeseries is intentional, for example when there is temporal variability in the measurements taken depending on events. At BAS, we collect data from a penguin weighbridge on weighbridge on Bird Island, South Georgia. This weighbridge measure weight on two different load cells (scales) to determine penguin weight and direction.
+
+You can read about this work in more detail in [Afanasyev et al. (2015)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292), but the important point here is that the weighbridge does not collect continuous measurement. When no weight is detected on the load cells, it only samples at 1hz, but as soon as any change in weight is detected it will start collecting data at 100hz. This is of course intentional, to reduce the sheer volume of data we need to process, but also has another benefit in isolating (or attempting to) individual crossings.
+
+The individual crossings are the most valuables pieces of data, as these allow us to deduce some sort of information like weight, direction (from colony to sea, or sea to colony) and hopefully ultimately, diet.
+
+In this case separating distinct, but continuous segments of data is required. This is the reasoning behind `timeline_group()`. This function allows us to split our timeseries in groups of individual crossings.
+
+### In summary 
 
 This package has intentionally been generalised to accommodate other, but similar, use cases. Other examples could include a correction in instrument calibration, compromised data transfer or unnoticed changes in the parameterisation of a model.

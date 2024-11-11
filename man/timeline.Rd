@@ -36,6 +36,10 @@ The \code{timeline_group()} and \code{timeline()} functions attempt to give the 
 control over how to check for continuity by providing an \code{expected_lag}. The
 difference between timesteps in a dataset should not exceed the
 \code{expected_lag}.
+
+Note: for monthly data it is recommended you convert your Date column to a
+monthly format (e.g 2024-October, 10-2024, Oct-2024 etc.), so a constant
+expected lag can be set (not a range of 29 - 31 days).
 }
 \examples{
 # A nice continuous dataset should return TRUE

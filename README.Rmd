@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 [![pkgcheck](https://github.com/thomaszwagerman/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck)
 <!-- badges: end -->
 
-The goal of butterfly is to aid in the verification of continually updating and overwritten time-series data, where we expect new values over time, but want to ensure previous data remains unchanged. 
+The goal of butterfly is to aid in the verification of continually updating timeseries data, where we expect new values over time, but want to ensure previous data remains unchanged, and timesteps remain continuous. 
 
 ```{r butterfly_diagram, echo=FALSE, out.width="100%", fig.cap="An illustration of continually updating timeseries data where a previous value unexpectedly changes."}
 knitr::include_graphics("man/figures/README-butterfly_diagram.png")
@@ -46,14 +46,17 @@ devtools::install_github("thomaszwagerman/butterfly")
 ```
 
 ## Overview
-The butterfly package contains the following:
+The butterfly package contains the following functions:
 
   * `butterfly::loupe()` - examines in detail whether previous values have changed, and returns TRUE/FALSE for no change/change.
   * `butterfly::catch()` - returns rows which contain previously changed values in a dataframe.
   * `butterfly::release()` - drops rows which contain previously changed values, and returns a dataframe containing new and unchanged rows.
   * `butterfly::create_object_list()` - returns a list of objects required by all of `loupe()`, `catch()` and `release()`. Contains underlying functionality.
   * `butterfly::timeline()` - check if a timeseries is continuous between timesteps.
-  * `butterfly::timeline_group()` - group distinct, but continuous sequences of a timeseres.
+  * `butterfly::timeline_group()` - group distinct, but continuous sequences of a timeseries.
+
+There are also dummy datasets, which a fictional and purely to demonstrate butterfly functionality:
+
   * `butterflycount` - a list of monthly dataframes, which contain fictional butterfly counts for a given date.
   * `forestprecipitation` - a list of monthly dataframes, which contain fictional daily precipitation measurements for a given date.
 
@@ -123,7 +126,7 @@ df_released
 ```
 
 ## Relevant packages and functions
-The butterfly package was created for a specific use case of handling continuously updating/overwritten time-series data, where previous values may change without notice. 
+The butterfly package was created for a specific use case of handling continuously updating/overwritten timeseries data, where previous values may change without notice. 
 
 There are other R packages and functions which handle object comparison, which may suit your specific needs better. Below we describe their overlap and differences to `butterfly`:
 
