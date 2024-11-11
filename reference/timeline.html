@@ -86,6 +86,9 @@ ways of checking if a dataset is continuous.</p>
 control over how to check for continuity by providing an <code>expected_lag</code>. The
 difference between timesteps in a dataset should not exceed the
 <code>expected_lag</code>.</p>
+<p>Note: for monthly data it is recommended you convert your Date column to a
+monthly format (e.g 2024-October, 10-2024, Oct-2024 etc.), so a constant
+expected lag can be set (not a range of 29 - 31 days).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

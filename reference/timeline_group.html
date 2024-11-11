@@ -95,7 +95,10 @@ returned to origin. Probably more common, and will results in a
 non-continuous dataset, however the records are still in chronological order
 This is something we would like to discover. This is accounted for in the
 logic in case_when().</p></li>
-</ol></div>
+</ol><p>Note: for monthly data it is recommended you convert your Date column to a
+monthly format (e.g 2024-October, 10-2024, Oct-2024 etc.), so a constant
+expected lag can be set (not a range of 29 - 31 days).</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

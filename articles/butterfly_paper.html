@@ -75,6 +75,11 @@
     
 <p>#&gt; left out bibliography: paper.bib from yaml</p>
 <div class="section level2">
+<h2 id="active-work-in-progress">
+<strong>Active work in progress!</strong><a class="anchor" aria-label="anchor" href="#active-work-in-progress"></a>
+</h2>
+</div>
+<div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>Previously recorded data could be revised after initial publication
@@ -148,7 +153,7 @@ recalculated.</p>
 <p>In our case however we want to continually append ERA5-derived
 datasets <strong>and</strong> continually publish them. This would be
 useful when functioning as a data source for an environmental digital
-twin (Blair &amp; Hnerys et al. 2023), or simply as input data into an
+twin (Blair &amp; Henrys et al. 2023), or simply as input data into an
 environmental forecasting model which itself is frequently running.</p>
 <p>Continually appending <strong>and</strong> publishing will require
 strict quality assurance. If a published dataset is only appended a DOI
@@ -171,6 +176,64 @@ to isolate local fluctuations in the ASL from larger-scale shifts in
 atmospheric pressure. The position and strength of the ASL are crucial
 for understanding regional change over West Antarctica (Hosking et
 al. 2016).</p>
+<div class="section level4">
+<h4 id="unexpected-changes-in-models">Unexpected changes in models<a class="anchor" aria-label="anchor" href="#unexpected-changes-in-models"></a>
+</h4>
+<p>This package was originally developed to deal with <a href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation" class="external-link">ERA5</a>’s
+initial release data, ERA5T. ERA5T data for a month is overwritten with
+the final ERA5 data two months after the month in question.</p>
+<p>Usually ERA5 and ERA5T are identical, but occasionally an issue with
+input data can (for example for <a href="https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth" class="external-link">09/21
+- 12/21</a>, and <a href="https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685" class="external-link">07/24</a>)
+force a recalculation, meaning previously published data differs from
+the final product.</p>
+<p>When publishing ERA5-derived datasets, and minting it with a DOI, it
+is possible to continuously append without invalidating that DOI.
+However, recalculation would overwrite previously published data,
+thereby forcing a new publication and DOI to be minted.</p>
+<p>We use the functionality in this package in an automated data
+processing pipeline to detect changes, stop data transfer and notify the
+user.</p>
+</div>
+<div class="section level4">
+<h4 id="unexpected-changes-in-data-acquisition">Unexpected changes in data acquisition<a class="anchor" aria-label="anchor" href="#unexpected-changes-in-data-acquisition"></a>
+</h4>
+<p>Measuring instruments can have different behaviours when they have a
+power failure. For example, during power failure an internal clock could
+reset to “1970-01-01”, or the manufacturing date (say, “2021-01-01”). If
+we are automatically ingesting and processing this data, it would be
+great to get a head’s up that a timeseries is no longer continuous in
+the way we expect it to be. This could have consequences for any
+calculation happening downstream.</p>
+<p>To prevent writing different ways of checking for this depending on
+the instrument, we wrote <code><a href="../reference/timeline.html">butterfly::timeline()</a></code>.</p>
+</div>
+<div class="section level4">
+<h4 id="variable-measurement-frequencies">Variable measurement frequencies<a class="anchor" aria-label="anchor" href="#variable-measurement-frequencies"></a>
+</h4>
+<p>In other cases, a non-continuous timeseries is intentional, for
+example when there is temporal variability in the measurements taken
+depending on events. At BAS, we collect data from a penguin weighbridge
+on weighbridge on Bird Island, South Georgia. This weighbridge measure
+weight on two different load cells (scales) to determine penguin weight
+and direction.</p>
+<p>You can read about this work in more detail in <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292" class="external-link">Afanasyev
+et al. (2015)</a>, but the important point here is that the weighbridge
+does not collect continuous measurement. When no weight is detected on
+the load cells, it only samples at 1hz, but as soon as any change in
+weight is detected it will start collecting data at 100hz. This is of
+course intentional, to reduce the sheer volume of data we need to
+process, but also has another benefit in isolating (or attempting to)
+individual crossings.</p>
+<p>The individual crossings are the most valuables pieces of data, as
+these allow us to deduce some sort of information like weight, direction
+(from colony to sea, or sea to colony) and hopefully ultimately,
+diet.</p>
+<p>In this case separating distinct, but continuous segments of data is
+required. This is the reasoning behind <code><a href="../reference/timeline_group.html">timeline_group()</a></code>.
+This function allows us to split our timeseries in groups of individual
+crossings.</p>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -184,6 +247,10 @@ al. 2016).</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<p>Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. (2015)
+Increasing Accuracy: A New Design and Algorithm for Automatically
+Measuring Weights, Travel Direction and Radio Frequency Identification
+(RFID) of Penguins. PLOS ONE 10(4): e0126292. <a href="https://doi.org/10.1371/journal.pone.0126292" class="external-link uri">https://doi.org/10.1371/journal.pone.0126292</a></p>
 <p>Andersson, T., &amp; Hosking, J. (2021). Forecasts, neural networks,
 and results from the paper: ‘Seasonal Arctic sea ice forecasting with
 probabilistic deep learning’ (Version 1.0) [Data set]. NERC EDS UK Polar

@@ -73,8 +73,9 @@
     
     
 <p>The goal of butterfly is to aid in the verification of continually
-updating and overwritten time-series data, where we expect new values
-over time, but want to ensure previous data remains unchanged.</p>
+updating timeseries data, where we expect new values over time, but want
+to ensure previous data remains unchanged, and timesteps remain
+continuous.</p>
 <p>Unnoticed changes in previous data could have unintended
 consequences, such as invalidating DOIs, or altering future predictions
 if used as input in forecasting models.</p>
@@ -130,13 +131,36 @@ of butterfly counts for a given date.</p>
 <span><span class="co">#&gt; 6 2024-11-01    18 Admiral</span></span></code></pre></div>
 <p>This dataset is entirely fictional, and merely included to aid
 demonstrating butterfly’s functionality.</p>
+<p>Another dummy dataset, <code>forestprecipitation</code>, also
+contains a list of monthly dataframes, but for fictional rainfall data.
+This dataset is intended to illustrate an instance of instrument failure
+leading to timesteps being recorded out of sync.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">forestprecipitation</span></span>
+<span><span class="co">#&gt; $january</span></span>
+<span><span class="co">#&gt;         time rainfall_mm</span></span>
+<span><span class="co">#&gt; 1 2024-01-01         0.0</span></span>
+<span><span class="co">#&gt; 2 2024-01-02         2.6</span></span>
+<span><span class="co">#&gt; 3 2024-01-03         0.0</span></span>
+<span><span class="co">#&gt; 4 2024-01-04         0.0</span></span>
+<span><span class="co">#&gt; 5 2024-01-05         3.7</span></span>
+<span><span class="co">#&gt; 6 2024-01-06         0.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $february</span></span>
+<span><span class="co">#&gt;                  time rainfall_mm</span></span>
+<span><span class="co">#&gt; 1 2024-02-01 00:00:00         1.1</span></span>
+<span><span class="co">#&gt; 2 2024-02-02 00:00:00         0.0</span></span>
+<span><span class="co">#&gt; 3 2024-02-03 00:00:00         1.4</span></span>
+<span><span class="co">#&gt; 4 2024-02-04 00:00:00         2.2</span></span>
+<span><span class="co">#&gt; 5 1969-12-31 23:00:00         3.4</span></span>
+<span><span class="co">#&gt; 6 1970-01-01 23:00:00         0.6</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="examining-datasets-loupe">Examining datasets: <code>loupe()</code><a class="anchor" aria-label="anchor" href="#examining-datasets-loupe"></a>
 </h2>
 <p>We can use <code><a href="../reference/loupe.html">butterfly::loupe()</a></code> to examine in detail
 whether previous values have changed.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">january</span>,</span>
@@ -186,7 +210,7 @@ two objects.</p>
 instance to specify the tolerance.</p>
 <p>If we add a tolerance of 2 to the previous example, no differences
 should be returned:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -210,7 +234,7 @@ arguments.</p>
 <p><code><a href="../reference/catch.html">butterfly::catch()</a></code> only returns rows which have
 <strong>changed</strong> from the previous version. It will not return
 new rows.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_caught</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/catch.html">catch</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -244,7 +268,7 @@ new rows.</p>
 <p>Conversely, <code><a href="../reference/release.html">butterfly::release()</a></code> drops all rows which
 had changed from the previous version. Note it retains new rows, as
 these were expected.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_released</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -276,7 +300,7 @@ these were expected.</p>
 <span><span class="co">#&gt; 4 2023-12-01    55</span></span></code></pre></div>
 <p>However, you do have the option to exclude new rows as well with the
 argument <code>include_new</code> set to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_release_without_new</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">february</span>,</span>
@@ -319,7 +343,7 @@ For example, during power failure an internal clock could reset to
 “1970-01-01”, or the manufacturing date (say, “2021-01-01”). This leads
 to unpredictable ways of checking if a dataset is continuous.</p>
 <p>To check if a timeseries is continuous:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/timeline.html">timeline</a></span><span class="op">(</span></span>
 <span>   <span class="va">forestprecipitation</span><span class="op">$</span><span class="va">january</span>,</span>
 <span>   datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
@@ -332,7 +356,7 @@ difference of 1 day between timesteps.</p>
 <p>However, in February our imaginary rain gauge’s onboard computer had
 a failure.</p>
 <p>The timestamp was reset to 1970-01-01:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">forestprecipitation</span><span class="op">$</span><span class="va">february</span></span>
 <span><span class="co">#&gt;                  time rainfall_mm</span></span>
 <span><span class="co">#&gt; 1 2024-02-01 00:00:00         1.1</span></span>
@@ -357,7 +381,7 @@ a failure.</p>
 <p>If we wanted to group chunks of our timeseries that are distinct, or
 broken up in some way, but still continuous, we can use
 <code><a href="../reference/timeline_group.html">timeline_group()</a></code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/timeline_group.html">timeline_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">forestprecipitation</span><span class="op">$</span><span class="va">february</span>,</span>
 <span>   datetime_variable <span class="op">=</span> <span class="st">"time"</span>,</span>
@@ -394,6 +418,9 @@ and options <code>(rlib_warning_verbosity = "quiet")</code>.</p>
 </h2>
 <p>There are a lot of other data comparison and QA/QC packages out
 there, why butterfly?</p>
+<div class="section level3">
+<h3 id="unexpected-changes-in-models">Unexpected changes in models<a class="anchor" aria-label="anchor" href="#unexpected-changes-in-models"></a>
+</h3>
 <p>This package was originally developed to deal with <a href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation" class="external-link">ERA5</a>’s
 initial release data, ERA5T. ERA5T data for a month is overwritten with
 the final ERA5 data two months after the month in question.</p>
@@ -409,10 +436,54 @@ thereby forcing a new publication and DOI to be minted.</p>
 <p>We use the functionality in this package in an automated data
 processing pipeline to detect changes, stop data transfer and notify the
 user.</p>
+</div>
+<div class="section level3">
+<h3 id="unexpected-changes-in-data-acquisition">Unexpected changes in data acquisition<a class="anchor" aria-label="anchor" href="#unexpected-changes-in-data-acquisition"></a>
+</h3>
+<p>Measuring instruments can have different behaviours when they have a
+power failure. For example, during power failure an internal clock could
+reset to “1970-01-01”, or the manufacturing date (say, “2021-01-01”). If
+we are automatically ingesting and processing this data, it would be
+great to get a head’s up that a timeseries is no longer continuous in
+the way we expect it to be. This could have consequences for any
+calculation happening downstream.</p>
+<p>To prevent writing different ways of checking for this depending on
+the instrument, we wrote <code><a href="../reference/timeline.html">butterfly::timeline()</a></code>.</p>
+</div>
+<div class="section level3">
+<h3 id="variable-measurement-frequencies">Variable measurement frequencies<a class="anchor" aria-label="anchor" href="#variable-measurement-frequencies"></a>
+</h3>
+<p>In other cases, a non-continuous timeseries is intentional, for
+example when there is temporal variability in the measurements taken
+depending on events. At BAS, we collect data from a penguin weighbridge
+on weighbridge on Bird Island, South Georgia. This weighbridge measure
+weight on two different load cells (scales) to determine penguin weight
+and direction.</p>
+<p>You can read about this work in more detail in <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292" class="external-link">Afanasyev
+et al. (2015)</a>, but the important point here is that the weighbridge
+does not collect continuous measurement. When no weight is detected on
+the load cells, it only samples at 1hz, but as soon as any change in
+weight is detected it will start collecting data at 100hz. This is of
+course intentional, to reduce the sheer volume of data we need to
+process, but also has another benefit in isolating (or attempting to)
+individual crossings.</p>
+<p>The individual crossings are the most valuables pieces of data, as
+these allow us to deduce some sort of information like weight, direction
+(from colony to sea, or sea to colony) and hopefully ultimately,
+diet.</p>
+<p>In this case separating distinct, but continuous segments of data is
+required. This is the reasoning behind <code><a href="../reference/timeline_group.html">timeline_group()</a></code>.
+This function allows us to split our timeseries in groups of individual
+crossings.</p>
+</div>
+<div class="section level3">
+<h3 id="in-summary">In summary<a class="anchor" aria-label="anchor" href="#in-summary"></a>
+</h3>
 <p>This package has intentionally been generalised to accommodate other,
 but similar, use cases. Other examples could include a correction in
 instrument calibration, compromised data transfer or unnoticed changes
 in the parameterisation of a model.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
