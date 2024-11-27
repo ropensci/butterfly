@@ -37,60 +37,35 @@ The intention of butterfly is to check for changes in previously published data,
 
 # Statement of Need
 
-Importance of citing exact extract of data [(Klump et al. 2021)](https://datascience.codata.org/articles/10.5334/dsj-2021-012)
+Semantic versioning is widely adopted in research software [(Preston-Werner 2013)](https://semver.org/spec/v2.0.0.html), but as outlined above datasets may also change for any number of reasons. It is therefore important to cite the exact extract of data you are using in your research to maintain reproducibility [(Klump et al. 2021)](https://datascience.codata.org/articles/10.5334/dsj-2021-012). It is not only important to indicate to users that there has been a change, but also **what** that change is. 
 
-Semantic versioning is widely adopted in research software [(Preston-Werner 2013)](https://semver.org/spec/v2.0.0.html)
+This may be especially relevant for Information Management Frameworks for Digital Twins (Siddorn et al. 2022). A digital twin might rely on any number of source data, whether live sensor streams or environmental forecasting models. To achieve a FAIR implementation (Wilkinson et al. 2016) of a Digital Twin, data provenance must be maintained, clearly documented for users and available in machine-readable format.
 
-Generating a derived data product
-
-A key recommendation in Siddorn et al.'s (2022) report "An Information Management Framework for Environmental Digital Twins (IMFe)...
-
-data provenance must be maintained
-
-data quality frameworks
-
-clearly documented for users and available in machine-readable format
-
-tools and methods
-
-... for a FAIR implementation (Wilkinson et al. 2016).
+To ensure trustworthiness, apply appropriate versioning and maintain the integrity of our published dataset DOI's we require tools to monitor and quality control changes in them. This is what butterfly aims to provide. The underlying functionality is largely based on the waldo package, and it also follows waldo's philosophy of being as verbose as possible (Wickham). 
 
 Below we describe two case studies where we applied butterfly in work done at the British Antarctic Survey.
 
-Quality assurance in continually updating and continually published ERA5-derived data.
-
-
-IceNet a sea ice prediction system based on deep learning (Andersson et al. 2021)
-
-ERA5-derived data.
-
 ## Case Study 1: unexpected changes in models
-## What is the Amundsen Sea Low Index
-At BAS, we frequently use ERA5 (Hersbach et al. 2023) as an input to climate models.
 
-The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016). To calculate the ASL indices and generate our dataset, we use ERA5 data.
+The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016). To calculate the ASL indices and generate our dataset, we use ERA5 data (Hersbach et al. 2023).
 
-### The issue with ERA5 and ERA5-Interim
+This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
 
-This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question.
+In most cases, this is not an issue. For static data publications which are a snapshot in time, such as research that uses ERA5 data and is associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526)[@Andersson_2021] or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
 
-Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+In our case however we want to continually append ERA5-derived ASL calculations **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Henrys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
 
-In most cases, this is not an issue. For static data publications which are a snapshot in time, such as data associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526)[@Andersson_2021] or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
+Continually appending **and** publishing will require strict quality assurance. Any change in any change in previous ERA5 data, will also change the results of all our previous ASL calculations. If this happened and we overwrite our dataset, we would be changing values in an already-published dataset. Or, if we append our existing dataset, anyone attempting to reproduce our methods would get different results, because previous calculations are not based on the same version of ERA5. Either way, our DOI will be invalidated.
 
-In our case however we want to continually append ERA5-derived datasets **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Henrys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
+In butterfly, `loupe()` is provided to examine in detail whether previous values have changed, and returns TRUE/FALSE for no change/change. To manipulate changed data, `catch()` "catches" the changes and returns them in a dataframe, while `release()` "releases" the changes and returns a dataframe without the detected changes.
 
-Continually appending **and** publishing will require strict quality assurance. If a published dataset is only appended, a DOI can be minted for it.  However, if the previously published data change, this will then invalidate the DOI.  For example, if you developed your code to find a better measure (more accurate, more precise) of the low pressure region, and wanted to reanalyse the previous data and republish.
+We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user. The full methods are described in this [article](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html) and source code is available in [this repository](https://github.com/antarctica/asli-pipeline) (Zwagerman & Wilby)
 
-When publishing ERA5-derived datasets, and minting it with a DOI, it is possible to continuously append without invalidating that DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. 
+## Case Study 2: unexpected changes in data acquisition
 
-We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user.
+Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. We could also mistake new data as "previous" data. This could have consequences for any calculation happening downstream.
 
-### Case Study 2: Unexpected changes in data acquisition
-
-Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. This could have consequences for any calculation happening downstream.
-
-To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`.
+To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`. It will return TRUE/FALSE depending on whether a timeseries is deemed continuous, based on an expected time step between each measurement. 
 
 ### Variable measurement frequencies
 
@@ -108,10 +83,7 @@ In this case separating distinct, but continuous segments of data is required. T
 
 Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. (2015) Increasing Accuracy: A New Design and Algorithm for Automatically Measuring Weights, Travel Direction and Radio Frequency Identification (RFID) of Penguins. PLOS ONE 10(4): e0126292. https://doi.org/10.1371/journal.pone.0126292
 
-
 Andersson, T., & Hosking, J. (2021). Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning' (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/71820e7d-c628-4e32-969f-464b7efb187c>
-
-Andersson, T.R., Hosking, J.S., Pérez-Ortiz, M. *et al.* Seasonal Arctic sea ice forecasting with probabilistic deep learning. *Nat Commun* **12**, 5124 (2021). <https://doi.org/10.1038/s41467-021-25257-4>
 
 Blair, Gordon S., and Peter A. Henrys. 2023. “The Role of Data Science in Environmental Digital Twins: In Praise of the Arrows.” Environmetrics 34 (January): Not available. <https://doi.org/10.1002/env.2789>.
 
@@ -127,4 +99,8 @@ Siddorn, John, Gordon Shaw Blair, David Boot, Justin James Henry Buck, Andrew Ki
 
 Tazi, K. (2023). Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalayas (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/b2099787-b57c-44ae-bf42-0d46d9ec87cc>
 
+Wickham, H. waldo: Find Differences Between R Objects [Computer software]. https://github.com/r-lib/waldo
+
 Wilkinson, Mark D., Michel Dumontier, IJsbrand Jan Aalbersberg, Gabrielle Appleton, Myles Axton, et al. 2016. “The FAIR Guiding Principles for Scientific Data Management and Stewardship.” Scientific Data 3 (1). <https://doi.org/10.1038/sdata.2016.18>.
+
+Zwagerman, T., & Wilby, D. asli-pipeline [Computer software]. https://github.com/antarctica/boost-eds-pipeline
