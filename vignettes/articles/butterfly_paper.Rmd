@@ -55,17 +55,22 @@ tools and methods
 
 ... for a FAIR implementation (Wilkinson et al. 2016).
 
-At the British Antarctic Survey (BAS), we developed this package to deal with a very specific issue.
+Below we describe two case studies where we applied butterfly in work done at the British Antarctic Survey.
 
 Quality assurance in continually updating and continually published ERA5-derived data.
 
-At BAS, we frequently use ERA5 (Hersbach et al. 2023) as an input to climate models.
 
 IceNet a sea ice prediction system based on deep learning (Andersson et al. 2021)
 
 ERA5-derived data.
 
-## The issue with ERA5 and ERA5-Interim
+## Case Study 1: unexpected changes in models
+## What is the Amundsen Sea Low Index
+At BAS, we frequently use ERA5 (Hersbach et al. 2023) as an input to climate models.
+
+The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016). To calculate the ASL indices and generate our dataset, we use ERA5 data.
+
+### The issue with ERA5 and ERA5-Interim
 
 This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question.
 
@@ -75,25 +80,13 @@ In most cases, this is not an issue. For static data publications which are a sn
 
 In our case however we want to continually append ERA5-derived datasets **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Henrys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
 
-Continually appending **and** publishing will require strict quality assurance. If a published dataset is only appended a DOI can be minted for it.  However, if the previously published data change, this will then invalidate the DOI.  For example, if you developed your code to find a better measure (more accurate, more precise) of the low pressure region, and wanted to reanalyse the previous data and republish.
-
-One such ERA5-derived dataset which we (will hopefully soon!) publish at BAS is the Amundsen Sea Low Index (ASLI).
-
-## What is the Amundsen Sea Low Index
-
-The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pressure system located in the Pacific sector of the Southern Ocean. In this sector, variability in sea-level pressure is greater than anywhere in the Southern Hemisphere, making it challenging to isolate local fluctuations in the ASL from larger-scale shifts in atmospheric pressure. The position and strength of the ASL are crucial for understanding regional change over West Antarctica (Hosking et al. 2016).
-
-### Unexpected changes in models
-
-This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. 
-
-Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
+Continually appending **and** publishing will require strict quality assurance. If a published dataset is only appended, a DOI can be minted for it.  However, if the previously published data change, this will then invalidate the DOI.  For example, if you developed your code to find a better measure (more accurate, more precise) of the low pressure region, and wanted to reanalyse the previous data and republish.
 
 When publishing ERA5-derived datasets, and minting it with a DOI, it is possible to continuously append without invalidating that DOI. However, recalculation would overwrite previously published data, thereby forcing a new publication and DOI to be minted. 
 
 We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user.
 
-### Unexpected changes in data acquisition
+### Case Study 2: Unexpected changes in data acquisition
 
 Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. This could have consequences for any calculation happening downstream.
 
@@ -108,8 +101,6 @@ You can read about this work in more detail in [Afanasyev et al. (2015)](https:/
 The individual crossings are the most valuables pieces of data, as these allow us to deduce some sort of information like weight, direction (from colony to sea, or sea to colony) and hopefully ultimately, diet.
 
 In this case separating distinct, but continuous segments of data is required. This is the reasoning behind `timeline_group()`. This function allows us to split our timeseries in groups of individual crossings.
-
-# Citations
 
 # Acknowledgements
 
