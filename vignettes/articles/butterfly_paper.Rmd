@@ -51,7 +51,7 @@ The Amundsen Seas Low (ASL) is a highly dynamic and mobile climatological low pr
 
 This package was originally developed to deal with [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=documentation)'s initial release data, ERA5T. ERA5T data for a month is overwritten with the final ERA5 data two months after the month in question. Usually ERA5 and ERA5T are identical, but occasionally an issue with input data can (for example for [09/21 - 12/21](https://confluence.ecmwf.int/display/CKB/ERA5T+issue+in+snow+depth), and [07/24](https://forum.ecmwf.int/t/final-validated-era5-product-to-differ-from-era5t-in-july-2024/6685)) force a recalculation, meaning previously published data differs from the final product.
 
-In most cases, this is not an issue. For static data publications which are a snapshot in time, such as research that uses ERA5 data and is associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526)[@Andersson_2021] or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
+In most cases, this is not an issue. For static data publications which are a snapshot in time, such as research that uses ERA5 data and is associated with a specific paper, as in "Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning'" [Andersson & Hosking (2021)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01526) or time period as in "Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalaya" [Tazi (2023)](https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01769), this is not an issue. These datasets clearly describe a version and time period of ERA5 from which the data were derived, and will not be amended or updated in the future, even if ERA5 is recalculated.
 
 In our case however we want to continually append ERA5-derived ASL calculations **and** continually publish them. This would be useful when functioning as a data source for an environmental digital twin (Blair & Henrys et al. 2023), or simply as input data into an environmental forecasting model which itself is frequently running.
 
@@ -63,9 +63,9 @@ We use the functionality in this package in an automated data processing pipelin
 
 ## Case Study 2: unexpected changes in data acquisition
 
-Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (say, "2021-01-01"). If we are automatically ingesting and processing this data, it would be great to get a head's up that a timeseries is no longer continuous in the way we expect it to be. We could also mistake new data as "previous" data. This could have consequences for any calculation happening downstream.
+Measuring instruments can have different behaviours when they have a power failure. For example, during power failure an internal clock could reset to "1970-01-01", or the manufacturing date (e.g. a Raspberry Pi manufactured in 2021 will return to "2021-01-01", one manufactured in 2022 to "2022-01-01" etc). If we are automatically ingesting and processing this data, it would be great to get a head's up that a time series is no longer continuous in the way we expect it to be. We could also mistake new data as "previous" data. This could have consequences for any calculation happening downstream.
 
-To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`. It will return TRUE/FALSE depending on whether a timeseries is deemed continuous, based on an expected time step between each measurement. 
+To prevent writing different ways of checking for this depending on the instrument, we wrote `butterfly::timeline()`. It will return TRUE/FALSE depending on whether a time series is deemed continuous, based on an expected time step between each measurement. 
 
 ### Variable measurement frequencies
 
@@ -81,23 +81,25 @@ In this case separating distinct, but continuous segments of data is required. T
 
 # References
 
-Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. (2015) Increasing Accuracy: A New Design and Algorithm for Automatically Measuring Weights, Travel Direction and Radio Frequency Identification (RFID) of Penguins. PLOS ONE 10(4): e0126292. https://doi.org/10.1371/journal.pone.0126292
+Expect formatting changes below
 
-Andersson, T., & Hosking, J. (2021). Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning' (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/71820e7d-c628-4e32-969f-464b7efb187c>
+Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. 2015. Increasing Accuracy: A New Design and Algorithm for Automatically Measuring Weights, Travel Direction and Radio Frequency Identification (RFID) of Penguins. PLOS ONE 10(4): e0126292. https://doi.org/10.1371/journal.pone.0126292
+
+Andersson, T., & Hosking, J. 2021. Forecasts, neural networks, and results from the paper: 'Seasonal Arctic sea ice forecasting with probabilistic deep learning' (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/71820e7d-c628-4e32-969f-464b7efb187c>
 
 Blair, Gordon S., and Peter A. Henrys. 2023. “The Role of Data Science in Environmental Digital Twins: In Praise of the Arrows.” Environmetrics 34 (January): Not available. <https://doi.org/10.1002/env.2789>.
 
 Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47
 
-Hosking, J. S., A. Orr, T. J. Bracegirdle, and J. Turner (2016), Future circulation changes off West Antarctica: Sensitivity of the Amundsen Sea Low to projected anthropogenic forcing, Geophys. Res. Lett., 43, 367–376, <doi:10.1002/2015GL067143>.
+Hosking, J. S., A. Orr, T. J. Bracegirdle, and J. Turner. 2016. Future circulation changes off West Antarctica: Sensitivity of the Amundsen Sea Low to projected anthropogenic forcing, Geophys. Res. Lett., 43, 367–376, <doi:10.1002/2015GL067143>.
 
-Klump, J., Wyborn, L., Wu, M., Martin, J., Downs, R.R. and Asmi, A. (2021) ‘Versioning Data Is About More than Revisions: A Conceptual Framework and Proposed Principles’, Data Science Journal, 20(1), p. 12. Available at: <https://doi.org/10.5334/dsj-2021-012>.
+Klump, J., Wyborn, L., Wu, M., Martin, J., Downs, R.R. and Asmi, A. 2021. ‘Versioning Data Is About More than Revisions: A Conceptual Framework and Proposed Principles’, Data Science Journal, 20(1), p. 12. Available at: <https://doi.org/10.5334/dsj-2021-012>.
 
 Preston-Werner, T. 2013. Semantic Versioning 2.0.0. Semantic Versioning. Available at <https://semver.org/spec/v2.0.0.html> [Last accessed 28 October 2024].
 
 Siddorn, John, Gordon Shaw Blair, David Boot, Justin James Henry Buck, Andrew Kingdon, et al. 2022. “An Information Management Framework for Environmental Digital Twins (IMFe).” Zenodo. <https://doi.org/10.5281/ZENODO.7004351>.
 
-Tazi, K. (2023). Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalayas (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/b2099787-b57c-44ae-bf42-0d46d9ec87cc>
+Tazi, K. 2023. Downscaled ERA5 monthly precipitation data using Multi-Fidelity Gaussian Processes between 1980 and 2012 for the Upper Beas and Sutlej Basins, Himalayas (Version 1.0) [Data set]. NERC EDS UK Polar Data Centre. <https://doi.org/10.5285/b2099787-b57c-44ae-bf42-0d46d9ec87cc>
 
 Wickham, H. waldo: Find Differences Between R Objects [Computer software]. https://github.com/r-lib/waldo
 
