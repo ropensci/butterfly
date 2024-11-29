@@ -41,6 +41,19 @@ such as invalidating a published dataset’s Digital Object Identfier
 (DOI), or altering future predictions if used as input in forecasting
 models.
 
+Other unnoticed changes could include a jump in time or measurement
+frequency, due to instrument failure or software updates.
+
+<div class="figure">
+
+<img src="man/figures/README-timeseries_dark.png" alt="An illustration of timeseries data not being continuous in the way it is expected to be." width="100%" />
+<p class="caption">
+An illustration of timeseries data not being continuous in the way it is
+expected to be.
+</p>
+
+</div>
+
 This package provides functionality that can be used as part of a data
 pipeline, to check and flag changes to previous data to prevent changes
 going unnoticed.
@@ -232,6 +245,87 @@ df_released
 #> 2 2024-02-01    17
 #> 3 2024-01-01    22
 #> 4 2023-12-01    55
+```
+
+### Checking for continuity: `timeline()`
+
+To check if a timeseries is continuous, `timeline()` and
+`timeline_group()` are provided.
+
+``` r
+# A rain gauge which measures precipitation every day
+butterfly::forestprecipitation$january
+#>         time rainfall_mm
+#> 1 2024-01-01         0.0
+#> 2 2024-01-02         2.6
+#> 3 2024-01-03         0.0
+#> 4 2024-01-04         0.0
+#> 5 2024-01-05         3.7
+#> 6 2024-01-06         0.8
+
+# In February there is a power failure in the instrument
+butterfly::forestprecipitation$february
+#>         time rainfall_mm
+#> 1 2024-02-01         1.1
+#> 2 2024-02-02         0.0
+#> 3 2024-02-03         1.4
+#> 4 2024-02-04         2.2
+#> 5 1970-01-01         3.4
+#> 6 1970-01-02         0.6
+```
+
+To check if a timeseries is continuous:
+
+``` r
+butterfly::timeline(
+   forestprecipitation$january,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+#> ✔ There are no time lags which are greater than the expected lag: 1 days. By this measure, the timeseries is continuous.
+#> [1] TRUE
+```
+
+In February our imaginary rain gauge’s onboard computer had a failure.
+
+The timestamp was reset to `1970-01-01`:
+
+``` r
+forestprecipitation$february
+#>         time rainfall_mm
+#> 1 2024-02-01         1.1
+#> 2 2024-02-02         0.0
+#> 3 2024-02-03         1.4
+#> 4 2024-02-04         2.2
+#> 5 1970-01-01         3.4
+#> 6 1970-01-02         0.6
+
+butterfly::timeline(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+#> ℹ There are time lags which are greater than the expected lag: 1 days. This indicates the timeseries is not continuous. There are 2 distinct continuous sequences. Use `timeline_group()` to extract.
+#> [1] FALSE
+```
+
+If we wanted to group chunks of our timeseries that are distinct, or
+broken up in some way, but still continuous, we can use
+`timeline_group()`:
+
+``` r
+butterfly::timeline_group(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+#>         time rainfall_mm        timelag timeline_group
+#> 1 2024-02-01         1.1        NA days              1
+#> 2 2024-02-02         0.0      1.00 days              1
+#> 3 2024-02-03         1.4      1.00 days              1
+#> 4 2024-02-04         2.2      1.00 days              1
+#> 5 1970-01-01         3.4 -19757.04 days              2
+#> 6 1970-01-02         0.6      1.00 days              2
 ```
 
 ## Relevant packages and functions

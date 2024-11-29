@@ -34,6 +34,12 @@ Data previously recorded could change for a number of reasons, such as discovery
 
 Unnoticed changes in previous data could have unintended consequences, such as invalidating a published dataset's Digital Object Identfier (DOI), or altering future predictions if used as input in forecasting models.
 
+Other unnoticed changes could include a jump in time or measurement frequency, due to instrument failure or software updates.
+
+```{r timeseries_diagram, echo=FALSE, out.width="100%", fig.cap="An illustration of timeseries data not being continuous in the way it is expected to be."}
+knitr::include_graphics("man/figures/README-timeseries_dark.png")
+```
+
 This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.
 
 ## Installation
@@ -123,6 +129,54 @@ df_released <- butterfly::release(
 )
 
 df_released
+```
+
+### Checking for continuity: `timeline()`
+
+To check if a timeseries is continuous, `timeline()` and `timeline_group()` are
+provided.
+
+```{r rain_gauge_data}
+# A rain gauge which measures precipitation every day
+butterfly::forestprecipitation$january
+
+# In February there is a power failure in the instrument
+butterfly::forestprecipitation$february
+```
+
+To check if a timeseries is continuous:
+
+```{r check_continuity}
+butterfly::timeline(
+   forestprecipitation$january,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+```
+
+In February our imaginary rain gauge's onboard computer had a failure.
+
+The timestamp was reset to `1970-01-01`:
+ 
+```{r not_continuous}
+forestprecipitation$february
+
+butterfly::timeline(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
+```
+
+If we wanted to group chunks of our timeseries that are distinct, or broken up
+in some way, but still continuous, we can use `timeline_group()`:
+
+```{r timeline_group}
+butterfly::timeline_group(
+  forestprecipitation$february,
+   datetime_variable = "time",
+   expected_lag = 1
+ )
 ```
 
 ## Relevant packages and functions

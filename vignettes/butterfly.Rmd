@@ -130,6 +130,14 @@ example, during power failure an internal clock could reset to "1970-01-01",
 or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
 ways of checking if a dataset is continuous.
 
+```{r rain_gauge_data}
+# A rain gauge which measures precipitation every day
+butterfly::forestprecipitation$january
+
+# In February there is a power failure in the instrument
+butterfly::forestprecipitation$february
+```
+
 To check if a timeseries is continuous:
 
 ```{r check_continuity}
@@ -140,12 +148,12 @@ butterfly::timeline(
  )
 ```
 
-The above is a nice continuous dataset, where there is no more than a difference
+As expected January is a continuous dataset, where there is no more than a difference
 of 1 day between timesteps.
 
 However, in February our imaginary rain gauge's onboard computer had a failure.
 
-The timestamp was reset to 1970-01-01:
+The timestamp was reset to `1970-01-01`:
  
 ```{r not_continuous}
 forestprecipitation$february
