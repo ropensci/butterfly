@@ -52,7 +52,7 @@ You can install the development version of butterfly from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("thomaszwagerman/butterfly")
+devtools::install_github("antarctica/butterfly")
 ```
 
 ## Overview
