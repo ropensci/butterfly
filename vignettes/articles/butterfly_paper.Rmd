@@ -81,7 +81,7 @@ In this case separating distinct, but continuous segments of data is required. T
 
 # References
 
-Expect formatting changes below
+Expect formatting changes below:
 
 Afanasyev V, Buldyrev SV, Dunn MJ, Robst J, Preston M, et al. 2015. Increasing Accuracy: A New Design and Algorithm for Automatically Measuring Weights, Travel Direction and Radio Frequency Identification (RFID) of Penguins. PLOS ONE 10(4): e0126292. https://doi.org/10.1371/journal.pone.0126292
 
