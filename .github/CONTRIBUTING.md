@@ -27,7 +27,7 @@ passes R CMD check by running `devtools::check()`. If R CMD check doesn't pass c
 
 * New code should follow the tidyverse [style guide](https://style.tidyverse.org). You can use the [styler](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.  
 
-*  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
+*  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://devguide.ropensci.org/maintenance_releases.html#news>.
 
 *  Before requesting a review, please make sure you have run `covr::package_coverage()`, `devtools::check()` and `pkgcheck::pkgcheck()`, as well as `devtools::build_readme`, `devtools::document()`, `devtools::build_vignettes()` or `devtools::build_site()` if you have made any changes to the README, documentation, vignettes or site.
 
