@@ -31,8 +31,7 @@ passes R CMD check by running `devtools::check()`. If R CMD check doesn't pass c
 
 *  Before requesting a review, please make sure you have run `covr::package_coverage()`, `devtools::check()` and `pkgcheck::pkgcheck()`, as well as `devtools::build_readme`, `devtools::document()`, `devtools::build_vignettes()` or `devtools::build_site()` if you have made any changes to the README, documentation, vignettes or site.
 
-* If you feel contribution is substantial enough for official author or contributor status, please add yourself to the `Authors@R` field of the [`DESCRIPTION`](https://github.com/ropensci/targets/blob/main/DESCRIPTION) file.
-
+* We follow the rOpenSci guidance on [contributor attributions](https://devguide.ropensci.org/maintenance_collaboration.html#attributions). Please feel free to add yourself to the `Authors@R` field of the [`DESCRIPTION`](https://github.com/ropensci/targets/blob/main/DESCRIPTION) file, and specify your role (e.g. "ctb" for small contributions or "aut" for bigger contributions).
 
 ## Code of Conduct
 
