@@ -1,4 +1,20 @@
-# butterfly 1.0.0
+butterfly 1.1.0 (yyyy-mm-dd)
+=========================
+
+### NEW FEATURES
+
+  * Adding new `butterfly::timeline()` function, which checks if a time series is continuous. The user can specify the difference between timesteps expected (#24).
+  * Adding new `butterfly::timeline_group()` function, which groups a time series in distinct, but continuous groups (#24).
+
+### MINOR IMPROVEMENTS
+
+  * Enabled further passing of `waldo` parameters (such as tolerance) (#18).
+  * Improved CONTRIBUTING.md (#29).
+
+butterfly 1.0.0 (2024-10-24)
+=========================
+
+### NEW FEATURES
 
 * Initial release:
 
