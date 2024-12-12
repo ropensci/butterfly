@@ -1,44 +1,38 @@
 # Contributing to butterfly
+We warmly welcome and actively encourage community contributions. This package was created with particular use cases in mind, and while an effort was made to generalise functionality, it may not work for every scenario. Further perspectives and applications will improve this package. 
 
-This outlines how to propose a change to butterfly.
-For a detailed discussion on contributing to this and other tidyverse packages, please see the [development contributing guide](https://rstd.io/tidy-contrib) and our [code review principles](https://code-review.tidyverse.org/).
+## With write access
+You can push directly to main for small fixes. Please use PRs to main for discussing larger updates.
 
-## Fixing typos
+## Without write access
+Corrections, suggestions and general improvements are welcome as [issues](https://github.com/antarctica/butterfly/issues).
 
-You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file. 
-This generally means you'll need to edit [roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a `.Rd` file. 
-You can find the `.R` file that generates the `.Rd` by reading the comment in the first line.
+You can also suggest changes by forking this repository, and opening a pull request. Please target your pull requests to the main branch.
 
-## Bigger changes
-
-If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed. 
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal 
-[reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed).
-See our guide on [how to create a great issue](https://code-review.tidyverse.org/issues/) for more advice.
+reprex(this will also help you write a unit test, if needed). See the tidyverse guidance on [how to create a great issue](https://code-review.tidyverse.org/issues/) for more advice.
 
 ### Pull request process
 
-*   Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("thomaszwagerman/butterfly", fork = TRUE)`.
+* Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("antarctica/butterfly", fork = TRUE)`.
 
-*   Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`. 
-    If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing. 
-*   Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
+* Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package
+passes R CMD check by running `devtools::check()`. If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing. 
 
-*   Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
-    The title of your PR should briefly describe the change.
-    The body of your PR should contain `Fixes #issue-number`.
+* Create a Git branch for your pull request (PR). We recommend using `usethis::pr_init("brief-description-of-change")`.
+
+* Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser. The title of your PR should briefly describe the change. The body of your PR should contain `Fixes #issue-number`.
+
+* We use [testthat](https://cran.r-project.org/package=testthat) for unit tests. If you create new functionality, or change existing functionality, please make sure all functionality is covered by tests, run `covr::package_coverage()` to check this.
+
+* New code should follow the tidyverse [style guide](https://style.tidyverse.org). You can use the [styler](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.  
 
 *  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
 
-### Code style
+*  Before requesting a review, please make sure you have run `covr::package_coverage()`, `devtools::check()` and `pkgcheck::pkgcheck()`, as well as `devtools::build_readme`, `devtools::document()`, `devtools::build_vignettes()` or `devtools::build_site()` if you have made any changes to the README, documentation, vignettes or site.
 
-*   New code should follow the tidyverse [style guide](https://style.tidyverse.org). 
-    You can use the [styler](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.  
+* If you feel contribution is substantial enough for official author or contributor status, please add yourself to the `Authors@R` field of the [`DESCRIPTION`](https://github.com/ropensci/targets/blob/main/DESCRIPTION) file.
 
-*  We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.  
-
-*  We use [testthat](https://cran.r-project.org/package=testthat) for unit tests. 
-   Contributions with test cases included are easier to accept.  
 
 ## Code of Conduct
 
