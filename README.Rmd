@@ -194,3 +194,12 @@ Other functions include `all.equal()` (base R) or [dplyr](https://github.com/tid
 ## `butterfly` in production
 
 Read more about how `butterfly` is [used in an operational data pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html) to verify a continually updated **and** published dataset.
+
+## Contributing
+### Without write access
+Corrections, suggestions and general improvements are welcome as issues.
+
+You can also suggest changes by forking this repository, and opening a pull request. Please target your pull requests to the main branch.
+
+### With write access
+You can push directly to main for small fixes. Please use PRs to main for discussing larger updates.
