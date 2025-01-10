@@ -138,6 +138,8 @@ export FILE_IDENTIFIER=${CURRENT_YEAR}
 
 Now that we have set our configuration, let's inspect the shell script which actually runs our pipeline, `run_asli_pipeline.sh`.
 
+These scripts would be run in a Bash shell, e.g. to run this script you would use `bash run_asli_pipeline.sh` in a terminal.
+
 ```bash
 #!/bin/bash
 set -e
