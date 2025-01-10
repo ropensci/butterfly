@@ -12,6 +12,10 @@
 #'
 #' It informs the user of new (unmatched) rows which have appeared, and then
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes.
+#' 
+#' `loupe()` will then return TRUE if there are not changes to previous data,
+#' or FALSE if there are unexpected changes. If you want to extract changes as
+#' a dataframe, use `catch()`, or if you want to drop them, use `release()`.
 #'
 #' The main assumption is that `df_current` and `df_previous` are a newer and
 #' older versions of the same data, and that the `datetime_variable` variable

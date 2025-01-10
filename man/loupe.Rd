@@ -37,6 +37,10 @@ This function matches two dataframe objects by their unique identifier
 It informs the user of new (unmatched) rows which have appeared, and then
 returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
 
+\code{loupe()} will then return TRUE if there are not changes to previous data,
+or FALSE if there are unexpected changes. If you want to extract changes as
+a dataframe, use \code{catch()}, or if you want to drop them, use \code{release()}.
+
 The main assumption is that \code{df_current} and \code{df_previous} are a newer and
 older versions of the same data, and that the \code{datetime_variable} variable
 name always remains the same. Elsewhere new columns can of appear, and these
