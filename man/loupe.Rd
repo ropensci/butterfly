@@ -35,7 +35,9 @@ This function matches two dataframe objects by their unique identifier
 (usually "time" or "datetime in a timeseries).
 
 It informs the user of new (unmatched) rows which have appeared, and then
-returns a \code{waldo::compare()} call to give a detailed breakdown of changes.
+returns a \code{waldo::compare()} call to give a detailed breakdown of changes. If
+you are not familiar with \code{waldo::compare()}, this is an expanded and more
+verbose function similar to base R's \code{all.equal()}.
 
 \code{loupe()} will then return TRUE if there are not changes to previous data,
 or FALSE if there are unexpected changes. If you want to extract changes as
