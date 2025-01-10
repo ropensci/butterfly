@@ -378,6 +378,9 @@ to verify a continually updated **and** published dataset.
 
 ## Contributing
 
+For full guidance on contributions, please refer to
+`.github/CONTRIBUTING.md`
+
 ### Without write access
 
 Corrections, suggestions and general improvements are welcome as issues.
