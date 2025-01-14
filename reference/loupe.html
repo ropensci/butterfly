@@ -86,7 +86,12 @@ previous values remains unchanged.</p>
 <p>This function matches two dataframe objects by their unique identifier
 (usually "time" or "datetime in a timeseries).</p>
 <p>It informs the user of new (unmatched) rows which have appeared, and then
-returns a <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> call to give a detailed breakdown of changes.</p>
+returns a <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> call to give a detailed breakdown of changes. If
+you are not familiar with <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code>, this is an expanded and more
+verbose function similar to base R's <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>.</p>
+<p><code>loupe()</code> will then return TRUE if there are not changes to previous data,
+or FALSE if there are unexpected changes. If you want to extract changes as
+a dataframe, use <code><a href="catch.html">catch()</a></code>, or if you want to drop them, use <code><a href="release.html">release()</a></code>.</p>
 <p>The main assumption is that <code>df_current</code> and <code>df_previous</code> are a newer and
 older versions of the same data, and that the <code>datetime_variable</code> variable
 name always remains the same. Elsewhere new columns can of appear, and these

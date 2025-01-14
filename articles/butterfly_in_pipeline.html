@@ -303,7 +303,12 @@ data:</p>
 <p>Firstly let’s look at our configuration, which is stored in an
 <code>ENVS</code> file. This determines the locations of our input data,
 our output data and where we will eventually publish our data, among
-other useful parameters:</p>
+other useful parameters.</p>
+<p>If you are not familiar with an <code>ENVS</code> file, this is a
+text file which exports environmental variables that subsequently be
+used as part of a Bash shell script. Using an ENVS file is useful, as it
+allows us to quickly change pipeline parameters, without altering the
+code of the pipeline itself.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">## Directories</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Should not need editing, but you can do so if you wish</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># Location that pipeline is stored, referenced by most scripts</span></span>
@@ -344,6 +349,8 @@ other useful parameters:</p>
 <p>Now that we have set our configuration, let’s inspect the shell
 script which actually runs our pipeline,
 <code>run_asli_pipeline.sh</code>.</p>
+<p>These scripts would be run in a Bash shell, e.g. to run this script
+you would use <code>bash run_asli_pipeline.sh</code> in a terminal.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
@@ -365,7 +372,8 @@ script which actually runs our pipeline,
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="cf">fi</span></span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 <p>The above concerns setting up our pipeline with input and output
-directories, as well as fetching all environmental variables.</p>
+directories, as well as fetching all environmental variables, by
+sourcing <code>ENVS</code>.</p>
 <p>Next is the calculation step, using the functionality from the
 <code>asli</code> package:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Fetch land sea mask, automatically writes in data directory</span></span>
@@ -379,12 +387,13 @@ directories, as well as fetching all environmental variables.</p>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co"># Run calculation, specifying output location</span></span>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="ex">asli_calc</span> <span class="va">$DATA_DIR</span>/era5_mean_sea_level_pressure_monthly_<span class="pp">*</span>.nc <span class="at">-o</span> <span class="va">$OUTPUT_DIR</span>/asli_calculation_<span class="va">$FILE_IDENTIFIER</span>.csv</span></code></pre></div>
 <p>Lovely, we now have our calculations ready in
-<code>$OUTPUT_DIR</code>, to rsync to a location given to us by the PDC.
-To do so for the first time, we will run:</p>
+<code>$OUTPUT_DIR</code>, to rsync to a location given to us by the UK
+Polar Data Centre (UK PDC). To do so for the first time, we will
+run:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="va">$OUTPUT_DIR</span>/<span class="pp">*</span>.csv <span class="va">$RSYNC_LOCATION</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Writing to </span><span class="va">$RSYNC_LOCATION</span><span class="st">."</span></span></code></pre></div>
-<p>Let’s pretend this was our first submission to the PDC. For any
-subsequent submission, we will want to use <code>butterfly</code> to
+<p>Let’s pretend that this was our first submission to the UK PDC. For
+any subsequent submission, we will want to use <code>butterfly</code> to
 compare our new results with the file we have just submitted to the
 <code>$RSYNC_LOCATION</code>, to make sure previous values have not
 changed.</p>
@@ -394,17 +403,17 @@ pipeline<a class="anchor" aria-label="anchor" href="#incorporate-r-and-butterfly
 </h4>
 <p>We are going to implement this in an R script called
 <code>quality_control.R</code>, but we will have to provide it with our
-new calculations and the calculations we did previously and transferred
-to <code>$RSYNC_LOCATION</code>, like:</p>
+new results and the results we submitted to the UK PDC, in the
+<code>$RSYNC_LOCATION</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">Rscript</span> quality_control.R <span class="st">"</span><span class="va">$OUTPUT_DIR</span><span class="st">/asli_calculation_</span><span class="va">$FILE_IDENTIFIER</span><span class="st">.csv"</span> <span class="st">"</span><span class="va">$RSYNC_LOCATION</span><span class="st">/asli_calculation_</span><span class="va">$FILE_IDENTIFIER</span><span class="st">.csv"</span></span></code></pre></div>
 <p>Here, <code>$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv</code>
 is our most recent calculation, in <code>quality_control.R</code> this
 will be referred to as <code>args[1]</code>. The previous calculation,
 <code>$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv</code>, will
 be <code>args[2]</code>.</p>
-<p>Let’s have a look at <code>quality_control.R</code> now. We started
-off with making this script executable by the shell, provide the user
-with some instructions on how to use the script, and by obtaining the
+<p>Let’s have a look at <code>quality_control.R</code> now. We start off
+with making this script executable by the shell, provide the user with
+some instructions on how to use the script, and by obtaining the
 arguments it was given in <code>args</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#!/usr/bin/env Rscript</span></span>
@@ -418,7 +427,7 @@ so we read in our files:</p>
 <code class="sourceCode R"><span><span class="co"># Test if there is two arguments: the output and previous file</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">args</span><span class="op">)</span><span class="op">!=</span><span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Please provide the output file, and the file it is being compared to"</span>, call.<span class="op">=</span><span class="cn">FALSE</span></span>
+<span>    <span class="st">"Please provide the output file, and the file it is being compared to"</span>, call. <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span></span>
@@ -434,9 +443,9 @@ so we read in our files:</p>
 <p>Great! Now that the files have been read in, we can start our
 verification using <code>butterfly</code>.</p>
 <p>In this case, we will use <code><a href="../reference/loupe.html">butterfly::loupe()</a></code> to give us
-our report, and return either TRUE (previous data has not changed, we
-are happy to proceed) or FALSE (a change in previous data has been
-detected, and we should abort data transfer).</p>
+our report, and return either <code>TRUE</code> (previous data has not
+changed, we are happy to proceed) or <code>FALSE</code> (a change in
+previous data has been detected, and we should abort data transfer).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use butterfly to check there are no changes to past data</span></span>
 <span><span class="va">qa_outcome</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>

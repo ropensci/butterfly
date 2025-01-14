@@ -79,9 +79,20 @@ continuous.</p>
 <p>Unnoticed changes in previous data could have unintended
 consequences, such as invalidating DOIs, or altering future predictions
 if used as input in forecasting models.</p>
+<p>Other unnoticed changes could include a jump in time or measurement
+frequency, due to instrument failure or software updates.</p>
 <p>This package provides functionality that can be used as part of a
 data pipeline, to check and flag changes to previous data to prevent
 changes going unnoticed.</p>
+<p>You can provide butterfly with a timeseries dataset to check for
+continuity, with <code><a href="../reference/timeline.html">timeline()</a></code>, and if it is not fully
+continuous as expected, split it into continuous chunks with
+<code><a href="../reference/timeline_group.html">timeline_group()</a></code>. To check for changes to previous data,
+you can provide two versions of the <em>same</em> dataset, and
+<code><a href="../reference/loupe.html">loupe()</a></code> will check if there are changes to matching rows,
+and tell you which rows are new. You can use <code><a href="../reference/catch.html">catch()</a></code> and
+<code><a href="../reference/release.html">release()</a></code> to extract or remove rows with changes. Full
+examples of functionality are provided below.</p>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
@@ -129,7 +140,7 @@ of butterfly counts for a given date.</p>
 <span><span class="co">#&gt; 4 2024-01-01    22 Admiral</span></span>
 <span><span class="co">#&gt; 5 2024-12-01    55 Admiral</span></span>
 <span><span class="co">#&gt; 6 2024-11-01    18 Admiral</span></span></code></pre></div>
-<p>This dataset is entirely fictional, and merely included to aid
+<p>This dataset is entirely fictional, and merely included to aid in
 demonstrating butterfly’s functionality.</p>
 <p>Another dummy dataset, <code>forestprecipitation</code>, also
 contains a list of monthly dataframes, but for fictional rainfall data.
@@ -198,6 +209,11 @@ to match the new and old objects using a common unique identifier, which
 in a timeseries will be the timestep. <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> is
 then used to compare these and provide a detailed report of the
 differences.</p>
+<p>In addition to a report, <code><a href="../reference/loupe.html">loupe()</a></code> also returns
+<code>TRUE</code> if there are no differences and <code>FALSE</code>
+when there are differences. This is especially useful when using
+butterfly in a pipeline that runs in a shell environment, a check for
+differences to fail gracefully.</p>
 <p><code>butterfly</code> follows the <code>waldo</code> philosophy of
 erring on the side of providing too much information, rather than too
 little. It will give a detailed feedback message on the status between
@@ -205,11 +221,11 @@ two objects.</p>
 <div class="section level3">
 <h3 id="additional-arguments-from-waldocompare">Additional arguments from <code>waldo::compare()</code><a class="anchor" aria-label="anchor" href="#additional-arguments-from-waldocompare"></a>
 </h3>
-<p>You have the flexibility to pass further arguments that
-<code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> accepts, to any butterfly function, for
-instance to specify the tolerance.</p>
-<p>If we add a tolerance of 2 to the previous example, no differences
-should be returned:</p>
+<p>You have the flexibility to pass further arguments accepted by
+<code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code>to any of <code><a href="../reference/loupe.html">loupe()</a></code>,
+<code><a href="../reference/catch.html">catch()</a></code> or <code><a href="../reference/release.html">release()</a></code>.</p>
+<p>One such argument is <code>tolerance</code>. If we add a tolerance of
+2 to the previous example, no differences should be returned:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/loupe.html">loupe</a></span><span class="op">(</span></span>
 <span>  <span class="va">butterflycount</span><span class="op">$</span><span class="va">march</span>,</span>
@@ -222,14 +238,15 @@ should be returned:</p>
 <span><span class="co">#&gt; 1 2024-03-01    23</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">And there are no differences with previous data.</span></span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-<p>Call <code>?waldo::compare()</code> to see the full list of
+<p>See <code>?waldo::compare()</code> for the full list of
 arguments.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="extracting-unexpected-changes-catch">Extracting unexpected changes: <code>catch()</code><a class="anchor" aria-label="anchor" href="#extracting-unexpected-changes-catch"></a>
 </h2>
-<p>You might want to return changed rows as a dataframe. For this
+<p>You might want to return changed rows as a dataframe, instead of
+returning <code>TRUE</code>/<code>FALSE</code>. For this
 <code><a href="../reference/catch.html">butterfly::catch()</a></code>is provided.</p>
 <p><code><a href="../reference/catch.html">butterfly::catch()</a></code> only returns rows which have
 <strong>changed</strong> from the previous version. It will not return
@@ -266,7 +283,7 @@ new rows.</p>
 <h2 id="dropping-unexpected-changes-release">Dropping unexpected changes: <code>release()</code><a class="anchor" aria-label="anchor" href="#dropping-unexpected-changes-release"></a>
 </h2>
 <p>Conversely, <code><a href="../reference/release.html">butterfly::release()</a></code> drops all rows which
-had changed from the previous version. Note it retains new rows, as
+have changed from the previous version. Note it retains new rows, as
 these were expected.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_released</span> <span class="op">&lt;-</span> <span class="fu">butterfly</span><span class="fu">::</span><span class="fu"><a href="../reference/release.html">release</a></span><span class="op">(</span></span>
@@ -340,8 +357,9 @@ not contain obvious gaps, this does not automatically mean it is also
 continuous.</p>
 <p>Measuring instruments can have different behaviours when they fail.
 For example, during power failure an internal clock could reset to
-“1970-01-01”, or the manufacturing date (say, “2021-01-01”). This leads
-to unpredictable ways of checking if a dataset is continuous.</p>
+“1970-01-01”, or the manufacturing date (e.g. “2021-01-01”, this is
+common behaviour for Raspberry Pi’s). This leads to unpredictable ways
+of checking if a dataset is continuous.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A rain gauge which measures precipitation every day</span></span>
 <span><span class="fu">butterfly</span><span class="fu">::</span><span class="va"><a href="../reference/forestprecipitation.html">forestprecipitation</a></span><span class="op">$</span><span class="va">january</span></span>
@@ -476,21 +494,23 @@ the instrument, we wrote <code><a href="../reference/timeline.html">butterfly::t
 <p>In other cases, a non-continuous timeseries is intentional, for
 example when there is temporal variability in the measurements taken
 depending on events. At BAS, we collect data from a penguin weighbridge
-on weighbridge on Bird Island, South Georgia. This weighbridge measure
-weight on two different load cells (scales) to determine penguin weight
-and direction.</p>
+on Bird Island, South Georgia. This weighbridge measure weight on two
+different load cells (scales), one on the colony side and one on the
+ocean side, to determine penguin weight and the direction they came
+from. The idea is that we may be able to derive information on their
+diet, as they return from the ocean to the colony.</p>
 <p>You can read about this work in more detail in <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292" class="external-link">Afanasyev
 et al. (2015)</a>, but the important point here is that the weighbridge
-does not collect continuous measurement. When no weight is detected on
-the load cells, it only samples at 1hz, but as soon as any change in
-weight is detected it will start collecting data at 100hz. This is of
-course intentional, to reduce the sheer volume of data we need to
-process, but also has another benefit in isolating (or attempting to)
-individual crossings.</p>
+does not collect continuous measurements. In a remote, off-grid location
+this would drain batteries far too quickly.</p>
+<p>Therefore, when no weight is detected on the load cells it only
+samples at 1hz, but as soon as any change in weight is detected it will
+start collecting data at 100hz. This is of course intentional, to reduce
+the sheer volume of data we need to process, but also has another
+benefit in isolating (or attempting to) individual crossings.</p>
 <p>The individual crossings are the most valuables pieces of data, as
-these allow us to deduce some sort of information like weight, direction
-(from colony to sea, or sea to colony) and hopefully ultimately,
-diet.</p>
+these allow us to deduce information on weight, direction and
+ultimately, diet.</p>
 <p>In this case separating distinct, but continuous segments of data is
 required. This is the reasoning behind <code><a href="../reference/timeline_group.html">timeline_group()</a></code>.
 This function allows us to split our timeseries in groups of individual
