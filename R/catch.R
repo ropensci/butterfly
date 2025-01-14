@@ -49,7 +49,7 @@ catch <- function(
       bullet_col = "orange"
     )
   } else {
-    # By using an inner join, we drop any row which does not match in
+    # By using an anti join, we drop any row which does not match in
     # df_previous.
     df_rows_changed_from_previous <- suppressMessages(
       dplyr::anti_join(

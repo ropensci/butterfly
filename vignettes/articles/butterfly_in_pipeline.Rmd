@@ -96,7 +96,9 @@ This is what will be submitted to the PDC.
 
 ### Configuration
 
-Firstly let's look at our configuration, which is stored in an `ENVS` file. This determines the locations of our input data, our output data and where we will eventually publish our data, among other useful parameters:
+Firstly let's look at our configuration, which is stored in an `ENVS` file. This determines the locations of our input data, our output data and where we will eventually publish our data, among other useful parameters.
+
+If you are not familiar with an `ENVS` file, this is a text file which exports environmental variables that subsequently be used as part of a Bash shell script. Using an ENVS file is useful, as it allows us to quickly change pipeline parameters, without altering the code of the pipeline itself.  
 
 ```bash
 ## Directories
@@ -138,6 +140,8 @@ export FILE_IDENTIFIER=${CURRENT_YEAR}
 
 Now that we have set our configuration, let's inspect the shell script which actually runs our pipeline, `run_asli_pipeline.sh`.
 
+These scripts would be run in a Bash shell, e.g. to run this script you would use `bash run_asli_pipeline.sh` in a terminal.
+
 ```bash
 #!/bin/bash
 set -e
@@ -161,7 +165,7 @@ do
 done
 ```
 
-The above concerns setting up our pipeline with input and output directories, as well as fetching all environmental variables.
+The above concerns setting up our pipeline with input and output directories, as well as fetching all environmental variables, by sourcing `ENVS`.
 
 Next is the calculation step, using the functionality from the `asli` package:
 
@@ -178,18 +182,18 @@ asli_data_era5 $DATA_ARGS_ERA5
 asli_calc $DATA_DIR/era5_mean_sea_level_pressure_monthly_*.nc -o $OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv
 ```
 
-Lovely, we now have our calculations ready in `$OUTPUT_DIR`, to rsync to a location given to us by the PDC. To do so for the first time, we will run:
+Lovely, we now have our calculations ready in `$OUTPUT_DIR`, to rsync to a location given to us by the UK Polar Data Centre (UK PDC). To do so for the first time, we will run:
 
 ```bash
 rsync $OUTPUT_DIR/*.csv $RSYNC_LOCATION
 echo "Writing to $RSYNC_LOCATION."
 ```
 
-Let's pretend this was our first submission to the PDC. For any subsequent submission, we will want to use `butterfly` to compare our new results with the file we have just submitted to the `$RSYNC_LOCATION`, to make sure previous values have not changed.
+Let's pretend that this was our first submission to the UK PDC. For any subsequent submission, we will want to use `butterfly` to compare our new results with the file we have just submitted to the `$RSYNC_LOCATION`, to make sure previous values have not changed.
 
 #### Incorporate R and `butterfly` into a shell-scripted pipeline
 
-We are going to implement this in an R script called `quality_control.R`, but we will have to provide it with our new calculations and the calculations we did previously and transferred to `$RSYNC_LOCATION`, like:
+We are going to implement this in an R script called `quality_control.R`, but we will have to provide it with our new results and the results we submitted to the UK PDC, in the `$RSYNC_LOCATION`:
 
 ```bash
 Rscript quality_control.R "$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv" "$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv"
@@ -198,7 +202,7 @@ Rscript quality_control.R "$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv" "$
 Here, `$OUTPUT_DIR/asli_calculation_$FILE_IDENTIFIER.csv` is our most recent calculation, in `quality_control.R` this will be referred to as `args[1]`. 
 The previous calculation, `$RSYNC_LOCATION/asli_calculation_$FILE_IDENTIFIER.csv`, will be `args[2]`.
 
-Let's have a look at `quality_control.R` now. We started off with making this script executable by the shell, provide the user with some instructions on how to use the script, and by obtaining the arguments it was given in `args`.
+Let's have a look at `quality_control.R` now. We start off with making this script executable by the shell, provide the user with some instructions on how to use the script, and by obtaining the arguments it was given in `args`.
 
 ```R
 #!/usr/bin/env Rscript
@@ -214,7 +218,7 @@ Next, we will test if those arguments were actually provided, and if so we read 
 # Test if there is two arguments: the output and previous file
 if (length(args)!=2) {
   stop(
-    "Please provide the output file, and the file it is being compared to", call.=FALSE
+    "Please provide the output file, and the file it is being compared to", call. = FALSE
   )
 } else {
 
@@ -231,7 +235,7 @@ existing_file <- readr::read_csv(
 
 Great! Now that the files have been read in, we can start our verification using `butterfly`.
 
-In this case, we will use `butterfly::loupe()` to give us our report, and return either TRUE (previous data has not changed, we are happy to proceed) or FALSE (a change in previous data has been detected, and we should abort data transfer).
+In this case, we will use `butterfly::loupe()` to give us our report, and return either `TRUE` (previous data has not changed, we are happy to proceed) or `FALSE` (a change in previous data has been detected, and we should abort data transfer).
 
 ```R
 # Use butterfly to check there are no changes to past data
