@@ -33,7 +33,7 @@ library(butterfly)
 butterflycount
 ```
 
-This dataset is entirely fictional, and merely included to aid demonstrating butterfly's functionality.
+This dataset is entirely fictional, and merely included to aid in demonstrating butterfly's functionality.
 
 Another dummy dataset, `forestprecipitation`, also contains a list of monthly dataframes, but for fictional rainfall data. This dataset is intended to illustrate an instance of instrument failure leading to timesteps being recorded out of sync.
 
@@ -61,13 +61,15 @@ butterfly::loupe(
 
 `butterfly::loupe()` uses `dplyr::semi_join()` to match the new and old objects using a common unique identifier, which in a timeseries will be the timestep. `waldo::compare()` is then used to compare these and provide a detailed report of the differences.
 
+In addition to a report, `loupe()` also returns `TRUE` if there are no differences and `FALSE` when there are differences. This is especially useful when using butterfly in a pipeline that runs in a shell environment, a check for differences to fail gracefully.
+
 `butterfly` follows the `waldo` philosophy of erring on the side of providing too much information, rather than too little. It will give a detailed feedback message on the status between two objects.
 
 ### Additional arguments from `waldo::compare()`
 
-You have the flexibility to pass further arguments that `waldo::compare()` accepts, to any butterfly function, for instance to specify the tolerance.
+You have the flexibility to pass further arguments accepted by `waldo::compare()`to any of `loupe()`, `catch()` or `release()`. 
 
-If we add a tolerance of 2 to the previous example, no differences should be returned:
+One such argument is `tolerance`. If we add a tolerance of 2 to the previous example, no differences should be returned:
 
 ```{r tolerance_example}
 butterfly::loupe(
@@ -78,11 +80,11 @@ butterfly::loupe(
 )
 ```
 
-Call `?waldo::compare()` to see the full list of arguments.
+See `?waldo::compare()` for the full list of arguments.
 
 ## Extracting unexpected changes: `catch()`
 
-You might want to return changed rows as a dataframe. For this `butterfly::catch()`is provided.
+You might want to return changed rows as a dataframe, instead of returning `TRUE`/`FALSE`. For this `butterfly::catch()`is provided.
 
 `butterfly::catch()` only returns rows which have **changed** from the previous version. It will not return new rows.
 
@@ -98,7 +100,7 @@ df_caught
 
 ## Dropping unexpected changes: `release()`
 
-Conversely, `butterfly::release()` drops all rows which had changed from the previous version. Note it retains new rows, as these were expected.
+Conversely, `butterfly::release()` drops all rows which have changed from the previous version. Note it retains new rows, as these were expected.
 
 ```{r butterfly_release}
 df_released <- butterfly::release(
@@ -131,7 +133,7 @@ automatically mean it is also continuous.
 
 Measuring instruments can have different behaviours when they fail. For
 example, during power failure an internal clock could reset to "1970-01-01",
-or the manufacturing date (say, "2021-01-01"). This leads to unpredictable
+or the manufacturing date (e.g. "2021-01-01", this is common behaviour for Raspberry Pi's). This leads to unpredictable
 ways of checking if a dataset is continuous.
 
 ```{r rain_gauge_data}
@@ -215,11 +217,13 @@ To prevent writing different ways of checking for this depending on the instrume
 
 ### Variable measurement frequencies
 
-In other cases, a non-continuous timeseries is intentional, for example when there is temporal variability in the measurements taken depending on events. At BAS, we collect data from a penguin weighbridge on weighbridge on Bird Island, South Georgia. This weighbridge measure weight on two different load cells (scales) to determine penguin weight and direction.
+In other cases, a non-continuous timeseries is intentional, for example when there is temporal variability in the measurements taken depending on events. At BAS, we collect data from a penguin weighbridge on Bird Island, South Georgia. This weighbridge measure weight on two different load cells (scales), one on the colony side and one on the ocean side, to determine penguin weight and the direction they came from. The idea is that we may be able to derive information on their diet, as they return from the ocean to the colony.
 
-You can read about this work in more detail in [Afanasyev et al. (2015)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292), but the important point here is that the weighbridge does not collect continuous measurement. When no weight is detected on the load cells, it only samples at 1hz, but as soon as any change in weight is detected it will start collecting data at 100hz. This is of course intentional, to reduce the sheer volume of data we need to process, but also has another benefit in isolating (or attempting to) individual crossings.
+You can read about this work in more detail in [Afanasyev et al. (2015)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126292), but the important point here is that the weighbridge does not collect continuous measurements. In a remote, off-grid location this would drain batteries far too quickly.
 
-The individual crossings are the most valuables pieces of data, as these allow us to deduce some sort of information like weight, direction (from colony to sea, or sea to colony) and hopefully ultimately, diet.
+Therefore, when no weight is detected on the load cells it only samples at 1hz, but as soon as any change in weight is detected it will start collecting data at 100hz. This is of course intentional, to reduce the sheer volume of data we need to process, but also has another benefit in isolating (or attempting to) individual crossings.
+
+The individual crossings are the most valuables pieces of data, as these allow us to deduce information on weight, direction and ultimately, diet.
 
 In this case separating distinct, but continuous segments of data is required. This is the reasoning behind `timeline_group()`. This function allows us to split our timeseries in groups of individual crossings.
 
