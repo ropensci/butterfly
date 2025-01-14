@@ -18,7 +18,11 @@ The goal of butterfly is to aid in the verification of continually updating time
 
 Unnoticed changes in previous data could have unintended consequences, such as invalidating DOIs, or altering future predictions if used as input in forecasting models.
 
+Other unnoticed changes could include a jump in time or measurement frequency, due to instrument failure or software updates.
+
 This package provides functionality that can be used as part of a data pipeline, to check and flag changes to previous data to prevent changes going unnoticed.
+
+You can provide butterfly with a timeseries dataset to check for continuity, with `timeline()`, and if it is not fully continuous as expected, split it into continuous chunks with `timeline_group()`. To check for changes to previous data, you can provide two versions of the *same* dataset, and `loupe()` will check if there are changes to matching rows, and tell you which rows are new. You can use `catch()` and `release()` to extract or remove rows with changes. Full examples of functionality are provided below.
 
 ## Data
 
