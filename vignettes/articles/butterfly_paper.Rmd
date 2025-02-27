@@ -105,4 +105,4 @@ Wickham, H. waldo: Find Differences Between R Objects [Computer software]. https
 
 Wilkinson, Mark D., Michel Dumontier, IJsbrand Jan Aalbersberg, Gabrielle Appleton, Myles Axton, et al. 2016. “The FAIR Guiding Principles for Scientific Data Management and Stewardship.” Scientific Data 3 (1). <https://doi.org/10.1038/sdata.2016.18>.
 
-Zwagerman, T., & Wilby, D. asli-pipeline [Computer software]. https://github.com/antarctica/boost-eds-pipeline
+Zwagerman, T., & Wilby, D. (2024). asli-pipeline (0.1.0). Zenodo. https://doi.org/10.5281/zenodo.14552486

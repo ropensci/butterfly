@@ -326,4 +326,4 @@ Hosking, J. S., A. Orr, T. J. Bracegirdle, and J. Turner (2016), Future circulat
 
 Hosking, J. S., & Wilby, D. asli [Computer software]. https://github.com/scotthosking/amundsen-sea-low-index
 
-Zwagerman, T., & Wilby, D. asli-pipeline [Computer software]. https://github.com/antarctica/boost-eds-pipeline
+Zwagerman, T., & Wilby, D. (2024). asli-pipeline (0.1.0). Zenodo. https://doi.org/10.5281/zenodo.14552486

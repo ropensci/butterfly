@@ -30,7 +30,8 @@
 #' a timeseries to be classed as continuous. Any difference greater than
 #' `expected_lag` will indicate a timeseries is not continuous. Default is 1.
 #' The smallest units of measurement present in the column will be used. In a
-#' column formatted YYYY-MM-DD day will be used.
+#' column formatted YYYY-MM-DD day will be used, therefore 1 would be 1 day, 7
+#' would be a week.
 #'
 #' @returns A data.frame, identical to `df_current`, but with extra columns
 #' `timeline_group`, which assigns a number to each continuous sets of
