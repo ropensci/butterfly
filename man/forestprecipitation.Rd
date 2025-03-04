@@ -5,7 +5,7 @@
 \alias{forestprecipitation}
 \title{Forest precipitation dummy data}
 \format{
-\subsection{\code{butterflycount}}{
+\subsection{\code{forestprecipitation}}{
 
 A list with 2 dataframes (january, february) containing 2 columns,
 and 6 rows. February intentionally resets to 1970-01-01

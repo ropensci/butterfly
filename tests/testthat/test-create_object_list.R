@@ -104,3 +104,56 @@ test_that("passing of additional waldo arguments works as expected", {
     create_object_list_output$butterfly_status
   )
 })
+
+test_that("response is as expected with messy data", {
+  # The messy data (butterflymess) is randomly generated
+  # So we expect changes in the data
+  create_object_list_output <- create_object_list(
+    butterflymess$march,
+    butterflymess$february,
+    datetime_variable = "time"
+  )
+
+  testthat::expect_false(
+    create_object_list_output$butterfly_status
+  )
+})
+
+test_that("error when no new rows with messy data", {
+  # This should occur when dfs are identical
+  expect_error(
+    create_object_list(
+      butterflymess$january,
+      butterflymess$january,
+      datetime_variable = "time"
+    )
+  )
+  # And when the previous/current dfs have been swapped.
+  expect_error(
+    create_object_list(
+      butterflymess$january,
+      butterflymess$february,
+      datetime_variable = "time"
+    )
+  )
+})
+
+test_that("correct message is fed back with messy data", {
+  expect_output(
+    create_object_list(
+      butterflymess$february,
+      butterflymess$january,
+      datetime_variable = "time"
+    ),
+    "The following rows are new in"
+  )
+
+  expect_output(
+    create_object_list(
+      butterflymess$march,
+      butterflymess$february,
+      datetime_variable = "time"
+    ),
+    "The following values have changes from the previous data."
+  )
+})

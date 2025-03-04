@@ -65,6 +65,7 @@ There are also dummy datasets, which a fictional and purely to demonstrate butte
 
   * `butterflycount` - a list of monthly dataframes, which contain fictional butterfly counts for a given date.
   * `forestprecipitation` - a list of monthly dataframes, which contain fictional daily precipitation measurements for a given date.
+  * `butterflymess` - a messy version of `butterflycount`, provided for testing purposes.
 
 ## Examples
 
