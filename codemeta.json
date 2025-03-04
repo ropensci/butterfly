@@ -4,10 +4,10 @@
   "identifier": "butterfly",
   "description": "Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.",
   "name": "butterfly: Verification For Continually Updating Timeseries Data",
-  "codeRepository": "https://github.com/thomaszwagerman/butterfly",
-  "issueTracker": "https://github.com/thomaszwagerman/butterfly/issues",
+  "codeRepository": "https://github.com/antarctica/butterfly",
+  "issueTracker": "https://github.com/antarctica/butterfly/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -140,7 +140,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "416.405KB",
+  "fileSize": "506.435KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -155,8 +155,8 @@
       "name": "{butterfly}: quality assurance of continually updating and overwritten time-series data"
     }
   ],
-  "releaseNotes": "https://github.com/thomaszwagerman/butterfly/blob/master/NEWS.md",
-  "readme": "https://github.com/thomaszwagerman/butterfly/blob/main/README.md",
+  "releaseNotes": "https://github.com/antarctica/butterfly/blob/master/NEWS.md",
+  "readme": "https://github.com/antarctica/butterfly/blob/main/README.md",
   "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main", "https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck"],
   "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html#stable", "https://www.repostatus.org/#active"],
   "keywords": ["qaqc", "timeseries", "r", "r-package", "rstats", "data-versioning", "verification"]
