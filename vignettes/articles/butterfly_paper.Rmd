@@ -80,7 +80,8 @@ To maintain the integrity of our published dataset, we need to impose robust che
 knitr::include_graphics("img/full_pipeline_example.png")
 ```
 
-This is where butterfly is used in a data processing pipeline, to prevent unintended DOI invalidation through publishing datasets with unnoticed changes.
+This is where butterfly is used in a data processing pipeline, to prevent unintended DOI invalidation through publishing datasets with unnoticed changes. The full methods are described in this [article](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html) and source code is available in the [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) [@zwagerman_2024]
+
 
 ## Case Study 2: unexpected changes in data acquisition
 
@@ -98,13 +99,17 @@ A non-continuous timeseries can also be intentional, for example when there is t
 
 The weighbridge does not collect continuous measurements. When no weight is detected on the load cells, it only samples at 1hz, but as soon as any change in weight is detected it will start collecting data at 100hz. This is to reduce the sheer volume of data to process, but also has another benefit in isolating individual penguin crossings.
 
+```{r 100hz_sampling, echo=FALSE, out.width="100%", fig.cap="An illustration of intentional non-continuous measurement, when weight is detected on the weighbridge."}
+knitr::include_graphics("img/100hz_sampling.png")
+```
+
 The individual crossings are the most valuables pieces of data, as these allow deducing information like weight, direction (from colony to sea, or sea to colony) and ultimately, diet.
 
 In this case separating distinct, but continuous segments of data is required. This is the reasoning behind `timeline_group()`. This function allows us to split our timeseries in groups of individual crossings.
 
-## Using butterfly in an operational data pipeline
-
-We use the functionality in this package in an automated data processing pipeline to detect changes, stop data transfer and notify the user. The full methods are described in this [article](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html) and source code is available in the [asli-pipeline repository](https://github.com/antarctica/asli-pipeline) [@zwagerman_2024]
+```{r crossing_example, echo=FALSE, out.width="100%", fig.cap="An example of an individual penguin crossing, the continuous crossing was identified and grouped using `timeline_group()`."}
+knitr::include_graphics("img/crossing_example.png")
+```
 
 # Acknowledgements
 This software was supported by NERC Grant ... I would like to thank Paul Breen & Helen Peat for guidance on DOIs and data publication, Matt Gascoyne for sharing his work on Bird Island's penguin weighbridge and David Wilby & Scott Hosking for collaborating with me on the Amundsen Sea Low related software development. 
