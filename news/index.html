@@ -25,7 +25,7 @@
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/antarctica/butterfly/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ropensci/butterfly/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -34,34 +34,34 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/antarctica/butterfly/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/ropensci/butterfly/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="butterfly-110-2025-03-04">butterfly 1.1.0 (2025-03-04)<a class="anchor" aria-label="anchor" href="#butterfly-110-2025-03-04"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-1-0">NEW FEATURES<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h4>
-<ul><li>Adding new <code><a href="../reference/timeline.html">butterfly::timeline()</a></code> function, which checks if a time series is continuous. The user can specify the difference between timesteps expected (<a href="https://github.com/antarctica/butterfly/issues/24" class="external-link">#24</a>).</li>
-<li>Adding new <code><a href="../reference/timeline_group.html">butterfly::timeline_group()</a></code> function, which groups a time series in distinct, but continuous groups (<a href="https://github.com/antarctica/butterfly/issues/24" class="external-link">#24</a>).</li>
-<li>Adding new <code>butterflymess</code> dataset, which provides a “messy” version of <code>butterflycount</code> for testing purposes (<a href="https://github.com/antarctica/butterfly/issues/33" class="external-link">#33</a>).</li>
+<ul><li>Adding new <code><a href="../reference/timeline.html">butterfly::timeline()</a></code> function, which checks if a time series is continuous. The user can specify the difference between timesteps expected (<a href="https://github.com/ropensci/butterfly/issues/24" class="external-link">#24</a>).</li>
+<li>Adding new <code><a href="../reference/timeline_group.html">butterfly::timeline_group()</a></code> function, which groups a time series in distinct, but continuous groups (<a href="https://github.com/ropensci/butterfly/issues/24" class="external-link">#24</a>).</li>
+<li>Adding new <code>butterflymess</code> dataset, which provides a “messy” version of <code>butterflycount</code> for testing purposes (<a href="https://github.com/ropensci/butterfly/issues/33" class="external-link">#33</a>).</li>
 </ul></div>
 <div class="section level4">
 <h4 id="minor-improvements-1-1-0">MINOR IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#minor-improvements-1-1-0"></a></h4>
-<ul><li>Enabled further passing of <code>waldo</code> parameters (such as tolerance) (<a href="https://github.com/antarctica/butterfly/issues/18" class="external-link">#18</a>).</li>
-<li>Improved CONTRIBUTING.md (<a href="https://github.com/antarctica/butterfly/issues/29" class="external-link">#29</a>).</li>
-<li>Adding further tests, using <code>butterflymess</code>, to test function response to badly formatted datasets (<a href="https://github.com/antarctica/butterfly/issues/33" class="external-link">#33</a>).</li>
-<li>Improved <code><a href="../reference/loupe.html">loupe()</a></code> feedback when there are no new rows (<a href="https://github.com/antarctica/butterfly/issues/34" class="external-link">#34</a>).</li>
+<ul><li>Enabled further passing of <code>waldo</code> parameters (such as tolerance) (<a href="https://github.com/ropensci/butterfly/issues/18" class="external-link">#18</a>).</li>
+<li>Improved CONTRIBUTING.md (<a href="https://github.com/ropensci/butterfly/issues/29" class="external-link">#29</a>).</li>
+<li>Adding further tests, using <code>butterflymess</code>, to test function response to badly formatted datasets (<a href="https://github.com/ropensci/butterfly/issues/33" class="external-link">#33</a>).</li>
+<li>Improved <code><a href="../reference/loupe.html">loupe()</a></code> feedback when there are no new rows (<a href="https://github.com/ropensci/butterfly/issues/34" class="external-link">#34</a>).</li>
 </ul></div>
 <div class="section level4">
 <h4 id="documentation-fixes-1-1-0">DOCUMENTATION FIXES<a class="anchor" aria-label="anchor" href="#documentation-fixes-1-1-0"></a></h4>
-<ul><li>Added section on contributing to <code>README</code> (<a href="https://github.com/antarctica/butterfly/issues/32" class="external-link">#32</a>).</li>
-<li>Improved introduction of main vignette (<a href="https://github.com/antarctica/butterfly/issues/35" class="external-link">#35</a>).</li>
-<li>Explicitly mentioned shell scripts are run in Bash (<a href="https://github.com/antarctica/butterfly/issues/35" class="external-link">#35</a>).</li>
-<li>Improve description of what <code><a href="../reference/loupe.html">loupe()</a></code> does (<a href="https://github.com/antarctica/butterfly/issues/36" class="external-link">#36</a>).</li>
-<li>Elaborate on <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>, in addition to <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> (<a href="https://github.com/antarctica/butterfly/issues/36" class="external-link">#36</a>).</li>
-<li>Fix error in <code><a href="../reference/catch.html">catch()</a></code> description, where it was mentioned the function uses <code>inner_join()</code>, when actually it uses <code>anti_join()</code> (<a href="https://github.com/antarctica/butterfly/issues/36" class="external-link">#36</a>).</li>
-<li>Clarified <code><a href="../reference/timeline.html">timeline()</a></code> description on how the expected lag units work for different periods of time (days, weeks) (<a href="https://github.com/antarctica/butterfly/issues/39" class="external-link">#39</a>).</li>
-<li>Grammar and punctuation fixes (<a href="https://github.com/antarctica/butterfly/issues/35" class="external-link">#35</a>, <a href="https://github.com/antarctica/butterfly/issues/36" class="external-link">#36</a>).</li>
+<ul><li>Added section on contributing to <code>README</code> (<a href="https://github.com/ropensci/butterfly/issues/32" class="external-link">#32</a>).</li>
+<li>Improved introduction of main vignette (<a href="https://github.com/ropensci/butterfly/issues/35" class="external-link">#35</a>).</li>
+<li>Explicitly mentioned shell scripts are run in Bash (<a href="https://github.com/ropensci/butterfly/issues/35" class="external-link">#35</a>).</li>
+<li>Improve description of what <code><a href="../reference/loupe.html">loupe()</a></code> does (<a href="https://github.com/ropensci/butterfly/issues/36" class="external-link">#36</a>).</li>
+<li>Elaborate on <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>, in addition to <code><a href="https://waldo.r-lib.org/reference/compare.html" class="external-link">waldo::compare()</a></code> (<a href="https://github.com/ropensci/butterfly/issues/36" class="external-link">#36</a>).</li>
+<li>Fix error in <code><a href="../reference/catch.html">catch()</a></code> description, where it was mentioned the function uses <code>inner_join()</code>, when actually it uses <code>anti_join()</code> (<a href="https://github.com/ropensci/butterfly/issues/36" class="external-link">#36</a>).</li>
+<li>Clarified <code><a href="../reference/timeline.html">timeline()</a></code> description on how the expected lag units work for different periods of time (days, weeks) (<a href="https://github.com/ropensci/butterfly/issues/39" class="external-link">#39</a>).</li>
+<li>Grammar and punctuation fixes (<a href="https://github.com/ropensci/butterfly/issues/35" class="external-link">#35</a>, <a href="https://github.com/ropensci/butterfly/issues/36" class="external-link">#36</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">
