@@ -200,13 +200,6 @@ Read more about how `butterfly` is [used in an operational data pipeline](https:
 
 For full guidance on contributions, please refer to `.github/CONTRIBUTING.md`.
 
-## Code of Conduct
-
-Please note that this package is released with a [Contributor
-Code of Conduct](https://ropensci.org/code-of-conduct/). 
-
-By contributing to this project, you agree to abide by its terms.
-
 ### Without write access
 Corrections, suggestions and general improvements are welcome as issues.
 
@@ -214,3 +207,10 @@ You can also suggest changes by forking this repository, and opening a pull requ
 
 ### With write access
 You can push directly to main for small fixes. Please use PRs to main for discussing larger updates.
+
+## Code of Conduct
+
+Please note that this package is released with a [Contributor
+Code of Conduct](https://ropensci.org/code-of-conduct/). 
+
+By contributing to this project, you agree to abide by its terms.

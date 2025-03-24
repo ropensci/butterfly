@@ -383,13 +383,6 @@ to verify a continually updated **and** published dataset.
 For full guidance on contributions, please refer to
 `.github/CONTRIBUTING.md`.
 
-## Code of Conduct
-
-Please note that this package is released with a [Contributor Code of
-Conduct](https://ropensci.org/code-of-conduct/).
-
-By contributing to this project, you agree to abide by its terms.
-
 ### Without write access
 
 Corrections, suggestions and general improvements are welcome as issues.
@@ -401,3 +394,10 @@ pull request. Please target your pull requests to the main branch.
 
 You can push directly to main for small fixes. Please use PRs to main
 for discussing larger updates.
+
+## Code of Conduct
+
+Please note that this package is released with a [Contributor Code of
+Conduct](https://ropensci.org/code-of-conduct/).
+
+By contributing to this project, you agree to abide by its terms.
