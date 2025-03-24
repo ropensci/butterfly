@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
   "author": [
     {
       "@type": "Person",
@@ -140,7 +140,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "506.435KB",
+  "fileSize": "506.719KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -156,8 +156,13 @@
     }
   ],
   "releaseNotes": "https://github.com/antarctica/butterfly/blob/master/NEWS.md",
-  "readme": "https://github.com/antarctica/butterfly/blob/main/README.md",
+  "readme": "https://github.com/ropensci/butterfly/blob/main/README.md",
   "contIntegration": ["https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main", "https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck"],
   "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html#stable", "https://www.repostatus.org/#active"],
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/676",
+    "provider": "https://ropensci.org"
+  },
   "keywords": ["qaqc", "timeseries", "r", "r-package", "rstats", "data-versioning", "verification"]
 }
