@@ -62,12 +62,10 @@ going unnoticed.
 
 ## Installation
 
-You can install the development version of butterfly from
-[GitHub](https://github.com/) with:
+You can install butterfly with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("antarctica/butterfly")
+install.packages("butterfly", repos = "https://ropensci.r-universe.dev")
 ```
 
 ## Overview
