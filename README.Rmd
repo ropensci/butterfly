@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![pkgcheck](https://github.com/thomaszwagerman/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck)
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/676_status.svg)](https://github.com/ropensci/software-review/issues/676)
 <!-- badges: end -->
 
 The goal of butterfly is to aid in the verification of continually updating timeseries data, where we expect new values over time, but want to ensure previous data remains unchanged, and timesteps remain continuous. 
@@ -198,7 +199,14 @@ Read more about how `butterfly` is [used in an operational data pipeline](https:
 
 ## Contributing
 
-For full guidance on contributions, please refer to `.github/CONTRIBUTING.md`
+For full guidance on contributions, please refer to `.github/CONTRIBUTING.md`.
+
+## Code of Conduct
+
+Please note that this package is released with a [Contributor
+Code of Conduct](https://ropensci.org/code-of-conduct/). 
+
+By contributing to this project, you agree to abide by its terms.
 
 ### Without write access
 Corrections, suggestions and general improvements are welcome as issues.
