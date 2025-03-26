@@ -13,13 +13,19 @@ Verification of continually updating timeseries data where we expect new values,
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/antarctica/butterfly}
-  \item Report bugs at \url{https://github.com/antarctica/butterfly/issues}
+  \item \url{https://docs.ropensci.org/butterfly}
+  \item \url{https://github.com/ropensci/butterfly}
+  \item Report bugs at \url{https://github.com/ropensci/butterfly/issues}
 }
 
 }
 \author{
 \strong{Maintainer}: Thomas Zwagerman \email{thozwa@bas.ac.uk} (\href{https://orcid.org/0009-0003-3742-3234}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Quentin Read (Quentin reviewed the package (v. 1.1.0) for rOpenSci, see <https://github.com/ropensci/software-review/issues/676>) [reviewer]
+}
 
 }
 \keyword{internal}

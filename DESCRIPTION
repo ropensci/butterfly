@@ -1,9 +1,12 @@
 Package: butterfly
 Title: Verification For Continually Updating Timeseries Data
 Version: 1.1.0
-Authors@R: 
+Authors@R: c(
     person("Thomas", "Zwagerman", , "thozwa@bas.ac.uk", role = c("aut", "cre"),
-           comment = c(ORCID = "0009-0003-3742-3234"))
+           comment = c(ORCID = "0009-0003-3742-3234")),
+    person("Quentin", "Read", role = "rev",
+        comment = "Quentin reviewed the package (v. 1.1.0) for rOpenSci, see <https://github.com/ropensci/software-review/issues/676>")    
+    )
 Description: Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
 License: MIT + file LICENSE
 Encoding: UTF-8
