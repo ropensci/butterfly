@@ -4,11 +4,11 @@
 \name{butterfly-package}
 \alias{butterfly}
 \alias{butterfly-package}
-\title{butterfly: Verification For Continually Updating Timeseries Data}
+\title{butterfly: Verification for Continually Updating Time Series Data}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
+Verification of continually updating time series data where we expect new values, but want to ensure previous data remains unchanged.
 }
 \seealso{
 Useful links:
@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Thomas Zwagerman \email{thozwa@bas.ac.uk} (\href{https://orcid.org/0009-0003-3742-3234}{ORCID})
+\strong{Maintainer}: Thomas Zwagerman \email{thozwa@bas.ac.uk} (\href{https://orcid.org/0009-0003-3742-3234}{ORCID}) [copyright holder]
 
 Other contributors:
 \itemize{

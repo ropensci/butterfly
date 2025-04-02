@@ -9,7 +9,7 @@
 #'
 #' @inheritParams create_object_list
 #'
-#' @returns A dataframe which contains only rows of `df_current` that have
+#' @return A dataframe which contains only rows of `df_current` that have
 #' changes from `df_previous`, but without new rows. Also returns a waldo
 #' object as in `loupe()`.
 #'
