@@ -33,7 +33,7 @@
 #' column formatted YYYY-MM-DD day will be used, therefore 1 would be 1 day, 7
 #' would be a week.
 #'
-#' @returns A data.frame, identical to `df_current`, but with extra columns
+#' @return A data.frame, identical to `df_current`, but with extra columns
 #' `timeline_group`, which assigns a number to each continuous sets of
 #' data and `timelag` which specifies the time lags between rows.
 #'

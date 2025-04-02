@@ -14,7 +14,7 @@
 #' returns a `waldo::compare()` call to give a detailed breakdown of changes. If
 #' you are not familiar with `waldo::compare()`, this is an expanded and more
 #' verbose function similar to base R's `all.equal()`.
-#' 
+#'
 #' `loupe()` will then return TRUE if there are not changes to previous data,
 #' or FALSE if there are unexpected changes. If you want to extract changes as
 #' a dataframe, use `catch()`, or if you want to drop them, use `release()`.
@@ -28,7 +28,7 @@
 #'
 #' @inheritParams create_object_list
 #'
-#' @returns A boolean where TRUE indicates no changes to previous data and
+#' @return A boolean where TRUE indicates no changes to previous data and
 #' FALSE indicates unexpected changes.
 #'
 #' @seealso [create_object_list()]

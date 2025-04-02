@@ -189,7 +189,7 @@ no continuity between them.
 
 ## Using `butterfly` in a data processing pipeline
 
-If you would like to know more about using `butterfly` in an operational data processing pipeline, please refer to the article on  [using `butterfly` in an operational pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html).
+If you would like to know more about using `butterfly` in an operational data processing pipeline, please refer to the article on  [using `butterfly` in an operational pipeline](https://docs.ropensci.org/butterfly/articles/butterfly_in_pipeline.html).
 
 ## A note on controlling verbosity
 

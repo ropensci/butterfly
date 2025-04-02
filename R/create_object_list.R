@@ -22,7 +22,7 @@
 #' @param ... Other `waldo::compare()` arguments can be supplied here, such as
 #'  `tolerance` or `max_diffs`. See `?waldo::compare()` for a full list.
 #'
-#' @returns A list containing boolean where TRUE indicates no changes to
+#' @return A list containing boolean where TRUE indicates no changes to
 #' previous data and FALSE indicates unexpected changes, a dataframe of
 #' the current data without new rows and a dataframe of new rows only
 #'

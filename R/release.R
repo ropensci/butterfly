@@ -8,7 +8,7 @@
 #' @inheritParams create_object_list
 #' @param include_new boolean, should new rows be included? Default is TRUE.
 #'
-#' @returns A dataframe which contains only rows of `df_current` that have not
+#' @return A dataframe which contains only rows of `df_current` that have not
 #' changed from `df_previous`, and includes new rows. Also returns a waldo
 #' object as in `loupe()`.
 #'

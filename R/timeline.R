@@ -21,7 +21,7 @@
 #'
 #' @seealso [timeline_group()]
 #'
-#' @returns A boolean, TRUE if the timeseries is continuous, and FALSE if there
+#' @return A boolean, TRUE if the timeseries is continuous, and FALSE if there
 #' are more than one continuous timeseries within the dataset.
 #'
 #' @examples

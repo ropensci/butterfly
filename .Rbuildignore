@@ -11,3 +11,5 @@
 ^doc$
 ^Meta$
 ^vignettes/articles$
+^dev$
+^revdep$
