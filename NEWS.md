@@ -1,3 +1,14 @@
+butterfly 1.1.1 (2025-04-02)
+=========================
+
+### DOCUMENTATION FIXES
+* Adding rOpenSci Reviewers to DESCRIPTION.
+* Updating URLs to match rOpenSci (#43).
+* Adding rhub yaml (#43).
+* Spelling checks in DESCRIPTION (#43).
+* Elaborate package description in DESCRIPTION (#43).
+* Changing @returns to @return to comply with tags check (#43)
+
 butterfly 1.1.0 (2025-03-04)
 =========================
 
