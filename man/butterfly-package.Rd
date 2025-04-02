@@ -13,8 +13,8 @@ Verification of continually updating timeseries data where we expect new values,
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://docs.ropensci.org/butterfly}
-  \item \url{https://github.com/ropensci/butterfly}
+  \item \url{https://docs.ropensci.org/butterfly/}
+  \item \url{https://github.com/ropensci/butterfly/}
   \item Report bugs at \url{https://github.com/ropensci/butterfly/issues}
 }
 

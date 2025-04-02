@@ -1,19 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# butterfly <a href="https://thomaszwagerman.github.io/butterfly/"><img src="man/figures/logo.png" align="right" height="139" alt="butterfly website" /></a>
+# butterfly <a href="https://github.com/ropensci/butterfly"><img src="man/figures/logo.png" align="right" height="139" alt="butterfly website" /></a>
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/ropensci/butterfly/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/butterfly/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/thomaszwagerman/butterfly/branch/main/graph/badge.svg)](https://app.codecov.io/gh/thomaszwagerman/butterfly?branch=main)
+coverage](https://codecov.io/gh/thomaszwagerman/butterfly/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci/butterfly?branch=main)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![pkgcheck](https://github.com/thomaszwagerman/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/thomaszwagerman/butterfly/actions?query=workflow%3Apkgcheck)
+[![pkgcheck](https://github.com/ropensci/butterfly/workflows/pkgcheck/badge.svg)](https://github.com/ropensci/butterfly/actions?query=workflow%3Apkgcheck)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/676_status.svg)](https://github.com/ropensci/software-review/issues/676)
 <!-- badges: end -->
@@ -375,7 +375,7 @@ Other functions include `all.equal()` (base R) or
 ## `butterfly` in production
 
 Read more about how `butterfly` is [used in an operational data
-pipeline](https://thomaszwagerman.github.io/butterfly/articles/butterfly_in_pipeline.html)
+pipeline](https://docs.ropensci.org/butterfly/articles/butterfly_in_pipeline.html)
 to verify a continually updated **and** published dataset.
 
 ## Contributing

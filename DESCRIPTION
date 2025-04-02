@@ -5,13 +5,16 @@ Authors@R: c(
     person("Thomas", "Zwagerman", , "thozwa@bas.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0003-3742-3234")),
     person("Quentin", "Read", role = "rev",
-        comment = "Quentin reviewed the package (v. 1.1.0) for rOpenSci, see <https://github.com/ropensci/software-review/issues/676>")    
-    )
-Description: Verification of continually updating timeseries data where we expect new values, but want to ensure previous data remains unchanged.
+           comment = "Quentin reviewed the package (v. 1.1.0) for rOpenSci, see <https://github.com/ropensci/software-review/issues/676>")
+  )
+Description: Verification of continually updating timeseries data where we
+    expect new values, but want to ensure previous data remains unchanged.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+URL: https://docs.ropensci.org/butterfly/,
+    https://github.com/ropensci/butterfly/
+BugReports: https://github.com/ropensci/butterfly/issues
+Depends: 
+    R (>= 2.10)
 Imports: 
     cli,
     dplyr,
@@ -22,10 +25,10 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
-Depends: 
-    R (>= 2.10)
+Encoding: UTF-8
 LazyData: true
-VignetteBuilder: knitr
-URL: https://docs.ropensci.org/butterfly, https://github.com/ropensci/butterfly
-BugReports: https://github.com/ropensci/butterfly/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
