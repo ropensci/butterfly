@@ -1,6 +1,6 @@
 Package: butterfly
 Title: Verification for Continually Updating Time Series Data
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
     person("Thomas", "Zwagerman", , "thozwa@bas.ac.uk", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0003-3742-3234")),

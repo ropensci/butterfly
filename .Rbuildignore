@@ -13,3 +13,4 @@
 ^vignettes/articles$
 ^dev$
 ^revdep$
+^cran-comments\.md$
