@@ -1,4 +1,4 @@
-butterfly 1.1.1 (2025-04-02)
+butterfly 1.1.2 (2025-04-04)
 =========================
 * Rephrased the DESCRIPTION description to avoid "This package" completely.
 * I have added British Antarctic Survey as "cph", as per the LICENSE.
