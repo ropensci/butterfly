@@ -1,6 +1,10 @@
 butterfly 1.1.1 (2025-04-02)
 =========================
+* Rephrased the DESCRIPTION description to avoid "This package" completely.
+* I have added British Antarctic Survey as "cph", as per the LICENSE.
 
+butterfly 1.1.1 (2025-04-02)
+=========================
 ### DOCUMENTATION FIXES
 * Adding rOpenSci Reviewers to DESCRIPTION.
 * Updating URLs to match rOpenSci (#43).
