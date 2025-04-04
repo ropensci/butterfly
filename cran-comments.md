@@ -5,6 +5,8 @@ This is a resubmission. In this version I have:
 
 * I have added British Antarctic Survey as "cph", as per the LICENSE.
 
+* No references have been used.
+
 
 ## R CMD check results
 
