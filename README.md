@@ -65,6 +65,10 @@ going unnoticed.
 You can install butterfly with:
 
 ``` r
+# From CRAN:
+install.packages("butterfly")
+
+# From rOpenSci
 install.packages("butterfly", repos = "https://ropensci.r-universe.dev")
 ```
 
