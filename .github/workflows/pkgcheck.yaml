@@ -19,4 +19,4 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: ropensci-review-tools/pkgcheck-action@v2
+      - uses: ropensci-review-tools/pkgcheck-action@main
